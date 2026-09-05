@@ -39,3 +39,17 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# impeccable live runtime
+.impeccable/
+
+# local agent config
+.codex/
+
+# python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+
+

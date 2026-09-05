@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OdontoDocument",
+  "description": "JSON Schema specification for OdontoDoc .odonto portable clinical files",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "metadata",
+    "patient",
+    "student",
+    "medicalHistory",
+    "photos",
+    "diagnosisAndPlan",
+    "treatmentLog"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["id", "createdAt", "updatedAt", "appVersion"],
+      "properties": {
+        "id": { "type": "string", "format": "uuid" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "appVersion": { "type": "string" }
+      }
+    },
+    "patient": {
+      "type": "object",
+      "required": ["fullName", "gender", "consultationReason"],
+      "properties": {
+        "recordNumber": { "type": "string" },
+        "fullName": { "type": "string", "minLength": 1 },
+        "age": { "type": "integer", "minimum": 0, "maximum": 130 },
+        "gender": { "type": "string", "enum": ["M", "F", "Otro"] },
+        "dateOfBirth": { "type": "string" },
+        "occupation": { "type": "string" },
+        "phone": { "type": "string" },
+        "address": { "type": "string" },
+        "consultationReason": { "type": "string", "minLength": 1 }
+      }
+    },
+    "student": {
+      "type": "object",
+      "required": ["studentName", "enrollmentId", "supervisorName"],
+      "properties": {
+        "studentName": { "type": "string", "minLength": 1 },
+        "enrollmentId": { "type": "string", "minLength": 1 },
+        "semester": { "type": "string" },
+        "subject": { "type": "string" },
+        "supervisorName": { "type": "string", "minLength": 1 }
+      }
+    },
+    "medicalHistory": {
+      "type": "object",
+      "properties": {
+        "hereditaryConditions": { "type": "string" },
+        "pathologicalBackground": { "type": "string" },
+        "nonPathologicalBackground": { "type": "string" },
+        "vitalSigns": {
+          "type": "object",
+          "properties": {
+            "bloodPressure": { "type": "string" },
+            "heartRate": { "type": "number" },
+            "respiratoryRate": { "type": "number" },
+            "temperature": { "type": "number" }
+          }
+        },
+        "stomatologicalExam": { "type": "string" }
+      }
+    },
+    "photos": {
+      "type": "object",
+      "properties": {
+        "extraoralFrontal": { "type": ["string", "null"] },
+        "intraoralFrontal": { "type": ["string", "null"] },
+        "intraoralUpper": { "type": ["string", "null"] },
+        "intraoralLower": { "type": ["string", "null"] },
+        "intraoralRight": { "type": ["string", "null"] },
+        "intraoralLeft": { "type": ["string", "null"] }
+      }
+    },
+    "diagnosisAndPlan": {
+      "type": "object",
+      "properties": {
+        "generalDiagnosis": { "type": "string" },
+        "teethRecords": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "phase1Preventive": { "type": "string" },
+        "phase2Curative": { "type": "string" },
+        "phase3Rehabilitative": { "type": "string" },
+        "prognosis": { "type": "string" }
+      }
+    },
+    "treatmentLog": {
+      "type": "object",
+      "required": ["entries"],
+      "properties": {
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "date", "procedure"],
+            "properties": {
+              "id": { "type": "string" },
+              "date": { "type": "string" },
+              "toothOrZone": { "type": "string" },
+              "procedure": { "type": "string" },
+              "evolutionNotes": { "type": "string" },
+              "status": {
+                "type": "string",
+                "enum": ["pre", "durante", "post", "concluido"]
+              },
+              "instructorSignatureConfirmed": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

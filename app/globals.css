@@ -1,26 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+
+  /* Official UJAT Brand Guidelines (Pantone 356 C, 362 C, 376 C) */
+  --ujat-green-primary: #1C8443;
+  --ujat-green-secondary: #41AD49;
+  --ujat-green-accent: #8DC642;
+  --ujat-navy: #002B49;
+
+  --font-caecilia: "Caecilia", "PMN Caecilia", "Roboto Slab", Georgia, serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.font-caecilia {
+  font-family: var(--font-caecilia);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Print Specific Rules adhering to UJAT print-layout-contract */
+@page {
+  size: letter portrait;
+  margin: 8mm;
+}
+
+@media print {
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 9pt;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Completely purge all application UI chrome */
+  nav,
+  header,
+  footer,
+  aside,
+  button,
+  .no-print,
+  [role="tablist"],
+  [role="toolbar"],
+  input[type="file"] {
+    display: none !important;
+  }
+
+  /* Printable Sheet Format */
+  .clinical-sheet {
+    page-break-after: always;
+    break-after: page;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 255mm !important;
+    margin: 0 !important;
+    padding: 2mm !important;
+    box-sizing: border-box !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .clinical-sheet:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+/* Custom scrollbar for mobile usability */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
 }
