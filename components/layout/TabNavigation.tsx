@@ -30,11 +30,11 @@ export function TabNavigation() {
 
   return (
     <nav
-      className="no-print fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 z-30 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]"
+      className="no-print fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 z-30 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] pt-1 pb-[max(0.5rem,env(safe-area-inset-bottom,0.5rem))] transition-colors"
       role="tablist"
       aria-label="Navegación clínica Material 3"
     >
-      <div className="max-w-xl mx-auto flex items-center justify-between px-2 h-16 sm:h-[72px]">
+      <div className="max-w-xl mx-auto flex items-center justify-between px-2 sm:px-4 h-16 sm:h-[70px]">
         {TABS.map((tab) => {
           const isActive = activeTab === tab.id;
           const Icon = tab.IconComponent;
@@ -44,14 +44,14 @@ export function TabNavigation() {
               role="tab"
               aria-selected={isActive}
               onClick={() => setActiveTab(tab.id)}
-              className="flex-1 flex flex-col items-center justify-center py-1 transition-all select-none group focus:outline-none"
+              className="flex-1 flex flex-col items-center justify-center min-h-[48px] py-1 transition-all select-none group focus:outline-none touch-manipulation cursor-pointer"
             >
               {/* Material Design 3 Active Indicator Pill */}
               <div
-                className={`w-14 sm:w-16 h-8 rounded-full flex items-center justify-center transition-all duration-200 ${
+                className={`w-13 sm:w-16 h-8 rounded-full flex items-center justify-center transition-all duration-200 ${
                   isActive
-                    ? "bg-[#1C8443]/15 text-[#1C8443] dark:bg-[#8DC642]/20 dark:text-[#8DC642] scale-105"
-                    : "bg-transparent text-slate-500 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200 group-hover:bg-slate-100 dark:group-hover:bg-slate-800/60"
+                    ? "bg-[var(--theme-primary-light)] text-[var(--theme-primary)] scale-105 shadow-sm"
+                    : "bg-transparent text-slate-500 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200 group-hover:bg-[var(--theme-primary-subtle)] dark:group-hover:bg-slate-800/60"
                 }`}
               >
                 <Icon sx={{ fontSize: 22 }} />
@@ -61,7 +61,7 @@ export function TabNavigation() {
               <span
                 className={`text-[11px] leading-tight tracking-tight mt-1 transition-colors ${
                   isActive
-                    ? "font-bold text-[#1C8443] dark:text-[#8DC642]"
+                    ? "font-bold text-[var(--theme-primary-text)] dark:text-[var(--theme-accent)]"
                     : "font-medium text-slate-600 dark:text-slate-400"
                 }`}
               >

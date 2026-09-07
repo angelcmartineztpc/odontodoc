@@ -20,21 +20,25 @@ export function IntraoralMatrixForm() {
   ].filter(Boolean).length;
 
   return (
-    <div className="space-y-6 pb-24 max-w-3xl mx-auto px-4 pt-4">
+    <div className="space-y-6 pb-40 sm:pb-48 max-w-3xl mx-auto px-4 pt-4">
       {/* Banner */}
-      <div className="bg-gradient-to-r from-emerald-700 to-teal-800 text-white p-4 rounded-2xl shadow-sm flex items-center justify-between border border-emerald-600/30">
-        <div>
-          <h2 className="text-lg font-bold flex items-center gap-2">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 border border-slate-200/90 dark:border-slate-800 shadow-sm flex items-start sm:items-center justify-between gap-3.5 transition-all">
+        <div className="flex items-start sm:items-center gap-3.5">
+          <div className="w-10 h-10 rounded-2xl bg-[var(--theme-primary-light)] text-[var(--theme-primary)] flex items-center justify-center shrink-0 shadow-inner">
             <PhotoCameraOutlinedIcon sx={{ fontSize: 22 }} />
-            <span>Módulo C: Matriz Fotográfica Intraoral (5 Tomas Clínicas)</span>
-          </h2>
-          <p className="text-xs text-emerald-100 mt-1">
-            Captura con compresión automática en Canvas en memoria. Alimenta la matriz fotográfica de la Hoja 2 oficial UJAT.
-          </p>
+          </div>
+          <div>
+            <h2 className="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight leading-snug">
+              Módulo C: Matriz Fotográfica Intraoral (5 Tomas Clínicas)
+            </h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
+              Captura con compresión en Canvas en memoria. Alimenta la matriz de la Hoja 2 oficial UJAT.
+            </p>
+          </div>
         </div>
-        <div className="text-right">
-          <span className="text-xs font-semibold bg-emerald-900/60 px-2.5 py-1 rounded-full border border-emerald-400/30 font-mono">
-            {totalPhotosCount} / 5 capturadas
+        <div className="shrink-0 text-right">
+          <span className="text-xs font-semibold bg-[var(--theme-primary-light)] text-[var(--theme-primary-text)] dark:text-[var(--theme-accent)] px-2.5 py-1 rounded-full border border-[var(--theme-primary-border)] font-mono">
+            {totalPhotosCount} / 5
           </span>
         </div>
       </div>
@@ -97,12 +101,12 @@ export function IntraoralMatrixForm() {
         </div>
       </div>
 
-      {/* Navigation Controls */}
-      <div className="flex justify-between pt-2">
+      {/* Navigation Action Card (Material Design 3 Surface with High Clearance) */}
+      <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-slate-200/90 dark:border-slate-800 shadow-sm flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 transition-all">
         <button
           type="button"
           onClick={() => setActiveTab("history")}
-          className="min-h-[44px] px-4 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-sm hover:bg-slate-300 transition-colors flex items-center gap-2"
+          className="min-h-[48px] px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300/80 dark:border-slate-700 font-semibold text-sm transition-colors flex items-center justify-center gap-2 touch-manipulation cursor-pointer"
         >
           <ArrowBackOutlinedIcon sx={{ fontSize: 18 }} />
           <span>Historial y Foto Extraoral</span>
@@ -110,10 +114,10 @@ export function IntraoralMatrixForm() {
         <button
           type="button"
           onClick={() => setActiveTab("diagnosis")}
-          className="min-h-[44px] px-5 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-semibold text-sm shadow flex items-center gap-2 transition-all active:scale-95"
+          className="min-h-[48px] px-6 py-2.5 rounded-xl bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-hover)] text-white font-bold text-sm shadow-sm flex items-center justify-center gap-2.5 transition-all active:scale-95 touch-manipulation cursor-pointer"
         >
           <span>Continuar a Diagnóstico y Plan</span>
-          <ArrowForwardOutlinedIcon sx={{ fontSize: 18 }} />
+          <ArrowForwardOutlinedIcon sx={{ fontSize: 19 }} />
         </button>
       </div>
     </div>

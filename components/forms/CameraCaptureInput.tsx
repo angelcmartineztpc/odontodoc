@@ -80,7 +80,11 @@ export function CameraCaptureInput({
 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 shadow-sm" />
+          <span
+            className={`w-2.5 h-2.5 rounded-full shadow-sm transition-colors ${
+              value ? "bg-[var(--theme-primary)]" : "bg-slate-300 dark:bg-slate-700"
+            }`}
+          />
           <span className="text-xs font-bold text-slate-800 dark:text-slate-100">
             {label}
           </span>
@@ -96,16 +100,17 @@ export function CameraCaptureInput({
         </p>
       )}
 
-      <div className="relative w-full aspect-[16/9] rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-950 flex items-center justify-center">
+      {/* Viewport Frame */}
+      <div className="relative w-full aspect-[4/3] bg-slate-950 rounded-2xl overflow-hidden border border-slate-700/60 shadow-inner flex items-center justify-center">
         {value ? (
           <>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={value} alt={label} className="w-full h-full object-cover" />
-            <span className="corner-reticle absolute top-2 left-2 w-3.5 h-3.5 border-t-2 border-l-2 border-emerald-400 pointer-events-none" />
-            <span className="corner-reticle absolute top-2 right-2 w-3.5 h-3.5 border-t-2 border-r-2 border-emerald-400 pointer-events-none" />
-            <span className="corner-reticle absolute bottom-2 left-2 w-3.5 h-3.5 border-b-2 border-l-2 border-emerald-400 pointer-events-none" />
-            <span className="corner-reticle absolute bottom-2 right-2 w-3.5 h-3.5 border-b-2 border-r-2 border-emerald-400 pointer-events-none" />
-            <span className="absolute bottom-2 right-2 bg-black/75 backdrop-blur-sm text-emerald-300 text-[10px] px-2 py-0.5 rounded font-mono pointer-events-none">
+            <span className="corner-reticle absolute top-2 left-2 w-3.5 h-3.5 border-t-2 border-l-2 border-[var(--theme-accent)] pointer-events-none" />
+            <span className="corner-reticle absolute top-2 right-2 w-3.5 h-3.5 border-t-2 border-r-2 border-[var(--theme-accent)] pointer-events-none" />
+            <span className="corner-reticle absolute bottom-2 left-2 w-3.5 h-3.5 border-b-2 border-l-2 border-[var(--theme-accent)] pointer-events-none" />
+            <span className="corner-reticle absolute bottom-2 right-2 w-3.5 h-3.5 border-b-2 border-r-2 border-[var(--theme-accent)] pointer-events-none" />
+            <span className="absolute bottom-2 right-2 bg-black/75 backdrop-blur-sm text-[var(--theme-accent)] text-[10px] px-2 py-0.5 rounded font-mono pointer-events-none">
               Canvas JPG 0.8
             </span>
           </>
@@ -114,16 +119,16 @@ export function CameraCaptureInput({
             type="button"
             onClick={handleTriggerCapture}
             disabled={isCompressing}
-            className="w-full h-full flex flex-col items-center justify-center gap-1.5 p-4 text-slate-300 hover:text-emerald-400 transition-colors"
+            className="w-full h-full flex flex-col items-center justify-center gap-1.5 p-4 text-slate-300 hover:text-[var(--theme-primary)] transition-colors"
           >
             {isCompressing ? (
               <div className="flex flex-col items-center gap-2">
-                <span className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-                <span className="text-[11px] text-emerald-400 font-medium">Procesando imagen...</span>
+                <span className="w-6 h-6 border-2 border-[var(--theme-primary)] border-t-transparent rounded-full animate-spin" />
+                <span className="text-[11px] text-[var(--theme-accent)] font-medium">Procesando imagen...</span>
               </div>
             ) : (
               <>
-                <PhotoCameraOutlinedIcon sx={{ fontSize: 32 }} className="text-emerald-500" />
+                <PhotoCameraOutlinedIcon sx={{ fontSize: 32 }} className="text-[var(--theme-primary)]" />
                 <span className="text-xs font-semibold">Tocar para capturar encuadre</span>
                 <span className="text-[10px] text-slate-400">Ajuste automático a estándar Carta</span>
               </>
@@ -137,7 +142,7 @@ export function CameraCaptureInput({
           <button
             type="button"
             onClick={handleTriggerCapture}
-            className="flex-1 min-h-[44px] px-3 py-2 rounded-lg bg-emerald-700 text-white text-xs font-semibold hover:bg-emerald-600 transition-colors flex items-center justify-center gap-1.5 active:scale-95 shadow-sm"
+            className="flex-1 min-h-[44px] px-3 py-2 rounded-lg bg-[var(--theme-primary)] text-white text-xs font-semibold hover:bg-[var(--theme-primary-hover)] transition-colors flex items-center justify-center gap-1.5 active:scale-95 shadow-sm"
           >
             <AutorenewOutlinedIcon sx={{ fontSize: 16 }} />
             <span>Reemplazar toma</span>

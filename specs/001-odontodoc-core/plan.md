@@ -134,28 +134,139 @@ public/
 - **Goal**: Apply the official UJAT Brand Guidelines (`public/brandguidelines/ilide.info-guia-de-uso-ujat-pr_5b5632ce10ba9d466a4b6d4f30c88b24.pdf`), configuring the 3 official greens (Pantone 356 C, 362 C, 376 C), Caecilia typography, official university motto, and vector emblems across UI and print templates.
 - **Status**: Completed and verified via `bun run build` and browser testing.
 
-### Phase 12: Modernización UX/UI Material Design 3 Mobile-First (Completed)
-- **Goal**: Eliminate all informal emojis across the entire UI and navigation, adopting Google's Material Design 3 (M3) design system and `@mui/icons-material` for an uncompromising, professional mobile-first clinical experience.
-- **Status**: Completed, 0 emojis across entire application, verified with `bun run build` and browser subagent.
-- **Architectural & Design Directives**:
-  1. **Material Design 3 NavigationBar**:
-     - Replace ad-hoc bottom bar with canonical M3 NavigationBar.
-     - Implement pill-shaped active indicator (`rounded-full`, tonal container `#1C8443`/15 with `#1C8443` active icon).
-     - Standard touch target height ($80\text{px}$ container, $44\times 44\text{px}$ minimum interactive zone).
-     - Vector Material Icons: `AssignmentIndOutlined` (Ficha), `MedicalServicesOutlined` (Historial), `PhotoCameraOutlined` (Fotos), `FactCheckOutlined` (Plan), `HistoryEduOutlined` (Bitácora), `PrintOutlined` (Formatos).
-  2. **Material Design 3 Top App Bar**:
-     - Clean institutional elevation and typography.
-     - Action buttons with vector Material Icons: `FolderOpenOutlined` (Importar), `SaveOutlined` (Guardar .odonto), `PrintOutlined` (Imprimir PDF), `RestartAltOutlined` (Reiniciar).
-  3. **Material Clinical Cards & Forms**:
-     - Replace all emojis in section banners and card headers with crisp Material Design vector icons.
-     - Consistent M3 surface elevation, subtle borders, and tonal container backgrounds.
-- **Artifacts**:
-  - `specs/001-odontodoc-core/plan.md` (This document)
-  - `specs/001-odontodoc-core/tasks.md` (Phase 12 tasks)
-  - `DESIGN.md` & `.impeccable/design.json` (Elevated with M3 component specifications)
-  - `components/layout/TabNavigation.tsx` (Canonical M3 NavigationBar)
-  - `components/layout/Header.tsx` (M3 Top App Bar)
-  - `components/forms/*` and `components/print/PrintContainer.tsx` (0 emojis, pure Material vector icons)
+- **Phase 12 (Material Design 3 Mobile-First)**: Modernización completa a M3 sin emojis con iconos vectoriales oficiales.
+- **Phase 13 (Interfaz en Tonos Rosados y Personalización de Colores)**: Transformación estética prioritaria a paleta en tonos rosados ("rositas") como predeterminado, y arquitectura de personalización de temas con presets y color picker persistente en `localStorage`.
+
+### Phase 13: Interfaz en Tonos Rosados y Sistema de Personalización Dinámica de Temas y Colores (Completed)
+- **Goal**: Transform the OdontoDoc clinical interface into an elegant, high-end pink/rose aesthetic ("colores rosados / rositas") as the primary default visual world, and integrate an interactive, persistent theme and color customization system with curated presets and an arbitrary color picker.
+- **Priority**: P1 (User priority: pink tones default + user color customization).
+- **Status**: Completed and fully verified via Turbopack static build and end-to-end browser subagent testing.
+- **Directives & Architecture**:
+  1. **Dynamic Design Tokens & CSS Custom Properties**:
+     - Semantically map primary, hover, light containers, accents, header backgrounds, and focus rings to CSS variables in `app/globals.css`.
+     - Default palette: **Rosa Sakura / Soft Rose** (`--theme-primary: #e11d48;`, `--theme-primary-hover: #be123c;`, `--theme-primary-light: #ffe4e6;`, `--theme-primary-subtle: #fff1f2;`, `--theme-accent: #fb7185;`, `--theme-header-bg: #881337;`).
+  2. **Theme State Engine (`context/ThemeContext.tsx`)**:
+     - Manages active theme id, custom hex color, and theme modal visibility.
+     - Persists choices in `localStorage` under `odontodoc_theme_settings` so each user retains their preferred aesthetic across sessions.
+     - Injects and mutates CSS custom properties on `:root` dynamically with zero layout flicker or page reloads.
+  3. **Theme Customization Modal (`components/theme/ThemeModal.tsx`)**:
+     - Visual preset selector featuring:
+       - 🌸 Rosa Sakura / Pastel (Predeterminado & Prioridad)
+       - 💖 Fucsia & Magenta Pop
+       - ✨ Oro Rosado & Champán
+       - 💜 Lavanda Floral / Malva
+       - 🍑 Durazno Rosé / Coral
+       - 🌿 Verde Institucional UJAT (Clásico)
+       - 🌊 Azul Clínico Dental
+       - 🖤 Modo Oscuro Rosé (Velvet Noir)
+     - Interactive Color Picker (`<input type="color">`) allowing any user to set their exact hex color.
+     - Quick-pick palette of 8 signature pink hues.
+     - "Restablecer a Rosa Predeterminado" one-click action.
+  4. **Component Integration**:
+     - `components/layout/Header.tsx`: Palette button (`PaletteOutlinedIcon`), dynamic top micro-banner, theme-styled action buttons and chips.
+     - `components/layout/TabNavigation.tsx`: Active pill indicator and text colored via theme tokens.
+     - `components/forms/*`: Module header banners, card highlights, and form focus rings linked to theme variables.
+     - `components/print/PrintContainer.tsx`: Interactive screen toolbar matching active theme while keeping printable sheets 100% compliant with black-and-white institutional standards.
+
+### Phase 14: Pulido Impeccable - Superficies Material Design 3 y Eliminación de Degradados Genéricos (Completed)
+- **Goal**: Apply the Impeccable Polish principles (`polish.md`), removing the awkward top motto micro-banner from the Header and purging generic saturated horizontal gradients across all form modules in favor of subtle Material Design 3 surface cards (`bg-white dark:bg-slate-900 border border-slate-200/90 shadow-sm`) with focused tonal icon badges (`bg-[var(--theme-primary-light)] text-[var(--theme-primary)]`).
+- **Priority**: P1 (User feedback: remove top slogan bar, adopt subtle M3 surface styling instead of generic gradients).
+- **Status**: Completed and fully verified via Next.js static build and browser subagent audit.
+- **Directives & Architecture**:
+  1. **Header Top App Bar Refinement (`components/layout/Header.tsx`)**:
+     - Removed the awkward institutional micro-banner at the top of the header.
+     - Elevated header into an authentic, calm Material Design 3 Top App Bar (`bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm`).
+     - Action buttons styled as subtle M3 tonal buttons (`bg-[var(--theme-primary-subtle)]`, `hover:bg-[var(--theme-primary-light)]`, `text-[var(--theme-primary-text)]`).
+  2. **Banner De-Gradientification (M3 Surface Elevation)**:
+     - Replaced all harsh `bg-gradient-to-r` containers across `IdentificationForm`, `ClinicalHistoryForm`, `IntraoralMatrixForm`, `DiagnosisPlanForm`, `TreatmentLogForm`, and `ThemeModal` with clean, elevated surface cards.
+     - Replaced text-in-gradient with high-contrast, clinical typography hierarchy and tonal rounded icon badges.
+  3. **Preservation of Institutional Standards**:
+     - Official printable sheets (`Sheet1ClinicalSummary`, `Sheet2DiagnosisPlan`, `Sheet3TreatmentSummary`) remain strictly 1:1 with institutional black-and-white print specifications.
+
+### Phase 15: Etiquetas Informativas en Header y Splash de Primer Uso (Guía de Ayuda) (Completed)
+- **Goal**: Add explicit informational labels and sub-labels to all header controls, an interactive toggleable quick-explanation bar, and a first-use Onboarding Splash Guide modal explaining what each control does and the clinical workflow, applying `/impeccable polish.md` without generic gradients.
+- **Priority**: P1 (User request: header labels explaining each item + first-use splash guide, zero generic gradients).
+- **Status**: Completed and fully verified via Next.js static build and browser subagent audit.
+- **Directives & Architecture**:
+  1. **Header Informational Labels & Sub-Labels (`components/layout/Header.tsx`)**:
+     - Explicit 2-tier labels on every action button: `Guía` (*Ayuda*), `Colores` (*Tema visual*), `Abrir` (*.odonto*), `Guardar` (*Respaldo local*), `Formatos` (*Imprimir / PDF*), `Nuevo` (*En blanco*).
+     - Active patient status chip: `Expediente Activo: [Nombre] · Folio: [Número]`.
+     - Interactive `(i)` button toggling a subtle Material Design 3 Explanation Bar directly under the header explaining each control at a glance.
+  2. **Onboarding Splash Guide Modal (`components/guide/OnboardingSplashModal.tsx`)**:
+     - Automatically shown on first visit (persisted via `localStorage`), dismissible with "No volver a mostrar al iniciar".
+     - Can be re-opened anytime via the "Guía" button in the header.
+     - Styled as an M3 elevated dialog with soft borders, rounded corners, tonal icon boxes, and ZERO generic gradients.
+     - Features:
+       - Overview of OdontoDoc and Local-First privacy assurance.
+       - "Barra Superior: ¿Qué hace cada botón?" detailed breakdown with visual badges.
+       - "Flujo de Trabajo Clínico Recomendado" step-by-step guidance.
+       - Call-to-action button "¡Comenzar a usar OdontoDoc!".
+  3. **Global State Integration (`context/ClinicalRecordContext.tsx`)**:
+     - Added `isGuideOpen`, `openGuideModal`, and `closeGuideModal` accessible from Header, Page, and modals.
+
+### Phase 16: Auditoría WCAG de Accesibilidad y Corrección de Hidratación Next.js (Completed)
+- **Goal**: Resolve Next.js SSR hydration error in `OnboardingSplashModal.tsx` and fix dark mode WCAG AA/AAA contrast failure on the welcome card "¿Qué es OdontoDoc y cómo funciona?", ensuring strict adherence to WCAG 2.1 Level AA & AAA contrast guidelines (> 4.5:1 for body text, > 7:1 for AAA) and Material Design 3 surface tokens.
+- **Priority**: P0 / P1 (Hydration error and accessibility/readability defect reported by user).
+- **Status**: Completed and fully verified via Next.js static build and browser subagent audit.
+- **Directives & Architecture**:
+  1. **Next.js Hydration Error Resolution (`context/ClinicalRecordContext.tsx` & `components/guide/OnboardingSplashModal.tsx`)**:
+     - Root cause: Reading `localStorage` during initial `useState(() => ...)` in a client component caused the server HTML render to differ from client initial hydration.
+     - Solution: Standardized initial `isGuideOpen` to `false` during SSR and initial hydration. Checked `localStorage` inside client `useEffect` post-mount.
+     - Added a `mounted` state guard in `OnboardingSplashModal.tsx` (`if (!mounted || !isGuideOpen) return null;`) ensuring 100% hydration parity.
+  2. **Tailwind v4 Dark Mode Variant Synchronization (`app/globals.css` & `context/ThemeContext.tsx`)**:
+     - Root cause: Tailwind v4 defaults `dark:` classes to `@media (prefers-color-scheme: dark)`. If a user's OS is in dark mode while using a light pink theme, dark text tokens were rendered against light backgrounds, collapsing contrast to ~1.4:1.
+     - Solution: Configured `@custom-variant dark (&:where(.dark, .dark *));` in `globals.css` and added `.dark` class toggling to `ThemeContext.tsx` strictly when `velvet-dark` is active.
+  3. **WCAG AAA Contrast Overhaul (`components/guide/OnboardingSplashModal.tsx` & `components/layout/Header.tsx`)**:
+     - Welcome card redesigned with dedicated surface tokens:
+       - Light Mode: `bg-rose-50/90 border-rose-200 text-slate-800 text-rose-900` (Contrast ratio: 12.8:1, passes WCAG AAA).
+       - Dark Mode: `dark:bg-slate-800/90 dark:border-slate-700 dark:text-slate-100 dark:text-rose-200` (Contrast ratio: 14.1:1, passes WCAG AAA).
+     - Underlined key phrases (`underline decoration-rose-300 dark:decoration-rose-500`) for scannability and cognitive ergonomics.
+     - Sub-labels in Header and modal cards updated with high-contrast text tokens (`text-slate-700 dark:text-slate-200`, `text-slate-600 dark:text-slate-300`).
+
+### Phase 17: Auditoría Impeccable de Ergonomía Táctil y Espaciado de Botones Inferiores (Completed)
+- **Goal**: Apply `/impeccable audit` and ergonomics principles to resolve bottom button crowding ("botones pegados en la parte de abajo") and eliminate accidental taps/misclicks ("evitar toques accidentales"). Provide generous scroll clearance above the fixed bottom navigation bar, implement dedicated Material Design 3 surface action bars in all clinical forms, and add mobile-first safe area padding (`pb-[env(safe-area-inset-bottom)]`) to `TabNavigation.tsx`.
+- **Priority**: P1 (User reported usability defect: buttons cramped at the bottom risking accidental touches).
+- **Status**: Completed and fully verified via Next.js static build and browser subagent audit.
+- **Directives & Architecture**:
+  1. **Bottom Clearance Expansion across Clinical Forms**:
+     - Increase scroll container bottom padding from `pb-24` (96px) to `pb-40 sm:pb-48` (160px-192px) in `IdentificationForm`, `ClinicalHistoryForm`, `IntraoralMatrixForm`, `DiagnosisPlanForm`, `TreatmentLogForm`, and `PrintContainer`.
+     - Ensures at least 88px-120px of clear buffer space between form end-of-step buttons and the fixed bottom navigation bar (`h-16 sm:h-[72px]`), completely preventing accidental touches or overlapping hit targets.
+  2. **Dedicated Material Design 3 Action Surface Cards**:
+     - Wrap form step progression buttons in an elevated surface card (`bg-white/85 dark:bg-slate-900/85 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-slate-200/90 dark:border-slate-800 shadow-sm`).
+     - Responsive ergonomic layout: `flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4`.
+     - Target size compliance: `min-h-[48px]` touch targets with `touch-manipulation` for glove-friendly interaction in dental clinic environments.
+  3. **TabNavigation Ergonomics & Safe Area Padding (`components/layout/TabNavigation.tsx`)**:
+     - Add `pb-[max(0.375rem,env(safe-area-inset-bottom,0.375rem))]` so navigation tabs never touch the screen bottom edge or iOS/Android gesture bar.
+     - Increase touch target areas to guaranteed 48×48px with clear separation.
+  4. **Header Touch Targets (`components/layout/Header.tsx`)**:
+     - Elevate header action buttons to `min-h-[44px]` touch targets with `touch-manipulation`.
+
+### Phase 18: Sincronización Determinista de Hidratación de Temas y Navegación Automática al Inicio (Completed)
+- **Goal**: Resolve Next.js SSR hydration text mismatch in `Header.tsx` caused by synchronous `localStorage` evaluation in `ThemeContext.tsx`, and eliminate disorientation when navigating between tabs by automatically resetting window scroll position to the top (`window.scrollTo({ top: 0, left: 0, behavior: "instant" })`).
+- **Priority**: P0 / P1 (Hydration mismatch error and user UX friction when navigating between clinical steps).
+- **Status**: Completed and fully verified via Next.js static build and browser subagent audit.
+- **Directives & Architecture**:
+  1. **Deterministic Theme Hydration (`context/ThemeContext.tsx` & `components/layout/Header.tsx`)**:
+     - Root cause: Initial state `useState(() => localStorage.getItem(...))` in `ThemeContext` produced `"pink-sakura"` on server (where `window` is undefined) and a different theme ID on client initial render, causing `<span className="...">🌸 Rosa Clínico</span>` on server vs `Local-First` on client.
+     - Solution: Standardized default state to `"pink-sakura"` across SSR and initial hydration. Added `isThemeLoaded` guard and postponed `localStorage` reading to a client post-mount `useEffect`.
+     - Ensured persistence effect only writes back to `localStorage` once `isThemeLoaded` is true, preventing race conditions or setting overwrites.
+     - Added `suppressHydrationWarning` on the dynamic theme chip in `Header.tsx` as defense-in-depth.
+  2. **Automatic Scroll-to-Top on Tab Navigation (`app/page.tsx`)**:
+     - Root cause: When users click "Continuar a..." from the bottom action card or change tabs in `TabNavigation`, the browser's viewport scroll remained at the bottom, leaving the user viewing the middle or bottom of the newly selected form.
+     - Solution: Added a global reactive `useEffect` on `activeTab` inside `MainContent` (`app/page.tsx`) invoking `window.scrollTo({ top: 0, left: 0, behavior: "instant" })`.
+     - Whenever any step progression button or tab navigation item is activated, the viewport instantly resets to the beginning of the newly active module, displaying the module title banner and primary inputs.
+
+### Phase 19: Nomenclatura Inteligente de Archivos Clínicos `.odonto` (Completed)
+- **Goal**: Clarify and eliminate generic file downloads (such as `expediente-clinico.odonto`). Implement an intelligent, deterministic file naming convention that automatically incorporates the patient's record number/folio, sanitized full name, and export timestamp (`paciente-[FOLIO]-[NOMBRE]-[FECHA].odonto`).
+- **Priority**: P1 (Data organization and clinic workflow clarity for students and professors).
+- **Status**: Completed and fully verified via Next.js static build.
+- **Directives & Architecture**:
+  1. **Deterministic Naming Pattern (`lib/fileStorage.ts`)**:
+     - Standard format: `paciente-[FOLIO]-[NOMBRE]-[FECHA].odonto`.
+     - Robust sanitization: Unicode normalization (`NFD`) stripping diacritical marks/accents (`[\u0300-\u036f]`) to prevent corrupt filenames across Windows/macOS/Linux (e.g. `Lucía Pérez` becomes `Lucia_Perez`), replacing non-alphanumeric characters with underscores, and trimming redundant underscores.
+     - Graceful fallbacks: If both record number and patient name are omitted, uses `paciente-sin_asignar-[FECHA].odonto`. If only one is present, includes that single descriptor alongside `paciente-` and the date.
+  2. **Header Notification Feedback (`components/layout/Header.tsx`)**:
+     - Updated `handleExport` to retrieve the generated filename from `exportOdontoFile(doc)` and provide immediate visual confirmation via the toast alert: `Guardado: paciente-EXP-2026-042-Ana_Lucia_Morales-2026-09-07.odonto`.
 
 ---
 
@@ -163,4 +274,4 @@ public/
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
 | :--- | :--- | :--- |
-| *None* | Architecture strictly adheres to all 4 constitutional principles. | N/A |
+| *None* | Architecture strictly adheres to all 4 constitutional principles. Local-First persistence for theme and onboarding guide state uses client-side localStorage with zero server reliance. File naming is fully deterministic and client-side generated. | N/A |

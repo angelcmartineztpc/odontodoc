@@ -34,21 +34,25 @@ export function ClinicalHistoryForm() {
     : null;
 
   return (
-    <div className="space-y-6 pb-24 max-w-3xl mx-auto px-4 pt-4">
+    <div className="space-y-6 pb-40 sm:pb-48 max-w-3xl mx-auto px-4 pt-4">
       {/* Banner */}
-      <div className="bg-gradient-to-r from-blue-700 to-indigo-800 text-white p-4 rounded-2xl shadow-sm border border-blue-600/30">
-        <h2 className="text-lg font-bold flex items-center gap-2">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 border border-slate-200/90 dark:border-slate-800 shadow-sm flex items-start sm:items-center gap-3.5 transition-all">
+        <div className="w-10 h-10 rounded-2xl bg-[var(--theme-primary-light)] text-[var(--theme-primary)] flex items-center justify-center shrink-0 shadow-inner">
           <MedicalServicesOutlinedIcon sx={{ fontSize: 22 }} />
-          <span>Módulo B: Resumen Clínico General y Fotografía Extraoral</span>
-        </h2>
-        <p className="text-xs text-blue-100 mt-1">
-          Antecedentes patológicos, somatometría, signos vitales y fotografía frontal. Alimenta la Hoja 1 oficial UJAT.
-        </p>
+        </div>
+        <div>
+          <h2 className="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight leading-snug">
+            Módulo B: Resumen Clínico General y Fotografía Extraoral
+          </h2>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
+            Antecedentes patológicos, somatometría, signos vitales y fotografía frontal. Alimenta la Hoja 1 oficial UJAT.
+          </p>
+        </div>
       </div>
 
       {/* Extraoral Photo Section */}
       <section className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-blue-700 dark:text-blue-400 flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-2">
+        <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--theme-primary-text)] dark:text-[var(--theme-accent)] flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-2">
           <PhotoCameraOutlinedIcon sx={{ fontSize: 19 }} />
           <span>Fotografía Extraoral (Frente / Sonrisa)</span>
         </h3>
@@ -96,7 +100,7 @@ export function ClinicalHistoryForm() {
                   value={medicalHistory.vitalSigns.bloodPressure}
                   onChange={(e) => updateVitalSigns({ bloodPressure: e.target.value })}
                   placeholder="120/80 mmHg"
-                  className="w-full min-h-[42px] px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full min-h-[42px] px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none"
                 />
               </div>
               <div className="space-y-1">
@@ -108,7 +112,7 @@ export function ClinicalHistoryForm() {
                   value={medicalHistory.vitalSigns.heartRate}
                   onChange={(e) => updateVitalSigns({ heartRate: e.target.value })}
                   placeholder="72 bpm"
-                  className="w-full min-h-[42px] px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full min-h-[42px] px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none"
                 />
               </div>
               <div className="space-y-1">
@@ -120,7 +124,7 @@ export function ClinicalHistoryForm() {
                   value={medicalHistory.vitalSigns.respiratoryRate}
                   onChange={(e) => updateVitalSigns({ respiratoryRate: e.target.value })}
                   placeholder="18 rpm"
-                  className="w-full min-h-[42px] px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full min-h-[42px] px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none"
                 />
               </div>
               <div className="space-y-1">
@@ -132,7 +136,7 @@ export function ClinicalHistoryForm() {
                   value={medicalHistory.vitalSigns.temperature}
                   onChange={(e) => updateVitalSigns({ temperature: e.target.value })}
                   placeholder="36.5 °C"
-                  className="w-full min-h-[42px] px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full min-h-[42px] px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none"
                 />
               </div>
             </div>
@@ -158,7 +162,7 @@ export function ClinicalHistoryForm() {
                   value={medicalHistory.vitalSigns.weight || ""}
                   onChange={(e) => updateVitalSigns({ weight: e.target.value })}
                   placeholder="Ej. 74"
-                  className="w-full min-h-[42px] px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                  className="w-full min-h-[42px] px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none"
                 />
               </div>
               <div className="space-y-1">
@@ -170,7 +174,7 @@ export function ClinicalHistoryForm() {
                   value={medicalHistory.vitalSigns.height || ""}
                   onChange={(e) => updateVitalSigns({ height: e.target.value })}
                   placeholder="Ej. 1.62"
-                  className="w-full min-h-[42px] px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                  className="w-full min-h-[42px] px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none"
                 />
               </div>
               <div className="p-2.5 rounded-lg bg-white dark:bg-slate-800 border border-emerald-200 dark:border-emerald-800/60 flex items-center justify-between min-h-[42px]">
@@ -203,7 +207,7 @@ export function ClinicalHistoryForm() {
               value={medicalHistory.hereditaryConditions}
               onChange={(e) => updateMedicalHistory({ hereditaryConditions: e.target.value })}
               placeholder="Diabetes, hipertensión, cardiopatías, neoplasias en familiares directos..."
-              className="w-full min-h-[56px] px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
+              className="w-full min-h-[56px] px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none resize-none"
             />
           </div>
 
@@ -216,7 +220,7 @@ export function ClinicalHistoryForm() {
               value={medicalHistory.pathologicalBackground}
               onChange={(e) => updateMedicalHistory({ pathologicalBackground: e.target.value })}
               placeholder="Alergias a fármacos/anestésicos, cirugías, hospitalizaciones, hemorragias..."
-              className="w-full min-h-[56px] px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
+              className="w-full min-h-[56px] px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none resize-none"
             />
           </div>
 
@@ -229,7 +233,7 @@ export function ClinicalHistoryForm() {
               value={medicalHistory.nonPathologicalBackground}
               onChange={(e) => updateMedicalHistory({ nonPathologicalBackground: e.target.value })}
               placeholder="Higiene bucal, frecuencia de cepillado, hábitos (tabaquismo, alcoholismo, bruxismo)..."
-              className="w-full min-h-[56px] px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
+              className="w-full min-h-[56px] px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none resize-none"
             />
           </div>
 
@@ -242,18 +246,18 @@ export function ClinicalHistoryForm() {
               value={medicalHistory.stomatologicalExam}
               onChange={(e) => updateMedicalHistory({ stomatologicalExam: e.target.value })}
               placeholder="Exploración de labios, carrillos, paladar duro/blando, lengua, piso de boca, encías, ATM y cadenas ganglionares..."
-              className="w-full min-h-[64px] px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
+              className="w-full min-h-[64px] px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none resize-none"
             />
           </div>
         </div>
       </section>
 
-      {/* Navigation Buttons */}
-      <div className="flex justify-between pt-2">
+      {/* Navigation Action Card (Material Design 3 Surface with High Clearance) */}
+      <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-slate-200/90 dark:border-slate-800 shadow-sm flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 transition-all">
         <button
           type="button"
           onClick={() => setActiveTab("identification")}
-          className="min-h-[44px] px-4 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-sm hover:bg-slate-300 transition-colors flex items-center gap-2"
+          className="min-h-[48px] px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300/80 dark:border-slate-700 font-semibold text-sm transition-colors flex items-center justify-center gap-2 touch-manipulation cursor-pointer"
         >
           <ArrowBackOutlinedIcon sx={{ fontSize: 18 }} />
           <span>Ficha de Identificación</span>
@@ -261,10 +265,10 @@ export function ClinicalHistoryForm() {
         <button
           type="button"
           onClick={() => setActiveTab("photos")}
-          className="min-h-[44px] px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm shadow flex items-center gap-2 transition-all active:scale-95"
+          className="min-h-[48px] px-6 py-2.5 rounded-xl bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-hover)] text-white font-bold text-sm shadow-sm flex items-center justify-center gap-2.5 transition-all active:scale-95 touch-manipulation cursor-pointer"
         >
           <span>Continuar a Fotos Intraorales</span>
-          <ArrowForwardOutlinedIcon sx={{ fontSize: 18 }} />
+          <ArrowForwardOutlinedIcon sx={{ fontSize: 19 }} />
         </button>
       </div>
     </div>

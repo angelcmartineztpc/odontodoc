@@ -20,6 +20,9 @@ interface ClinicalRecordContextType {
   dispatch: React.Dispatch<ClinicalAction>;
   activeTab: ActiveTab;
   setActiveTab: (tab: ActiveTab) => void;
+  isGuideOpen: boolean;
+  openGuideModal: () => void;
+  closeGuideModal: () => void;
   updatePatient: (data: Partial<PatientData>) => void;
   updateStudent: (data: Partial<StudentData>) => void;
   updateMedicalHistory: (data: Partial<Omit<MedicalHistory, "vitalSigns">>) => void;
@@ -40,6 +43,21 @@ const ClinicalRecordContext = createContext<ClinicalRecordContextType | undefine
 export function ClinicalRecordProvider({ children }: { children: ReactNode }) {
   const [document, dispatch] = useReducer(clinicalRecordReducer, undefined, createEmptyOdontoDocument);
   const [activeTab, setActiveTab] = useState<ActiveTab>("identification");
+  const [isGuideOpen, setIsGuideOpen] = useState<boolean>(false);
+
+  React.useEffect(() => {
+    try {
+      const dismissed = localStorage.getItem("odontodoc_guide_dismissed");
+      if (dismissed !== "true") {
+        setIsGuideOpen(true);
+      }
+    } catch {
+      // Ignore
+    }
+  }, []);
+
+  const openGuideModal = () => setIsGuideOpen(true);
+  const closeGuideModal = () => setIsGuideOpen(false);
 
   const updatePatient = (data: Partial<PatientData>) => {
     dispatch({ type: "UPDATE_PATIENT", payload: data });
@@ -100,6 +118,9 @@ export function ClinicalRecordProvider({ children }: { children: ReactNode }) {
         dispatch,
         activeTab,
         setActiveTab,
+        isGuideOpen,
+        openGuideModal,
+        closeGuideModal,
         updatePatient,
         updateStudent,
         updateMedicalHistory,

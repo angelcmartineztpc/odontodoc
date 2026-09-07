@@ -72,26 +72,30 @@ export function TreatmentLogForm() {
   };
 
   return (
-    <div className="space-y-6 pb-24 max-w-3xl mx-auto px-4 pt-4">
+    <div className="space-y-6 pb-40 sm:pb-48 max-w-3xl mx-auto px-4 pt-4">
       {/* Banner */}
-      <div className="bg-gradient-to-r from-amber-600 to-orange-700 text-white p-4 rounded-2xl shadow-sm flex items-center justify-between">
-        <div>
-          <h2 className="text-lg font-bold flex items-center gap-2">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 border border-slate-200/90 dark:border-slate-800 shadow-sm flex items-start sm:items-center justify-between gap-3.5 transition-all">
+        <div className="flex items-start sm:items-center gap-3.5">
+          <div className="w-10 h-10 rounded-2xl bg-[var(--theme-primary-light)] text-[var(--theme-primary)] flex items-center justify-center shrink-0 shadow-inner">
             <HistoryEduOutlinedIcon sx={{ fontSize: 22 }} />
-            <span>Módulo D: Resumen del Tratamiento Realizado y Bitácora</span>
-          </h2>
-          <p className="text-xs text-amber-100 mt-1">
-            Datos de sesión, fotografías operatorias (Antes/Durante/Después) y bitácora clínica para la Hoja 3 oficial.
-          </p>
+          </div>
+          <div>
+            <h2 className="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight leading-snug">
+              Módulo D: Resumen del Tratamiento Realizado y Bitácora
+            </h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
+              Datos de sesión, fotografías operatorias (Antes/Durante/Después) y bitácora clínica para la Hoja 3 oficial.
+            </p>
+          </div>
         </div>
-        <span className="text-xs font-semibold bg-amber-800/60 px-2.5 py-1 rounded-full border border-amber-400/30">
+        <span className="text-xs font-semibold bg-[var(--theme-primary-light)] text-[var(--theme-primary-text)] dark:text-[var(--theme-accent)] px-2.5 py-1 rounded-full border border-[var(--theme-primary-border)] shrink-0 font-mono">
           {treatmentLog.entries.length} citas
         </span>
       </div>
 
       {/* Section 1: Session Details for Sheet 3 (Diagnóstico, Tratamiento, N. Recibo) */}
       <section className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 flex items-center gap-1.5 border-b border-slate-100 dark:border-slate-800 pb-2">
+        <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--theme-primary-text)] dark:text-[var(--theme-accent)] flex items-center gap-1.5 border-b border-slate-100 dark:border-slate-800 pb-2">
           <AssignmentOutlinedIcon sx={{ fontSize: 18 }} />
           <span>Datos de la Sesión para Hoja 3 Oficial UJAT</span>
         </h3>
@@ -106,7 +110,7 @@ export function TreatmentLogForm() {
               value={session.diagnosis}
               onChange={(e) => updateTreatmentSession({ diagnosis: e.target.value })}
               placeholder="Ej. Caries de esmalte y dentina en OD 16 (K02.1)"
-              className="w-full min-h-[44px] px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
+              className="w-full min-h-[44px] px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none"
             />
           </div>
 
@@ -119,7 +123,7 @@ export function TreatmentLogForm() {
               value={session.receiptNumber}
               onChange={(e) => updateTreatmentSession({ receiptNumber: e.target.value })}
               placeholder="Ej. REC-2026-084"
-              className="w-full min-h-[44px] px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none font-mono"
+              className="w-full min-h-[44px] px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none font-mono"
             />
           </div>
 
@@ -132,7 +136,7 @@ export function TreatmentLogForm() {
               value={session.treatmentName}
               onChange={(e) => updateTreatmentSession({ treatmentName: e.target.value })}
               placeholder="Ej. Restauración clase I con resina compuesta fotopolimerizable"
-              className="w-full min-h-[44px] px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
+              className="w-full min-h-[44px] px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none"
             />
           </div>
 
@@ -144,7 +148,7 @@ export function TreatmentLogForm() {
               type="date"
               value={session.date || todayStr}
               onChange={(e) => updateTreatmentSession({ date: e.target.value })}
-              className="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
+              className="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none"
             />
           </div>
         </div>
@@ -217,7 +221,7 @@ export function TreatmentLogForm() {
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
                 required
-                className="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                className="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none"
               />
             </div>
 
@@ -230,7 +234,7 @@ export function TreatmentLogForm() {
                 value={toothOrZone}
                 onChange={(e) => setToothOrZone(e.target.value)}
                 placeholder="Ej. O.D. 16 o General"
-                className="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                className="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none"
               />
             </div>
 
@@ -241,7 +245,7 @@ export function TreatmentLogForm() {
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value as TreatmentStatus)}
-                className="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                className="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none"
               >
                 <option value="concluido">Concluido en la cita</option>
                 <option value="durante">En proceso / Cita subsecuente</option>
@@ -261,7 +265,7 @@ export function TreatmentLogForm() {
               onChange={(e) => setProcedure(e.target.value)}
               placeholder="Ej. Apertura cavitaria, grabado ácido y resina compuesta..."
               required
-              className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
+              className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none"
             />
           </div>
 
@@ -274,14 +278,14 @@ export function TreatmentLogForm() {
               value={evolutionNotes}
               onChange={(e) => setEvolutionNotes(e.target.value)}
               placeholder="Evolución clínica, medicamentos prescritos, indicaciones al paciente..."
-              className="w-full min-h-[56px] px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none resize-none"
+              className="w-full min-h-[56px] px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none resize-none"
             />
           </div>
 
           <div className="flex justify-end pt-1">
             <button
               type="submit"
-              className="min-h-[44px] px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-semibold text-sm shadow transition-all active:scale-95 flex items-center gap-2"
+              className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-hover)] text-white font-semibold text-sm shadow-md transition-all active:scale-95 flex items-center gap-2"
             >
               <AddCircleOutlineIcon sx={{ fontSize: 18 }} />
               <span>Guardar Cita en Bitácora</span>
@@ -292,7 +296,7 @@ export function TreatmentLogForm() {
 
       {/* Section 4: Chronological List of Sessions */}
       <section className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 flex items-center gap-1.5 border-b border-slate-100 dark:border-slate-800 pb-2">
+        <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--theme-primary-text)] dark:text-[var(--theme-accent)] flex items-center gap-1.5 border-b border-slate-100 dark:border-slate-800 pb-2">
           <ReceiptLongOutlinedIcon sx={{ fontSize: 18 }} />
           <span>Historial de Sesiones Registradas</span>
         </h3>
@@ -379,12 +383,12 @@ export function TreatmentLogForm() {
         )}
       </section>
 
-      {/* Navigation Controls */}
-      <div className="flex justify-between pt-2">
+      {/* Navigation Action Card (Material Design 3 Surface with High Clearance) */}
+      <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-slate-200/90 dark:border-slate-800 shadow-sm flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 transition-all">
         <button
           type="button"
           onClick={() => setActiveTab("diagnosis")}
-          className="min-h-[44px] px-4 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-sm hover:bg-slate-300 transition-colors flex items-center gap-1.5"
+          className="min-h-[48px] px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300/80 dark:border-slate-700 font-semibold text-sm transition-colors flex items-center justify-center gap-2 touch-manipulation cursor-pointer"
         >
           <ArrowBackOutlinedIcon sx={{ fontSize: 18 }} />
           <span>Diagnóstico y Plan</span>
@@ -392,10 +396,10 @@ export function TreatmentLogForm() {
         <button
           type="button"
           onClick={() => setActiveTab("print")}
-          className="min-h-[44px] px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-700 to-indigo-700 text-white font-semibold text-sm shadow flex items-center gap-2 transition-all active:scale-95"
+          className="min-h-[48px] px-6 py-2.5 rounded-xl bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-hover)] text-white font-bold text-sm shadow-sm flex items-center justify-center gap-2.5 transition-all active:scale-95 touch-manipulation cursor-pointer"
         >
           <span>Ver Formatos Oficiales UJAT 1:1</span>
-          <PrintOutlinedIcon sx={{ fontSize: 18 }} />
+          <PrintOutlinedIcon sx={{ fontSize: 19 }} />
         </button>
       </div>
     </div>

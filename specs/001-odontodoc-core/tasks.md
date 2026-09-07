@@ -179,6 +179,99 @@
 
 ---
 
+## Phase 13: Interfaz en Tonos Rosados y Sistema de Personalización de Colores (Priority: P1)
+
+**Goal**: Transform the OdontoDoc interface into a modern, refined pink/rose aesthetic ("colores rosados / rositas") as the primary default experience, and implement a flexible, persistent theme customization system allowing each user to choose among 8 curated presets or dial in a custom hex color.
+
+- [x] T062 [P] Configure dynamic theme CSS custom properties and pink default tokens in app/globals.css
+- [x] T063 [P] Implement ThemeContext and ThemeProvider with localStorage persistence and CSS variable injection in context/ThemeContext.tsx
+- [x] T064 [P] Implement interactive ThemeModal component with 8 presets, color picker, and quick swatches in components/theme/ThemeModal.tsx
+- [x] T065 [P] Integrate ThemeProvider in app/layout.tsx and app/page.tsx
+- [x] T066 [P] Update components/layout/Header.tsx with theme customizer trigger button, dynamic banner, and pink styling
+- [x] T067 [P] Update components/layout/TabNavigation.tsx with theme-driven active indicator and labels
+- [x] T068 [P] Update components/forms/IdentificationForm.tsx and components/forms/ClinicalHistoryForm.tsx with dynamic theme banners and focus rings
+- [x] T069 [P] Update components/forms/IntraoralMatrixForm.tsx, components/forms/DiagnosisPlanForm.tsx, and components/forms/TreatmentLogForm.tsx with dynamic theme banners and accents
+- [x] T070 [P] Update components/forms/CameraCaptureInput.tsx and components/print/PrintContainer.tsx controls while preserving print black & white sheets
+- [x] T071 [P] Update DESIGN.md to register theme architecture and pink primary design system tokens
+- [x] T072 Run automated TypeScript and Next.js static export build (bun run build) to ensure 0 type errors or bundle issues
+- [x] T073 Conduct visual audit in browser verifying pink default theme, theme switcher modal, and custom color picker
+
+---
+
+## Phase 14: Pulido Impeccable - Superficies Material Design 3 y Eliminación de Degradados Genéricos (Priority: P1)
+
+**Goal**: Apply Impeccable Polish principles (`polish.md`), removing the awkward top slogan banner in `Header.tsx` and eliminating generic horizontal gradients across all form modules in favor of subtle Material Design 3 surface cards with tonal containers and high-contrast clinical typography.
+
+- [x] T074 [P] Remove institutional micro-banner at the top of Header.tsx and elevate into a clean Material Design 3 Top App Bar
+- [x] T075 [P] Replace generic gradient banners with M3 surface cards and tonal icon containers in components/forms/IdentificationForm.tsx and components/forms/ClinicalHistoryForm.tsx
+- [x] T076 [P] Replace generic gradient banners with M3 surface cards and tonal badges in components/forms/IntraoralMatrixForm.tsx, components/forms/DiagnosisPlanForm.tsx, and components/forms/TreatmentLogForm.tsx
+- [x] T077 [P] Refactor dialog header in components/theme/ThemeModal.tsx into a subtle M3 elevated card header
+- [x] T078 Run automated TypeScript and Next.js static export build (bun run build) to ensure 0 type errors or bundle issues
+- [x] T079 Conduct visual audit in browser verifying removal of top banner, subtle M3 surfaces across tabs, and theme modal
+
+---
+
+## Phase 15: Etiquetas Informativas en Header y Splash de Primer Uso (Guía de Ayuda) (Priority: P1)
+
+**Goal**: Implement clear explicit labels and sub-labels on all Header buttons, an interactive quick-explanation banner, and a first-use Onboarding Splash Guide modal explaining what each control does and the clinical workflow, adhering strictly to `/impeccable polish.md` without generic gradients.
+
+- [x] T080 [P] Implement OnboardingSplashModal component with M3 surfaces, control explanations, workflow steps, and localStorage persistence in components/guide/OnboardingSplashModal.tsx
+- [x] T081 [P] Wire isGuideOpen, openGuideModal, and closeGuideModal state into context/ClinicalRecordContext.tsx
+- [x] T082 [P] Refactor components/layout/Header.tsx with 2-tier explicit button labels (Guía, Colores, Abrir, Guardar, Formatos, Nuevo), active patient chip, and interactive (i) explanation bar
+- [x] T083 [P] Mount OnboardingSplashModal in app/page.tsx
+- [x] T084 Run automated TypeScript and Next.js static export build (bun run build) to ensure 0 type errors or bundle issues
+- [x] T085 Conduct visual audit in browser verifying first-run splash guide, header button labels/sub-labels, explanation bar, and guide reopening
+
+---
+
+## Phase 16: Auditoría WCAG de Accesibilidad y Corrección de Hidratación Next.js (Priority: P0)
+
+**Goal**: Eliminate Next.js SSR hydration mismatch in `OnboardingSplashModal.tsx` and elevate dark mode contrast on the welcome card "¿Qué es OdontoDoc y cómo funciona?" to WCAG AAA standards (> 12:1 contrast ratio) with decoupled Tailwind v4 dark mode class tokens.
+
+- [x] T086 [P] Standardize isGuideOpen initialization and post-mount localStorage check in context/ClinicalRecordContext.tsx to eliminate Next.js hydration mismatch
+- [x] T087 [P] Add mounted hydration guard in components/guide/OnboardingSplashModal.tsx to prevent client/server HTML divergence
+- [x] T088 [P] Synchronize Tailwind v4 dark variant with .dark class in app/globals.css and context/ThemeContext.tsx
+- [x] T089 [P] Re-architect welcome note and header labels with WCAG AAA contrast tokens (> 12:1) across Light and Dark modes in components/guide/OnboardingSplashModal.tsx and components/layout/Header.tsx
+- [x] T090 Conduct browser subagent visual audit verifying 0 hydration errors on reload and WCAG AAA contrast in both Rosa Sakura and Velvet Noir dark mode
+
+---
+
+## Phase 17: Auditoría Impeccable de Ergonomía Táctil y Espaciado de Botones Inferiores (Priority: P1)
+
+**Goal**: Eliminate bottom button crowding and accidental touches by expanding bottom clearance across all forms (`pb-40 sm:pb-48`), enclosing navigation actions in dedicated Material Design 3 surface cards with 48px touch targets, and adding safe-area padding to `TabNavigation.tsx`.
+
+- [x] T091 [P] Update components/layout/TabNavigation.tsx with safe area bottom padding, increased hit targets (min 48px), and touch-manipulation
+- [x] T092 [P] Refactor IdentificationForm.tsx and ClinicalHistoryForm.tsx with expanded bottom clearance (pb-44), dedicated M3 action surface cards, and 48px touch targets
+- [x] T093 [P] Refactor IntraoralMatrixForm.tsx, DiagnosisPlanForm.tsx, and TreatmentLogForm.tsx with expanded bottom clearance (pb-44), dedicated M3 action surface cards, and 48px touch targets
+- [x] T094 [P] Update PrintContainer.tsx and Header.tsx ensuring adequate bottom clearance and 44px min touch target sizes
+- [x] T095 Run automated TypeScript and Next.js static export build (bun run build) to ensure 0 type errors or bundle issues
+- [x] T096 Conduct visual audit in browser verifying generous bottom clearance, zero overlap with TabNavigation, and ergonomic touch targets
+
+---
+
+## Phase 18: Sincronización Determinista de Hidratación de Temas y Navegación Automática al Inicio (Priority: P0)
+
+**Goal**: Eliminate Next.js SSR hydration text mismatch in `Header.tsx` by standardizing initial state and post-mount localStorage loading in `ThemeContext.tsx`, and automatically scroll the viewport to the top (`window.scrollTo({ top: 0, left: 0 })`) upon any tab navigation in `app/page.tsx`.
+
+- [x] T097 [P] Refactor context/ThemeContext.tsx with deterministic initial state, isThemeLoaded guard, and post-mount localStorage loading to eliminate hydration mismatch
+- [x] T098 [P] Add suppressHydrationWarning and ensure consistent dynamic chip rendering in components/layout/Header.tsx
+- [x] T099 [P] Implement reactive automatic scroll-to-top on activeTab changes in app/page.tsx
+- [x] T100 Run automated TypeScript and Next.js static export build (bun run build) to ensure 0 type errors or bundle issues
+- [x] T101 Conduct visual audit in browser verifying 0 hydration mismatch errors on reload and verified instant top-scrolling on step navigation
+
+---
+
+## Phase 19: Nomenclatura Inteligente de Archivos Clínicos `.odonto` (Priority: P1)
+
+**Goal**: Eliminate generic file download names (e.g. `expediente-clinico.odonto`) and implement an intelligent, deterministic file naming convention incorporating patient folio, sanitized patient name, and export timestamp (`paciente-[FOLIO]-[NOMBRE]-[FECHA].odonto`).
+
+- [x] T102 [P] Implement `generateOdontoFilename(doc)` with Unicode NFD normalization, diacritic stripping, and folio/name/date composition in `lib/fileStorage.ts`
+- [x] T103 [P] Update `exportOdontoFile(doc)` to return the generated filename string in `lib/fileStorage.ts`
+- [x] T104 [P] Update `handleExport` in `components/layout/Header.tsx` to display the exact generated filename in the feedback toast
+- [x] T105 Run automated TypeScript and Next.js static export build (`bun run build`) to ensure 0 type errors or bundle issues
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
@@ -195,13 +288,30 @@
 - **Phase 10 (Formatos Oficiales UJAT 1:1)**: Depends on Phase 6 & Phase 8 — completed.
 - **Phase 11 (Identidad Visual UJAT Oficial)**: Depends on Phase 10 — completed.
 - **Phase 12 (Material Design 3 Mobile-First)**: Depends on Phase 11; executes T054 through T061 — completed.
+- **Phase 13 (Interfaz Rosada & Personalización)**: Depends on Phase 12; executes T062 through T073 — completed.
+- **Phase 14 (Pulido Impeccable M3 & Eliminación de Degradados)**: Depends on Phase 13; executes T074 through T079 — completed.
+- **Phase 15 (Etiquetas en Header y Splash Guía de Primer Uso)**: Depends on Phase 14; executes T080 through T085 — completed.
+- **Phase 16 (Auditoría WCAG de Accesibilidad y Corrección de Hidratación)**: Depends on Phase 15; executes T086 through T090 — completed.
+- **Phase 17 (Ergonomía Táctil y Espaciado de Botones Inferiores)**: Depends on Phase 16; executes T091 through T096 — completed.
+- **Phase 18 (Hidratación de Temas y Scroll al Inicio)**: Depends on Phase 17; executes T097 through T101 — completed.
+- **Phase 19 (Nomenclatura Inteligente de Archivos .odonto)**: Depends on Phase 2 & Phase 18; executes T102 through T105 — completed.
 
 ---
 
 ## Implementation Status Summary
 
-- **Total Tasks**: 61 / 61 completadas (100%)
+- **Total Tasks**: 105 / 105 completadas (100%)
 - **Static Export**: Generado con éxito en `out/`
 - **Lint & TypeScript**: 0 errores, 0 advertencias
-- **Material Design 3 & Ergonomía Mobile-First**: 100% libre de emojis, iconos vectoriales oficiales `@mui/icons-material` en navegación, cabeceras y formularios.
+- **Nomenclatura de Archivos**: Nombres inteligentes `paciente-[FOLIO]-[NOMBRE]-[FECHA].odonto` con saneamiento Unicode NFD y confirmación visual en el Header
+- **Hidratación Next.js**: 0 errores o desajustes de SSR/hidratación en consola (determinista en ThemeContext y Header)
+- **Navegación al Inicio (Scroll-to-top)**: 100% reactiva y automática en app/page.tsx al cambiar de pestaña
+- **Accesibilidad & Contraste WCAG**: Cumplimiento estricto WCAG AA y AAA (> 12:1) en modo claro y modo oscuro
+- **Ergonomía Táctil & Touch Targets**: 100% completado; holgura inferior ampliada a `pb-40 sm:pb-48` (> 100px de margen respecto a TabNavigation), tarjetas M3 y botones táctiles de 48px libres de colisión
+- **Material Design 3 & Ergonomía Mobile-First**: 100% libre de emojis, iconos vectoriales oficiales `@mui/icons-material`.
+- **Tema Rosado y Personalización**: 100% completado; paleta rosa sakura activa por defecto con persistencia en localStorage y modal interactivo de temas/colores.
+- **Pulido Impeccable M3**: Header limpio sin cintillo incómodo, sustitución total de degradados horizontales genéricos por tarjetas de superficie M3 y contenedores tonales sutiles.
+- **Etiquetas y Splash Guía de Ayuda**: Botones con etiquetas y sub-etiquetas descriptivas, barra interactiva de explicación, y modal de bienvenida con guía de primer uso persistente en localStorage.
+
+
 

@@ -1,11 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
-:root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
+@custom-variant dark (&:where(.dark, .dark *));
 
-  /* Official UJAT Brand Guidelines (Pantone 356 C, 362 C, 376 C) */
+:root {
+  --background: #fff5f7;
+  --foreground: #1e1b24;
+
+  /* OdontoDoc Theme Engine - Default Priority: Rosa Pastel / Sakura */
+  --theme-primary: #e11d48;
+  --theme-primary-hover: #be123c;
+  --theme-primary-active: #9f1239;
+  --theme-primary-light: #ffe4e6;
+  --theme-primary-subtle: #fff1f2;
+  --theme-primary-border: #fecdd3;
+  --theme-primary-text: #9f1239;
+  --theme-accent: #fb7185;
+  --theme-ring: rgba(225, 29, 72, 0.35);
+  --theme-header-bg: #881337;
+  --theme-header-bar: #be123c;
+  --theme-header-border: #9f1239;
+  --theme-banner-from: #e11d48;
+  --theme-banner-to: #9f1239;
+  --theme-app-bg: #fff5f7;
+  --theme-card-bg: #ffffff;
+  --theme-surface-border: #fce7f3;
+
+  /* Official UJAT Brand Guidelines (Pantone 356 C, 362 C, 376 C) preserved for official print & fallback */
   --ujat-green-primary: #1C8443;
   --ujat-green-secondary: #41AD49;
   --ujat-green-accent: #8DC642;
@@ -19,10 +40,11 @@
 }
 
 body {
-  background: var(--background);
+  background: var(--theme-app-bg);
   color: var(--foreground);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 /* Print Specific Rules adhering to UJAT print-layout-contract */
@@ -89,6 +111,44 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #f472b6;
   border-radius: 9999px;
 }
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-primary);
+}
+
+/* Theme Semantic Utilities */
+.theme-bg-primary {
+  background-color: var(--theme-primary);
+}
+.theme-bg-hover:hover {
+  background-color: var(--theme-primary-hover);
+}
+.theme-text-primary {
+  color: var(--theme-primary);
+}
+.theme-text-dark {
+  color: var(--theme-primary-text);
+}
+.theme-border-primary {
+  border-color: var(--theme-primary);
+}
+.theme-border-subtle {
+  border-color: var(--theme-primary-border);
+}
+.theme-bg-light {
+  background-color: var(--theme-primary-light);
+}
+.theme-bg-subtle {
+  background-color: var(--theme-primary-subtle);
+}
+.theme-focus-ring:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--theme-ring);
+  border-color: var(--theme-primary);
+}
+.theme-banner {
+  background: linear-gradient(135deg, var(--theme-banner-from), var(--theme-banner-to));
+}
+

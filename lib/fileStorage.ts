@@ -46,19 +46,53 @@ export function validateOdontoDocument(data: unknown): data is OdontoDocument {
 }
 
 /**
- * Exports the entire clinical document to a local .odonto file download.
+ * Generates an intelligent, non-generic filename for the .odonto clinical file:
+ * Format: paciente-[FOLIO]-[NOMBRE]-[FECHA].odonto
  */
-export function exportOdontoFile(doc: OdontoDocument): void {
+export function generateOdontoFilename(doc: OdontoDocument): string {
+  const dateStr = new Date().toISOString().split("T")[0];
+
+  const sanitize = (str: string) =>
+    str
+      .trim()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "") // Remove accents gracefully
+      .replace(/[^a-zA-Z0-9_-]/g, "_")
+      .replace(/_+/g, "_")
+      .replace(/^_|_$/g, "");
+
+  const parts: string[] = ["paciente"];
+
+  const recordNum = doc.patient.recordNumber ? sanitize(doc.patient.recordNumber) : "";
+  const patientName = doc.patient.fullName ? sanitize(doc.patient.fullName) : "";
+
+  if (recordNum) {
+    parts.push(recordNum);
+  }
+
+  if (patientName) {
+    parts.push(patientName);
+  }
+
+  if (!recordNum && !patientName) {
+    parts.push("sin_asignar");
+  }
+
+  parts.push(dateStr);
+
+  return `${parts.join("-")}.odonto`;
+}
+
+/**
+ * Exports the entire clinical document to a local .odonto file download.
+ * Returns the downloaded filename.
+ */
+export function exportOdontoFile(doc: OdontoDocument): string {
   const jsonContent = JSON.stringify(doc, null, 2);
   const blob = new Blob([jsonContent], { type: "application/json;charset=utf-8" });
   const url = URL.createObjectURL(blob);
 
-  const cleanName = (doc.patient.fullName || doc.patient.recordNumber || "clinico")
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9_-]/g, "_");
-
-  const filename = `expediente-${cleanName}.odonto`;
+  const filename = generateOdontoFilename(doc);
 
   const link = document.createElement("a");
   link.href = url;
@@ -68,6 +102,7 @@ export function exportOdontoFile(doc: OdontoDocument): void {
   document.body.removeChild(link);
 
   URL.revokeObjectURL(url);
+  return filename;
 }
 
 /**
