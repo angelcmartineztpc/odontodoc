@@ -170,52 +170,43 @@ export function CameraCaptureInput({
             </span>
           </>
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center">
+          <div className="w-full h-full flex flex-col items-center justify-center p-3 text-center">
             {isCompressing ? (
               <div className="flex flex-col items-center gap-2.5">
                 <span className="w-7 h-7 border-2 border-[var(--theme-primary)] border-t-transparent rounded-full animate-spin" />
-                <span className="text-xs text-[var(--theme-accent)] font-medium">
-                  Comprimiendo y ajustando foto en canvas...
-                </span>
+                <span className="text-xs text-[var(--theme-accent)] font-medium">Comprimiendo imagen en canvas...</span>
               </div>
             ) : (
-              <div className="flex flex-col items-center gap-3 w-full max-w-xs">
-                {/* Visual Viewfinder Icon */}
-                <div className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 text-slate-400 flex items-center justify-center shadow-sm">
-                  <PhotoCameraOutlinedIcon sx={{ fontSize: 26 }} className="text-[var(--theme-primary)]" />
-                </div>
+              <div className="grid grid-cols-2 gap-3 w-full h-full p-2">
+                <button
+                  type="button"
+                  onClick={handleTriggerCamera}
+                  disabled={isCompressing}
+                  className="group flex flex-col items-center justify-center gap-2 p-3 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 hover:from-slate-850 hover:to-slate-900 border border-slate-800 hover:border-[var(--theme-primary)] transition-all cursor-pointer touch-manipulation active:scale-95 shadow-sm"
+                >
+                  <div className="w-11 h-11 rounded-2xl bg-[var(--theme-primary)] text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                    <PhotoCameraOutlinedIcon sx={{ fontSize: 24 }} />
+                  </div>
+                  <div className="text-center">
+                    <span className="block text-xs font-bold text-slate-100">Tomar Foto</span>
+                    <span className="block text-[10px] text-slate-400 mt-0.5">En sillón dental</span>
+                  </div>
+                </button>
 
-                <div className="space-y-0.5">
-                  <p className="text-xs font-semibold text-slate-200">
-                    Captura en vivo o sube foto existente
-                  </p>
-                  <p className="text-[10px] text-slate-400">
-                    Puedes documentar con el paciente en el sillón o cargar fotos ya tomadas
-                  </p>
-                </div>
-
-                {/* Dual Action Buttons */}
-                <div className="grid grid-cols-2 gap-2 w-full pt-1">
-                  <button
-                    type="button"
-                    onClick={handleTriggerCamera}
-                    disabled={isCompressing}
-                    className="min-h-[44px] px-3 py-2 rounded-xl bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-hover)] text-white text-xs font-semibold transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95 touch-manipulation cursor-pointer"
-                  >
-                    <PhotoCameraOutlinedIcon sx={{ fontSize: 16 }} />
-                    <span>Tomar Foto</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleTriggerFile}
-                    disabled={isCompressing}
-                    className="min-h-[44px] px-3 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-750 text-slate-100 hover:text-white border border-slate-700 text-xs font-semibold transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95 touch-manipulation cursor-pointer"
-                  >
-                    <AddPhotoAlternateOutlinedIcon sx={{ fontSize: 16 }} />
-                    <span>Subir Archivo</span>
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={handleTriggerFile}
+                  disabled={isCompressing}
+                  className="group flex flex-col items-center justify-center gap-2 p-3 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 hover:from-slate-850 hover:to-slate-900 border border-slate-800 hover:border-slate-600 transition-all cursor-pointer touch-manipulation active:scale-95 shadow-sm"
+                >
+                  <div className="w-11 h-11 rounded-2xl bg-slate-800 text-slate-200 group-hover:text-white border border-slate-700 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                    <AddPhotoAlternateOutlinedIcon sx={{ fontSize: 24 }} />
+                  </div>
+                  <div className="text-center">
+                    <span className="block text-xs font-bold text-slate-100">Subir Archivo</span>
+                    <span className="block text-[10px] text-slate-400 mt-0.5">Galería / Memoria</span>
+                  </div>
+                </button>
               </div>
             )}
           </div>
