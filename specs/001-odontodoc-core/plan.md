@@ -268,10 +268,26 @@ public/
   2. **Header Notification Feedback (`components/layout/Header.tsx`)**:
      - Updated `handleExport` to retrieve the generated filename from `exportOdontoFile(doc)` and provide immediate visual confirmation via the toast alert: `Guardado: paciente-EXP-2026-042-Ana_Lucia_Morales-2026-09-07.odonto`.
 
+### Phase 20: Soporte Dual de Fotografía Clínica - Cámara en Vivo y Carga de Archivos Locales (Completed)
+- **Goal**: Apply `/impeccable` craft to empower dentists and students to document intraoral clinical records asynchronously when the patient is no longer in the dental chair. Upgrade `CameraCaptureInput.tsx` to offer dual, dedicated inputs: native environment camera capture (`capture="environment"`) and local photo/gallery file upload (without capture restriction), complemented by drag-and-drop support.
+- **Priority**: P1 (Clinical workflow flexibility requested by client: filling records asynchronously from existing photo files).
+- **Status**: Completed and fully verified via Next.js static build and browser subagent audit.
+- **Directives & Architecture**:
+  1. **Dual Native Triggers (`components/forms/CameraCaptureInput.tsx`)**:
+     - Maintained two hidden file inputs: `cameraInputRef` (`accept="image/*" capture="environment"`) for live rear-camera capture, and `fileInputRef` (`accept="image/*"` without capture) to seamlessly open the native device gallery or file manager.
+     - Added desktop/laptop drag-and-drop listeners (`onDragOver`, `onDragLeave`, `onDrop`) with real-time visual feedback on the viewfinder frame.
+  2. **Impeccable Material Design 3 Dual Action Surfaces**:
+     - In empty state: Elevated viewfinder with corner reticles, clear clinical prompt ("Captura en vivo o sube foto existente"), and two tactile 44px buttons: **[Tomar Foto]** (primary theme) and **[Subir Archivo]** (subtle elevated dark/light surface).
+     - In filled state: Displays the photo with reticles and `Canvas JPG 0.8` badge, plus a 3-button action bar: **[Nueva Foto]**, **[Cambiar Archivo]**, and **[Quitar]**.
+     - Seamlessly routes all inputs through `compressClinicalPhoto` (<1000px, JPEG 0.8) to guarantee zero memory leaks or storage bloat.
+  3. **Module C Header Polish (`components/forms/IntraoralMatrixForm.tsx`)**:
+     - Updated banner subtitle to clearly explain that users can document live in chair or upload pre-existing photos taken previously.
+
 ---
 
 ## Complexity Tracking
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
 | :--- | :--- | :--- |
-| *None* | Architecture strictly adheres to all 4 constitutional principles. Local-First persistence for theme and onboarding guide state uses client-side localStorage with zero server reliance. File naming is fully deterministic and client-side generated. | N/A |
+| *None* | Architecture strictly adheres to all 4 constitutional principles. Dual camera/file inputs run 100% in-browser using HTML5 File and Canvas APIs with zero external dependencies or server reliance. | N/A |
+

@@ -272,6 +272,18 @@
 
 ---
 
+## Phase 20: Soporte Dual de Fotografía Clínica - Cámara en Vivo y Carga de Archivos Locales (Priority: P1)
+
+**Goal**: Apply `/impeccable` craft to empower dentists and students to document intraoral clinical records asynchronously when the patient is no longer in the dental chair. Upgrade `CameraCaptureInput.tsx` to offer dual, dedicated inputs: native environment camera capture (`capture="environment"`) and local photo/gallery file upload (without capture restriction), complemented by drag-and-drop support.
+
+- [x] T106 [P] Implement dual hidden native file inputs (`cameraInputRef` with `capture="environment"` and `fileInputRef` without capture) in `components/forms/CameraCaptureInput.tsx`
+- [x] T107 [P] Implement drag-and-drop event listeners (`onDragOver`, `onDragLeave`, `onDrop`) and interactive border styling in `components/forms/CameraCaptureInput.tsx`
+- [x] T108 [P] Design Material Design 3 dual action buttons (Tomar Foto / Subir Archivo, and 3-button filled state) with 44px touch targets in `components/forms/CameraCaptureInput.tsx`
+- [x] T109 [P] Update Module C header banner in `components/forms/IntraoralMatrixForm.tsx` to communicate dual live/deferred capture capability
+- [x] T110 Run automated TypeScript and Next.js static export build (`bun run build`) and conduct visual audit in browser verifying dual camera/file inputs
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
@@ -295,14 +307,16 @@
 - **Phase 17 (Ergonomía Táctil y Espaciado de Botones Inferiores)**: Depends on Phase 16; executes T091 through T096 — completed.
 - **Phase 18 (Hidratación de Temas y Scroll al Inicio)**: Depends on Phase 17; executes T097 through T101 — completed.
 - **Phase 19 (Nomenclatura Inteligente de Archivos .odonto)**: Depends on Phase 2 & Phase 18; executes T102 through T105 — completed.
+- **Phase 20 (Soporte Dual de Fotografía Clínica)**: Depends on Phase 2 & Phase 14; executes T106 through T110 — completed.
 
 ---
 
 ## Implementation Status Summary
 
-- **Total Tasks**: 105 / 105 completadas (100%)
+- **Total Tasks**: 110 / 110 completadas (100%)
 - **Static Export**: Generado con éxito en `out/`
 - **Lint & TypeScript**: 0 errores, 0 advertencias
+- **Fotografía Clínica Dual**: Soporte simultáneo para disparo en vivo con cámara nativa o carga de fotos previas desde archivos/galería, con drag-and-drop y compresión en Canvas
 - **Nomenclatura de Archivos**: Nombres inteligentes `paciente-[FOLIO]-[NOMBRE]-[FECHA].odonto` con saneamiento Unicode NFD y confirmación visual en el Header
 - **Hidratación Next.js**: 0 errores o desajustes de SSR/hidratación en consola (determinista en ThemeContext y Header)
 - **Navegación al Inicio (Scroll-to-top)**: 100% reactiva y automática en app/page.tsx al cambiar de pestaña
@@ -312,6 +326,7 @@
 - **Tema Rosado y Personalización**: 100% completado; paleta rosa sakura activa por defecto con persistencia en localStorage y modal interactivo de temas/colores.
 - **Pulido Impeccable M3**: Header limpio sin cintillo incómodo, sustitución total de degradados horizontales genéricos por tarjetas de superficie M3 y contenedores tonales sutiles.
 - **Etiquetas y Splash Guía de Ayuda**: Botones con etiquetas y sub-etiquetas descriptivas, barra interactiva de explicación, y modal de bienvenida con guía de primer uso persistente en localStorage.
+
 
 
 

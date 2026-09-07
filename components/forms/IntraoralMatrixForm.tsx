@@ -32,7 +32,7 @@ export function IntraoralMatrixForm() {
               Módulo C: Matriz Fotográfica Intraoral (5 Tomas Clínicas)
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
-              Captura con compresión en Canvas en memoria. Alimenta la matriz de la Hoja 2 oficial UJAT.
+              Captura en vivo con cámara o sube fotos tomadas previamente desde tus archivos o galería. Optimización en memoria para la Hoja 2 oficial UJAT.
             </p>
           </div>
         </div>
