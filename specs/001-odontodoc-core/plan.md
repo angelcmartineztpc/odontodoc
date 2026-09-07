@@ -283,11 +283,29 @@ public/
   3. **Module C Header Polish (`components/forms/IntraoralMatrixForm.tsx`)**:
      - Updated banner subtitle to clearly explain that users can document live in chair or upload pre-existing photos taken previously.
 
+### Phase 21: Anonimización Bioética Facial y Fondo Blanco Clínico Local-First (Completed)
+- **Goal**: Implement client-side automated patient face detection, clinical white background segmentation (`#FFFFFF`), and bioethical eye de-identification black bar across all clinical photo inputs, while automatically passing through dental intraoral photos unaffected when no face is detected.
+- **Priority**: P1 (Bioethics standard and patient health privacy compliance under NOM-004-SSA3-2012 / UJAT academic case presentation).
+- **Status**: Completed and visually verified via automated browser test and static build.
+- **Directives & Architecture**:
+  1. **Local-First WebAssembly Vision Pipeline (`lib/bioethicsVision.ts`)**:
+     - Utilizes `@mediapipe/tasks-vision` executing 100% in-browser via WebAssembly, guaranteeing zero external network requests or patient data exfiltration.
+     - Offline models loaded directly from `public/models/blaze_face_short_range.tflite` (224 KB) and `public/models/selfie_segmenter.tflite` (244 KB), backed by WASM assets in `public/wasm/`.
+     - Face detector identifies facial landmarks (right eye, left eye) and computes the exact inter-pupillary distance and facial tilt angle (`Math.atan2(dy, dx)`).
+     - Selfie segmenter produces a category mask separating patient anatomy from the dental operatory background, replacing background pixels with pure clinical white (`#FFFFFF`).
+     - Renders an opaque black censor rectangle (`#000000`) over the eyes from temple to temple with anatomical coverage spanning from supraorbital ridges (eyebrows) to infraorbital margins.
+  2. **Intelligent Dental Photo Pass-Through**:
+     - Intraoral photos (teeth, occlusal surfaces, dental arches) and radiographs produce `0 detections` in `FaceDetector`.
+     - The pipeline automatically detects this condition and immediately bypasses segmentation and censoring, ensuring dental photographs remain 100% untouched.
+  3. **Clinical UI & Dual Preview (`components/forms/CameraCaptureInput.tsx`)**:
+     - Contextual processing indicator: *"Analizando paciente y aplicando anonimización bioética..."*.
+     - Visual badge indicating protection: `🛡️ Anonimización Bioética: Fondo blanco + Ojos censurados`.
+     - Dual preview toggle button: `[👁️ Ver Original Diagnóstico]` / `[🔒 Ver Versión Anonimizada]`, giving clinicians full control to examine untreated anatomical proportions or export anonymized documentation for UJAT teaching.
+
 ---
 
 ## Complexity Tracking
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
 | :--- | :--- | :--- |
-| *None* | Architecture strictly adheres to all 4 constitutional principles. Dual camera/file inputs run 100% in-browser using HTML5 File and Canvas APIs with zero external dependencies or server reliance. | N/A |
-
+| Client-side WASM models (~470 KB total) | Enables automated face detection and background removal 100% in-browser without violating patient privacy | Server-side AI APIs (e.g. cloud vision) strictly violate Constitutional Principle 1 (Local-First & Absolute Privacy) and Mexican medical norm NOM-004-SSA3-2012. |

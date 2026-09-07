@@ -284,6 +284,19 @@
 
 ---
 
+## Phase 21: Anonimización Bioética Facial y Fondo Blanco Clínico Local-First (Priority: P1)
+
+**Goal**: Implement client-side automated patient face detection, clinical white background segmentation (`#FFFFFF`), and bioethical eye de-identification black bar across all clinical photo inputs, while automatically passing through dental intraoral photos unaffected when no face is detected.
+
+- [x] T111 [P] Implement `lib/bioethicsVision.ts` client-side WebAssembly vision engine using `@mediapipe/tasks-vision` (`FaceDetector` + `ImageSegmenter`) with offline models in `public/models` and WASM in `public/wasm`
+- [x] T112 [P] Implement automatic eye keypoints detection and inter-pupillary angled black censor bar drawing (`#000000`) covering orbits on `HTMLCanvasElement` in `lib/bioethicsVision.ts`
+- [x] T113 [P] Implement clinical white background (`#FFFFFF`) segmentation on `HTMLCanvasElement` isolating patient silhouette from dental operatory background in `lib/bioethicsVision.ts`
+- [x] T114 [P] Implement dental photo pass-through logic (`detections.length === 0`), guaranteeing zero modifications or censor bars on intraoral dental matrix photos
+- [x] T115 [P] Integrate bioethics vision pipeline in `components/forms/CameraCaptureInput.tsx` with processing feedback, bioethics active badge, and interactive toggle button between anonymized and original diagnostic views
+- [x] T116 Run automated TypeScript and Next.js static export build (`bun run build`) and conduct browser audit verifying face de-identification with white background vs dental photo pass-through
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
@@ -308,14 +321,16 @@
 - **Phase 18 (Hidratación de Temas y Scroll al Inicio)**: Depends on Phase 17; executes T097 through T101 — completed.
 - **Phase 19 (Nomenclatura Inteligente de Archivos .odonto)**: Depends on Phase 2 & Phase 18; executes T102 through T105 — completed.
 - **Phase 20 (Soporte Dual de Fotografía Clínica)**: Depends on Phase 2 & Phase 14; executes T106 through T110 — completed.
+- **Phase 21 (Anonimización Bioética Facial y Fondo Blanco)**: Depends on Phase 2 & Phase 20; executes T111 through T116 — completed.
 
 ---
 
 ## Implementation Status Summary
 
-- **Total Tasks**: 110 / 110 completadas (100%)
+- **Total Tasks**: 116 / 116 completadas (100%)
 - **Static Export**: Generado con éxito en `out/`
 - **Lint & TypeScript**: 0 errores, 0 advertencias
+- **Anonimización Bioética Local-First**: Detección facial automática vía WebAssembly (MediaPipe BlazeFace + Selfie Segmenter) con fondo blanco clínico puro (`#FFFFFF`) y recuadro negro en ojos, con pass-through intacto de fotos dentales intraorales y selector conmutable de vista diagnóstica original
 - **Fotografía Clínica Dual**: Soporte simultáneo para disparo en vivo con cámara nativa o carga de fotos previas desde archivos/galería, con drag-and-drop y compresión en Canvas
 - **Nomenclatura de Archivos**: Nombres inteligentes `paciente-[FOLIO]-[NOMBRE]-[FECHA].odonto` con saneamiento Unicode NFD y confirmación visual en el Header
 - **Hidratación Next.js**: 0 errores o desajustes de SSR/hidratación en consola (determinista en ThemeContext y Header)

@@ -99,6 +99,22 @@ Como estudiante que debe entregar la documentación física al docente superviso
 
 ---
 
+### User Story 7 - Anonimización Bioética Facial y Fondo Blanco Clínico Local-First (Priority: P1)
+
+Como odontólogo, docente o estudiante de la UJAT, cuando tome o suba una fotografía donde aparezca el rostro del paciente (extraoral facial o de sonrisa), quiero que el sistema detecte automáticamente el rostro, reemplace el fondo por un blanco clínico limpio (`#FFFFFF`) y coloque un recuadro negro sólido sobre los ojos para anonimizar la identidad del paciente conforme a la bioética médica y la NOM-004-SSA3-2012, manteniendo al mismo tiempo las fotografías dentales intraorales 100% intactas y naturales.
+
+**Why this priority**: Es un requisito fundamental de bioética clínica, protección de datos de salud y presentación docente en la UJAT (tesis, casos clínicos, congresos). Además, debe ejecutarse 100% en el dispositivo del usuario sin servidores externos.
+
+**Independent Test**: Puede probarse subiendo una foto facial de paciente y verificando que en menos de 1 segundo se coloca el fondo blanco y la barra ocular de censura. Al subir una foto dental de arcada oclusal, se verifica que no se altere ni aplique censura alguna.
+
+**Acceptance Scenarios**:
+
+1. **Given** una fotografía tomada o subida donde hay un rostro visible, **When** el sistema la procesa en memoria mediante WebAssembly (MediaPipe BlazeFace + Selfie Segmenter), **Then** el fondo se transforma en blanco uniforme (`#FFFFFF`) y se dibuja un recuadro negro opaco que cubre ambos ojos de sien a sien.
+2. **Given** una fotografía dental intraoral (dientes, encías, oclusión) sin rostro ni ojos, **When** el detector no identifica rostros (`0 detections`), **Then** la imagen no sufre ninguna alteración de fondo ni censura, guardándose exactamente como fue capturada.
+3. **Given** una fotografía facial procesada y anonimizada, **When** el usuario visualiza el componente en pantalla, **Then** se muestra un indicador distintivo de anonimización bioética y un botón interactivo para alternar entre la versión anonimizada y la versión original de diagnóstico clínico.
+
+---
+
 ### Edge Cases
 
 - **Entrada de fotografías en ultra-alta resolución (>48MP)**: El pipeline de compresión Canvas debe escalar adecuadamente la imagen sin desbordar la memoria del hilo principal ni generar cuelgues (OOM) en dispositivos con 2GB de RAM o menos.
@@ -126,6 +142,11 @@ Como estudiante que debe entregar la documentación física al docente superviso
 - **FR-014**: Los estilos `@media print` DEBEN purgar incondicionalmente todos los elementos de control de la interfaz web (botones, navegación, pestañas) y formatear el documento para papel estándar Letter / A4.
 - **FR-015**: La arquitectura de estado DEBE garantizar sincronización bidireccional inmediata (Single Source of Truth) entre los formularios de captura y el documento previsualizado.
 - **FR-016**: La aplicación DEBE validar la integridad de cualquier archivo `.odonto` importado antes de mutar el estado.
+- **FR-017**: Cuando el usuario sube o captura una fotografía con rostro visible de un paciente, el sistema DEBE detectar automáticamente el rostro y los puntos oculares de forma 100% local en el navegador mediante WebAssembly (MediaPipe BlazeFace).
+- **FR-018**: El sistema DEBE segmentar la silueta del paciente respecto al fondo del consultorio/sillón dental y sustituir el fondo por un blanco clínico homogéneo (`#FFFFFF`) en Canvas.
+- **FR-019**: El sistema DEBE dibujar un recuadro o franja negra opaca (`#000000`) sobre los ojos del paciente que abarque desde los bordes orbitarios laterales (sien a sien) y cubra cejas y pómulos superiores, ajustando la inclinación al ángulo bipupilar.
+- **FR-020**: Cuando la fotografía sea dental intraoral (dientes, arcadas, oclusión, paladar) o radiográfica sin rostro detectable (`0 detections`), el sistema DEBE mantener la fotografía 100% inalterada, sin recortes de fondo ni franja alguna.
+- **FR-021**: El sistema DEBE proporcionar una insignia visual de estado bioético (`Anonimización Bioética Activa`) y permitir al clínico alternar entre la versión con censura y la versión original de diagnóstico.
 
 ### Key Entities *(include if feature involves data)*
 
