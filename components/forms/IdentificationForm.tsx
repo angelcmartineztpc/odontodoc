@@ -122,19 +122,6 @@ export function IdentificationForm() {
 
           <div className="space-y-1 sm:col-span-2">
             <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
-              Ocupación
-            </label>
-            <input
-              type="text"
-              value={patient.occupation}
-              onChange={(e) => updatePatient({ occupation: e.target.value })}
-              placeholder="Ej. Estudiante, Empleado, Comerciante"
-              className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none"
-            />
-          </div>
-
-          <div className="space-y-1 sm:col-span-2">
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
               Domicilio
             </label>
             <input
@@ -143,19 +130,6 @@ export function IdentificationForm() {
               onChange={(e) => updatePatient({ address: e.target.value })}
               placeholder="Calle, Número, Colonia, Municipio"
               className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none"
-            />
-          </div>
-
-          <div className="space-y-1 sm:col-span-2">
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
-              Motivo Principal de la Consulta *
-            </label>
-            <textarea
-              rows={3}
-              value={patient.consultationReason}
-              onChange={(e) => updatePatient({ consultationReason: e.target.value })}
-              placeholder="Describa textualmente el motivo por el cual acude el paciente..."
-              className="w-full min-h-[64px] px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none resize-none"
             />
           </div>
         </div>

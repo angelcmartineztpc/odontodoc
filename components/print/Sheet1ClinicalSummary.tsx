@@ -22,7 +22,7 @@ export function Sheet1ClinicalSummary({ isBlank = false }: Sheet1Props) {
       });
 
   return (
-    <article className="clinical-sheet p-6 sm:p-8 bg-white text-black font-sans text-[11px] leading-normal border border-slate-300 shadow-md sm:rounded-lg max-w-[215.9mm] mx-auto min-h-[268mm] flex flex-col justify-between mb-8 print:border-none print:shadow-none print:m-0 print:p-6 print:min-h-[260mm]">
+    <article className="clinical-sheet p-6 sm:p-8 bg-white text-black font-sans text-[11px] leading-normal border border-slate-300 shadow-md sm:rounded-lg max-w-[215.9mm] mx-auto min-h-[268mm] flex flex-col justify-between mb-8 print:border-none print:shadow-none print:rounded-none print:m-0 print:p-4 print:min-h-[260mm] print:bg-white">
       <div>
         {/* Institutional UJAT DACS Header with Crests */}
         <InstitutionalHeader sheetTitle="NOTA MEDICA: RESUMEN CLÍNICO GENERAL." />
@@ -76,29 +76,45 @@ export function Sheet1ClinicalSummary({ isBlank = false }: Sheet1Props) {
           </div>
         </div>
 
-        {/* Section: Fotografías Clínicas Extraorales */}
+        {/* Section: Fotografías Clínicas Extraorales (6 Tomas Estándar) */}
         <div className="mb-4">
           <h5 className="font-bold uppercase text-[11px] mb-2 tracking-wide text-black">
             FOTOGRAFIAS CLINICAS EXTRAORALES:
           </h5>
-          <div className="border border-black rounded-lg p-2 min-h-[140px] flex items-center justify-center bg-slate-50/50">
-            {!isBlank && photos.extraoralFrontal ? (
-              <div className="flex flex-col items-center">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={photos.extraoralFrontal}
-                  alt="Fotografía Clínica Extraoral"
-                  className="max-h-[135px] max-w-full object-contain rounded border border-slate-300"
-                />
-                <span className="text-[9px] text-slate-600 mt-1">Frente / Sonrisa</span>
+          <div className="grid grid-cols-6 gap-2 border border-black rounded-lg p-2 bg-white print:bg-white">
+            {[
+              { label: "Frontal", photo: photos.extraoralFrontal, watermark: "FRONTAL" },
+              { label: "Perfil Derecho", photo: photos.extraoralRightProfile, watermark: "PERFIL DERECHO" },
+              { label: "Perfil Izquierdo", photo: photos.extraoralLeftProfile, watermark: "PERFIL IZQUIERDO" },
+              { label: "Sonrisa", photo: photos.extraoralSmile, watermark: "SONRISA" },
+              { label: "Oclusal Sup.", photo: photos.intraoralUpper, watermark: "OCLUSAL SUP." },
+              { label: "Oclusal Inf.", photo: photos.intraoralLower, watermark: "OCLUSAL INF." },
+            ].map((slot, index) => (
+              <div
+                key={index}
+                className="flex flex-col items-center justify-between border border-slate-300 rounded p-1 bg-white min-h-[95px] overflow-hidden"
+              >
+                <div className="w-full flex-1 flex items-center justify-center overflow-hidden">
+                  {!isBlank && slot.photo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={slot.photo}
+                      alt={slot.label}
+                      className="max-h-[75px] w-full object-contain rounded"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-center p-1">
+                      <span className="text-[7.5px] font-bold text-slate-400 uppercase tracking-tight leading-tight">
+                        {slot.watermark}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <span className="text-[7.5px] font-bold text-black text-center mt-0.5 border-t border-slate-100 w-full pt-0.5 truncate">
+                  {slot.label}
+                </span>
               </div>
-            ) : (
-              <div className="text-center text-slate-400 text-[10px] italic">
-                {isBlank
-                  ? "(Pegar aquí fotografías clínicas extraorales del paciente)"
-                  : "Sin fotografía extraoral adjunta al expediente"}
-              </div>
-            )}
+            ))}
           </div>
         </div>
 

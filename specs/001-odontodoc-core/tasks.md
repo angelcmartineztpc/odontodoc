@@ -322,25 +322,130 @@
 - **Phase 19 (Nomenclatura Inteligente de Archivos .odonto)**: Depends on Phase 2 & Phase 18; executes T102 through T105 — completed.
 - **Phase 20 (Soporte Dual de Fotografía Clínica)**: Depends on Phase 2 & Phase 14; executes T106 through T110 — completed.
 - **Phase 21 (Anonimización Bioética Facial y Fondo Blanco)**: Depends on Phase 2 & Phase 20; executes T111 through T116 — completed.
+- **Phase 22 (Ajustes de Alcance - Ficha de Identificación)**: Executes T117 through T119.
+- **Phase 23 (Serie Fotográfica Clínica Estándar de 6 Tomas)**: Executes T120 through T123.
+- **Phase 24 (Editor de Encuadre, Zoom y Rotación Estilo WhatsApp)**: Executes T124 through T127.
+- **Phase 25 (Secciones de Evolución, Tratamiento y Galerías con Radiografía)**: Executes T128 through T132.
+- **Phase 26 (Autoguardado Persistente en Caché Local con IndexedDB)**: Executes T133 through T136 — completed.
+- **Phase 27 (Fidelidad Visual 1:1 en Exportación e Impresión a PDF)**: Executes T137 through T141 — completed.
+- **Phase 28 (Pulido de Captura Fotográfica y Purga Estricta de Color en Exportación PDF Oficial)**: Executes T142 through T145 — completed.
+- **Phase 29 (Secuenciación Cronológica Procedural - RX Primero)**: Executes T146 through T148 — completed.
+
+---
+
+## Phase 22: Ajustes de Alcance (Ficha de Identificación)
+
+**Goal**: Simplificar la captura eliminando campos innecesarios y redundantes.
+
+- [x] T117 [P] [US1] Marcar `occupation?: string` y `consultationReason?: string` como opcionales en lib/types.ts y context/initialClinicalState.ts
+- [x] T118 [P] [US1] Retirar el campo "Ocupación" en components/forms/IdentificationForm.tsx
+- [x] T119 [US1] Retirar el campo "Motivo Principal de la Consulta" en components/forms/IdentificationForm.tsx preservando la narrativa del resumen clínico
+
+---
+
+## Phase 23: Serie Fotográfica Clínica Estándar (6 Tomas)
+
+**Goal**: Implementar la serie estandarizada odontológica de 6 tomas clínicas con nomenclatura técnica precisa.
+
+- [x] T120 [P] [US2] Actualizar PhotographicMatrix en lib/types.ts y context/initialClinicalState.ts para soportar Frontal, Perfil Derecho, Perfil Izquierdo, Sonrisa, Oclusal Superior y Oclusal Inferior
+- [x] T121 [P] [US2] Actualizar reducer en context/clinicalRecordReducer.ts para admitir los nuevos slots fotográficos
+- [x] T122 [US2] Implementar la cuadrícula de 6 fotografías clínicas estándar en components/forms/ClinicalHistoryForm.tsx
+- [x] T123 [US2] Configurar marcas de agua con nombres técnicos en recuadros vacíos ("FRONTAL", "PERFIL DERECHO", "PERFIL IZQUIERDO", "SONRISA", "OCLUSAL SUPERIOR", "OCLUSAL INFERIOR") en components/forms/CameraCaptureInput.tsx
+
+---
+
+## Phase 24: Editor de Encuadre, Zoom y Rotación 90° Estilo WhatsApp
+
+**Goal**: Proporcionar una herramienta táctil interactiva para centrar, rotar, recortar y eliminar bordes vacíos en las fotografías.
+
+- [x] T124 [P] [US2] Crear componente modal táctil components/forms/ImageEditorModal.tsx con paneo 2D, rotación 90° horaria y zoom (1x-3x)
+- [x] T125 [US2] Implementar recorte para llenar recuadro completo (`object-cover` canvas render) eliminando bordes vacíos en components/forms/ImageEditorModal.tsx
+- [x] T126 [US2] Conectar ImageEditorModal a CameraCaptureInput.tsx tras captura o mediante botón "Ajustar encuadre"
+- [x] T127 [US2] Integrar el resultado recortado con el pipeline de compresión y anonimización bioética en components/forms/CameraCaptureInput.tsx
+
+---
+
+## Phase 25: Secciones de Evolución, Tratamiento y Galerías con Radiografía
+
+**Goal**: Redefinir Tratamiento como resumen del plan, habilitar galerías multi-foto en Antes/Durante/Después, agregar Radiografía y marcas de agua.
+
+- [x] T128 [P] [US4] Actualizar ProcedurePhotos en lib/types.ts para soportar arrays de fotos en before, during, after y nuevo array xray (Radiografía)
+- [x] T129 [P] [US4] Adaptar context/initialClinicalState.ts y context/clinicalRecordReducer.ts para la estructura multi-foto y nueva sección radiográfica
+- [x] T130 [US4] Reconfigurar el campo "Tratamiento" en components/forms/TreatmentLogForm.tsx como resumen del plan de tratamiento a realizar
+- [x] T131 [US4] Implementar galerías multi-foto para "Antes", "Durante", "Después" y la nueva sección "Radiografía" en components/forms/TreatmentLogForm.tsx
+- [x] T132 [US4] Configurar marcas de agua en recuadros vacíos ("ANTES", "DURANTE", "DESPUÉS", "RADIOGRAFÍA") reemplazando mensajes genéricos en components/forms/TreatmentLogForm.tsx
+
+---
+
+## Phase 26: Autoguardado Persistente en Caché Local con IndexedDB
+
+**Goal**: Persistir automáticamente campos y fotos en caché local de alta capacidad para sobrevivir a cierres de pestaña o navegador.
+
+- [x] T133 [P] [US5] Implementar utilidad lib/cacheStorage.ts con IndexedDB y fallback seguro a localStorage para almacenamiento de expedientes completos
+- [x] T134 [US5] Integrar autoguardado reactivo con debounce (~300ms) en context/ClinicalRecordContext.tsx ante cambios de estado
+- [x] T135 [US5] Implementar restauración automática del borrador almacenado al montar la aplicación en context/ClinicalRecordContext.tsx
+- [x] T136 [US5] Agregar indicador visual de estado de guardado local y opción para reiniciar expediente en components/layout/Header.tsx
+
+---
+
+## Phase 27: Fidelidad Visual 1:1 en Exportación e Impresión a PDF
+
+**Goal**: Espejo visual exacto de la plantilla institucional UJAT DACS corrigiendo el bug de encabezados y renderizado de escudos.
+
+- [x] T137 [P] [US6] Corregir InstitutionalHeader.tsx reemplazando `<header>` por `<div className="institutional-header">` y asegurar renderizado nítido de escudos oficiales UJAT y DACS
+- [x] T138 [P] [US6] Actualizar app/globals.css para que `@media print` no suprima encabezados institucionales ni marcas de agua
+- [x] T139 [US6] Reflejar la serie de 6 fotos extraorales y marcas de agua en components/print/Sheet1ClinicalSummary.tsx
+- [x] T140 [US6] Reflejar marcas de agua técnicas en recuadros intraorales vacíos en components/print/Sheet2DiagnosisPlan.tsx
+- [x] T141 [US6] Reflejar el resumen del tratamiento proyectado, la cuadrícula de 4 secciones (Antes, Durante, Después, Radiografía) y marcas de agua en components/print/Sheet3TreatmentSummary.tsx
+
+---
+
+## Phase 28: Pulido de Captura Fotográfica y Purga Estricta de Color en Exportación PDF Oficial
+
+**Goal**: Eliminar textos de fondo redundantes en los recuadros de captura y garantizar una exportación a PDF 100% libre de colores de interfaz, marcos rosados o bordes no institucionales.
+
+- [x] T142 [P] [US2] Retirar texto de fondo / marcas de agua detrás de los botones de captura en components/forms/CameraCaptureInput.tsx y components/forms/MultiPhotoGalleryCard.tsx
+- [x] T143 [P] [US6] Purgar fondos rosados de la interfaz (`var(--theme-app-bg)`), bordes y padding en `@media print` en app/globals.css, app/page.tsx y components/print/PrintContainer.tsx
+- [x] T144 [US6] Configurar `print:rounded-none`, `print:bg-white` y `print:border-none` en las 3 hojas clínicas (Sheet1ClinicalSummary.tsx, Sheet2DiagnosisPlan.tsx, Sheet3TreatmentSummary.tsx) asegurando papel oficial blanco estricto UJAT DACS (Carta/Letter)
+- [x] T145 [P] Ejecutar verificación automatizada de tipos (npx tsc --noEmit) y compilación estática de producción (npm run build) asegurando 0 errores
+
+---
+
+## Phase 29: Secuenciación Cronológica Procedural (RX Primero, luego Antes, Durante y Después)
+
+**Goal**: Alinear la secuencia cronológica de tomas clínicas operatorias colocando el diagnóstico radiográfico inicial (RX) en primer lugar, seguido de la secuencia de procedimiento (Antes, Durante y Después).
+
+- [x] T146 [P] [US4] Reordenar las galerías multifoto en components/forms/TreatmentLogForm.tsx para colocar 1. Radiografía (RX / Gabinete) al inicio, seguido de 2. Antes, 3. Durante y 4. Después
+- [x] T147 [P] [US6] Reordenar la cuadrícula de 4 ranuras procedimentales en components/print/Sheet3TreatmentSummary.tsx colocando slot `xray` ("Radiografía (RX)") en la primera posición antes de `before`, `during` y `after`
+- [x] T148 [P] Ejecutar verificación automatizada de tipos (npx tsc --noEmit) y compilación estática de producción (npm run build) asegurando 0 errores
+
+---
+
+## Phase 30: Restauración del Flujo de Subida Directa y Anonimización Bioética Inmediata
+
+**Goal**: Restaurar el flujo original de subida directa sin modales obstructivos al seleccionar o tomar una fotografía clínica, ejecutando inmediatamente la compresión en Canvas y la anonimización bioética UJAT (BlazeFace + Selfie Segmenter: fondo blanco clínico, censura orbitaria y badge conmutador de diagnóstico original vs anonimizado). El editor de encuadre/zoom WhatsApp se mantiene accesible a demanda mediante el botón "Encuadre".
+
+- [x] T149 [P] [US2] Restaurar ejecución inmediata de `compressClinicalPhoto` con `enableBioethicsAnonymization` en `processImageFile` de `components/forms/CameraCaptureInput.tsx`, mostrando el spinner clínico de anonimización bioética al capturar o subir archivo
+- [x] T150 [US2] Configurar botón de acción a demanda `[Encuadre]` en `CameraCaptureInput.tsx` para abrir `ImageEditorModal` pasando `originalVersion || value`, permitiendo re-aplicar anonimización bioética tras el recorte
+- [x] T151 [P] [US4] Actualizar `components/forms/MultiPhotoGalleryCard.tsx` para procesar y agregar fotos directamente a la galería sin modal intermedio forzado, manteniendo el botón `[Encuadre]` en cada miniatura para ajustes opcionales
+- [x] T152 [P] Ejecutar verificación automatizada de tipos (`npx tsc --noEmit`) y compilación estática de producción (`npm run build`) asegurando 0 errores
+
+## Phase 31: Supresión de Falsos Positivos en Turbopack Dev Overlay por Mensajes INFO de TFLite / Emscripten
+
+**Goal**: Evitar que los mensajes informativos internos de TensorFlow Lite / XNNPACK delegados a `stderr` por WebAssembly sean interpretados por Turbopack como errores de consola en tiempo de desarrollo.
+
+- [x] T153 [P] [US2] Implementar interceptor en `context/ThemeContext.tsx` y `lib/bioethicsVision.ts` para redirigir diagnósticos benignos `INFO: Created TensorFlow Lite...` a `console.info` en lugar de `console.error`
+- [x] T154 [P] [US2] Configurar prefijo de origen absoluto (`window.location.origin`) en rutas de modelos `.tflite` y binarios `.wasm` en `lib/bioethicsVision.ts`
+- [x] T155 [P] Ejecutar verificación automatizada de tipos (`npx tsc --noEmit`) y compilación estática de producción (`npm run build`) asegurando 0 errores
 
 ---
 
 ## Implementation Status Summary
 
-- **Total Tasks**: 116 / 116 completadas (100%)
-- **Static Export**: Generado con éxito en `out/`
-- **Lint & TypeScript**: 0 errores, 0 advertencias
-- **Anonimización Bioética Local-First**: Detección facial automática vía WebAssembly (MediaPipe BlazeFace + Selfie Segmenter) con fondo blanco clínico puro (`#FFFFFF`) y recuadro negro en ojos, con pass-through intacto de fotos dentales intraorales y selector conmutable de vista diagnóstica original
-- **Fotografía Clínica Dual**: Soporte simultáneo para disparo en vivo con cámara nativa o carga de fotos previas desde archivos/galería, con drag-and-drop y compresión en Canvas
-- **Nomenclatura de Archivos**: Nombres inteligentes `paciente-[FOLIO]-[NOMBRE]-[FECHA].odonto` con saneamiento Unicode NFD y confirmación visual en el Header
-- **Hidratación Next.js**: 0 errores o desajustes de SSR/hidratación en consola (determinista en ThemeContext y Header)
-- **Navegación al Inicio (Scroll-to-top)**: 100% reactiva y automática en app/page.tsx al cambiar de pestaña
-- **Accesibilidad & Contraste WCAG**: Cumplimiento estricto WCAG AA y AAA (> 12:1) en modo claro y modo oscuro
-- **Ergonomía Táctil & Touch Targets**: 100% completado; holgura inferior ampliada a `pb-40 sm:pb-48` (> 100px de margen respecto a TabNavigation), tarjetas M3 y botones táctiles de 48px libres de colisión
-- **Material Design 3 & Ergonomía Mobile-First**: 100% libre de emojis, iconos vectoriales oficiales `@mui/icons-material`.
-- **Tema Rosado y Personalización**: 100% completado; paleta rosa sakura activa por defecto con persistencia en localStorage y modal interactivo de temas/colores.
-- **Pulido Impeccable M3**: Header limpio sin cintillo incómodo, sustitución total de degradados horizontales genéricos por tarjetas de superficie M3 y contenedores tonales sutiles.
-- **Etiquetas y Splash Guía de Ayuda**: Botones con etiquetas y sub-etiquetas descriptivas, barra interactiva de explicación, y modal de bienvenida con guía de primer uso persistente en localStorage.
+- **Total Tasks**: 155 tasks (T001 - T155)
+- **Status**: 155/155 completadas (100%)
+- **Fase Actual**: Fases 1 a 31 finalizadas exitosamente con compilación estática verificada.
+
 
 
 

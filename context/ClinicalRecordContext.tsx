@@ -14,6 +14,7 @@ import {
 } from "@/lib/types";
 import { createEmptyOdontoDocument } from "./initialClinicalState";
 import { clinicalRecordReducer, ClinicalAction } from "./clinicalRecordReducer";
+import { saveClinicalDraft, loadClinicalDraft, clearClinicalDraft } from "@/lib/cacheStorage";
 
 interface ClinicalRecordContextType {
   document: OdontoDocument;
@@ -23,6 +24,8 @@ interface ClinicalRecordContextType {
   isGuideOpen: boolean;
   openGuideModal: () => void;
   closeGuideModal: () => void;
+  lastSaved: string | null;
+  clearDraftAndReset: () => Promise<void>;
   updatePatient: (data: Partial<PatientData>) => void;
   updateStudent: (data: Partial<StudentData>) => void;
   updateMedicalHistory: (data: Partial<Omit<MedicalHistory, "vitalSigns">>) => void;
@@ -44,6 +47,38 @@ export function ClinicalRecordProvider({ children }: { children: ReactNode }) {
   const [document, dispatch] = useReducer(clinicalRecordReducer, undefined, createEmptyOdontoDocument);
   const [activeTab, setActiveTab] = useState<ActiveTab>("identification");
   const [isGuideOpen, setIsGuideOpen] = useState<boolean>(false);
+  const [isLoadedFromCache, setIsLoadedFromCache] = useState<boolean>(false);
+  const [lastSaved, setLastSaved] = useState<string | null>(null);
+
+  // Load persistent draft from IndexedDB / LocalStorage on mount
+  React.useEffect(() => {
+    let isMounted = true;
+    loadClinicalDraft().then((cached) => {
+      if (isMounted && cached && cached.doc) {
+        dispatch({ type: "LOAD_DOCUMENT", payload: cached.doc });
+        setLastSaved(cached.savedAt);
+      }
+      if (isMounted) {
+        setIsLoadedFromCache(true);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // Reactive Debounced Auto-Saving to IndexedDB
+  React.useEffect(() => {
+    if (!isLoadedFromCache) return;
+
+    const timer = setTimeout(() => {
+      saveClinicalDraft(document).then(() => {
+        setLastSaved(new Date().toISOString());
+      });
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [document, isLoadedFromCache]);
 
   React.useEffect(() => {
     try {
@@ -111,6 +146,12 @@ export function ClinicalRecordProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "RESET_DOCUMENT" });
   };
 
+  const clearDraftAndReset = async () => {
+    await clearClinicalDraft();
+    dispatch({ type: "RESET_DOCUMENT" });
+    setLastSaved(null);
+  };
+
   return (
     <ClinicalRecordContext.Provider
       value={{
@@ -121,6 +162,8 @@ export function ClinicalRecordProvider({ children }: { children: ReactNode }) {
         isGuideOpen,
         openGuideModal,
         closeGuideModal,
+        lastSaved,
+        clearDraftAndReset,
         updatePatient,
         updateStudent,
         updateMedicalHistory,

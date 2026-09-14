@@ -42,31 +42,97 @@ export function ClinicalHistoryForm() {
         </div>
         <div>
           <h2 className="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight leading-snug">
-            Módulo B: Resumen Clínico General y Fotografía Extraoral
+            Módulo B: Resumen Clínico General y Serie Fotográfica Clínica (6 Tomas)
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
-            Antecedentes patológicos, somatometría, signos vitales y fotografía frontal. Alimenta la Hoja 1 oficial UJAT.
+            Antecedentes patológicos, somatometría, constantes vitales y serie clínica estándar (Frontal, Perfiles, Sonrisa y Oclusales). Alimenta la Hoja 1 oficial UJAT.
           </p>
         </div>
       </div>
 
-      {/* Extraoral Photo Section */}
-      <section className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--theme-primary-text)] dark:text-[var(--theme-accent)] flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-2">
-          <PhotoCameraOutlinedIcon sx={{ fontSize: 19 }} />
-          <span>Fotografía Extraoral (Frente / Sonrisa)</span>
-        </h3>
-        <p className="text-xs text-slate-500 dark:text-slate-400">
-          Captura el rostro completo del paciente de frente o sonriendo para valoración estética y perfil estomatológico.
+      {/* 6-Photo Clinical Dental Series Section */}
+      <section className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-2">
+          <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--theme-primary-text)] dark:text-[var(--theme-accent)] flex items-center gap-2">
+            <PhotoCameraOutlinedIcon sx={{ fontSize: 19 }} />
+            <span>Serie Fotográfica Clínica Estándar (6 Tomas)</span>
+          </h3>
+          <span className="text-[11px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-[var(--theme-primary-light)] text-[var(--theme-primary-text)] border border-[var(--theme-primary-border)] w-fit">
+            {[
+              photos.extraoralFrontal,
+              photos.extraoralRightProfile,
+              photos.extraoralLeftProfile,
+              photos.extraoralSmile,
+              photos.intraoralUpper,
+              photos.intraoralLower,
+            ].filter(Boolean).length} / 6 tomas
+          </span>
+        </div>
+        <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+          Serie fotográfica odontológica estándar de valoración estomatológica. Cada recuadro incluye editor táctil estilo WhatsApp (zoom, rotación de 90°, paneo y recorte para eliminar bordes vacíos).
         </p>
 
-        <div className="max-w-xs mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+          {/* 1. Frontal en Reposo */}
           <CameraCaptureInput
-            label="Fotografía Facial Extraoral"
-            description="Enfoque de frente a la altura de los ojos"
+            label="1. Frontal (Reposo)"
+            description="Rostro completo de frente, labios en reposo a la altura de los ojos"
             value={photos.extraoralFrontal}
             onChange={(dataUrl) => updatePhoto("extraoralFrontal", dataUrl)}
-            aspectRatioLabel="3:4 / 4:3 Facial"
+            aspectRatioLabel="Facial 4:3"
+            watermarkText="FRONTAL"
+          />
+
+          {/* 2. Perfil Derecho */}
+          <CameraCaptureInput
+            label="2. Perfil Derecho"
+            description="Perfil estricto a 90°, plano de Frankfort horizontal paralelo al piso"
+            value={photos.extraoralRightProfile || null}
+            onChange={(dataUrl) => updatePhoto("extraoralRightProfile", dataUrl)}
+            aspectRatioLabel="Perfil 4:3"
+            watermarkText="PERFIL DERECHO"
+          />
+
+          {/* 3. Perfil Izquierdo */}
+          <CameraCaptureInput
+            label="3. Perfil Izquierdo"
+            description="Perfil estricto a 90°, plano de Frankfort horizontal"
+            value={photos.extraoralLeftProfile || null}
+            onChange={(dataUrl) => updatePhoto("extraoralLeftProfile", dataUrl)}
+            aspectRatioLabel="Perfil 4:3"
+            watermarkText="PERFIL IZQUIERDO"
+          />
+
+          {/* 4. Sonrisa */}
+          <CameraCaptureInput
+            label="4. Sonrisa Frontal"
+            description="Sonrisa amplia y espontánea evaluando línea de sonrisa y corredores"
+            value={photos.extraoralSmile || null}
+            onChange={(dataUrl) => updatePhoto("extraoralSmile", dataUrl)}
+            aspectRatioLabel="Sonrisa 4:3"
+            watermarkText="SONRISA"
+          />
+
+          {/* 5. Oclusal Superior */}
+          <CameraCaptureInput
+            label="5. Oclusal Superior"
+            description="Arcada maxilar superior completa tomada con espejo oclusal y retractor"
+            value={photos.intraoralUpper}
+            onChange={(dataUrl) => updatePhoto("intraoralUpper", dataUrl)}
+            aspectRatioLabel="Maxilar 4:3"
+            watermarkText="OCLUSAL SUPERIOR"
+            enableBioethicsAnonymization={false}
+          />
+
+          {/* 6. Oclusal Inferior */}
+          <CameraCaptureInput
+            label="6. Oclusal Inferior"
+            description="Arcada mandibular inferior completa separando lengua con espejo"
+            value={photos.intraoralLower}
+            onChange={(dataUrl) => updatePhoto("intraoralLower", dataUrl)}
+            aspectRatioLabel="Mandibular 4:3"
+            watermarkText="OCLUSAL INFERIOR"
+            enableBioethicsAnonymization={false}
           />
         </div>
       </section>

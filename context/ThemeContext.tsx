@@ -2,6 +2,27 @@
 
 import React, { createContext, useContext, useEffect, useState, useMemo } from "react";
 
+// Suppress benign WebAssembly / TensorFlow Lite Emscripten stderr diagnostic INFO logs
+// from triggering Next.js Turbopack dev error overlay
+if (typeof window !== "undefined" && !(window as any).__tflite_console_patched) {
+  (window as any).__tflite_console_patched = true;
+  const originalError = console.error;
+  console.error = function (...args: any[]) {
+    const firstArg = typeof args[0] === "string" ? args[0] : "";
+    if (
+      firstArg.includes("Created TensorFlow Lite") ||
+      firstArg.includes("XNNPACK delegate") ||
+      firstArg.includes("INFO: ") ||
+      firstArg.startsWith("INFO:") ||
+      firstArg.startsWith("WARNING:")
+    ) {
+      console.info(...args);
+      return;
+    }
+    return originalError.apply(console, args);
+  };
+}
+
 export interface ThemeColors {
   primary: string;
   primaryHover: string;

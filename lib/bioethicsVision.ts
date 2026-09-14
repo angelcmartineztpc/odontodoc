@@ -16,9 +16,34 @@ export interface BioethicsVisionResult {
   facesCount: number;
 }
 
+// Suppress benign WebAssembly / TensorFlow Lite Emscripten stderr diagnostic INFO logs
+// from triggering Next.js Turbopack dev error overlay
+if (typeof window !== "undefined" && !(window as any).__tflite_console_patched) {
+  (window as any).__tflite_console_patched = true;
+  const originalError = console.error;
+  console.error = function (...args: any[]) {
+    const firstArg = typeof args[0] === "string" ? args[0] : "";
+    if (
+      firstArg.includes("Created TensorFlow Lite") ||
+      firstArg.includes("XNNPACK delegate") ||
+      firstArg.includes("INFO: ") ||
+      firstArg.startsWith("INFO:") ||
+      firstArg.startsWith("WARNING:")
+    ) {
+      console.info(...args);
+      return;
+    }
+    return originalError.apply(console, args);
+  };
+}
+
 let visionFilesetPromise: Promise<any> | null = null;
 let faceDetectorInstance: any = null;
 let imageSegmenterInstance: any = null;
+
+function getOrigin(): string {
+  return typeof window !== "undefined" ? window.location.origin : "";
+}
 
 /**
  * Initializes the MediaPipe vision task runner using offline WASM assets
@@ -32,9 +57,10 @@ async function getVisionFileset() {
   if (!visionFilesetPromise) {
     visionFilesetPromise = (async () => {
       const { FilesetResolver } = await import("@mediapipe/tasks-vision");
+      const wasmPath = `${getOrigin()}/wasm`;
       try {
         // Try local offline WASM assets first (Local-First / Zero network)
-        return await FilesetResolver.forVisionTasks("/wasm");
+        return await FilesetResolver.forVisionTasks(wasmPath);
       } catch (localErr) {
         console.warn("Falling back to CDN for vision tasks WASM:", localErr);
         return await FilesetResolver.forVisionTasks(
@@ -54,11 +80,12 @@ async function getFaceDetector() {
 
   const { FaceDetector } = await import("@mediapipe/tasks-vision");
   const vision = await getVisionFileset();
+  const origin = getOrigin();
 
   try {
     faceDetectorInstance = await FaceDetector.createFromOptions(vision, {
       baseOptions: {
-        modelAssetPath: "/models/blaze_face_short_range.tflite",
+        modelAssetPath: `${origin}/models/blaze_face_short_range.tflite`,
       },
       runningMode: "IMAGE",
       minDetectionConfidence: 0.5,
@@ -86,11 +113,12 @@ async function getImageSegmenter() {
 
   const { ImageSegmenter } = await import("@mediapipe/tasks-vision");
   const vision = await getVisionFileset();
+  const origin = getOrigin();
 
   try {
     imageSegmenterInstance = await ImageSegmenter.createFromOptions(vision, {
       baseOptions: {
-        modelAssetPath: "/models/selfie_segmenter.tflite",
+        modelAssetPath: `${origin}/models/selfie_segmenter.tflite`,
       },
       runningMode: "IMAGE",
       outputCategoryMask: true,

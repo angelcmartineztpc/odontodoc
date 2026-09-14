@@ -15,7 +15,15 @@ import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 export function Header() {
-  const { document: doc, loadDocument, resetDocument, setActiveTab, openGuideModal } = useClinicalRecord();
+  const {
+    document: doc,
+    loadDocument,
+    resetDocument,
+    setActiveTab,
+    openGuideModal,
+    lastSaved,
+    clearDraftAndReset,
+  } = useClinicalRecord();
   const { openThemeModal, activeThemeId } = useTheme();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [feedback, setFeedback] = useState<{ text: string; isError?: boolean } | null>(null);
@@ -59,14 +67,14 @@ export function Header() {
     showFeedback("Navegando a módulo de formatos e impresión oficial...");
   };
 
-  const handleReset = () => {
+  const handleReset = async () => {
     if (
       window.confirm(
-        "¿Deseas reiniciar y crear un nuevo expediente? Se limpiarán los datos actuales no exportados."
+        "¿Deseas reiniciar y crear un nuevo expediente? Se limpiarán la memoria y la caché local de este paciente."
       )
     ) {
-      resetDocument();
-      showFeedback("Expediente clínico reiniciado a plantilla en blanco.");
+      await clearDraftAndReset();
+      showFeedback("Expediente clínico reiniciado y caché local limpia.");
     }
   };
 
@@ -74,7 +82,7 @@ export function Header() {
   const folio = doc.patient.recordNumber.trim() ? `Folio: ${doc.patient.recordNumber}` : "Borrador";
 
   return (
-    <header className="no-print bg-white/95 dark:bg-slate-900/95 backdrop-blur-md text-slate-900 dark:text-slate-100 shadow-sm border-b border-slate-200/80 dark:border-slate-800 sticky top-0 z-30 transition-colors duration-200">
+    <header className="app-header no-print bg-white/95 dark:bg-slate-900/95 backdrop-blur-md text-slate-900 dark:text-slate-100 shadow-sm border-b border-slate-200/80 dark:border-slate-800 sticky top-0 z-30 transition-colors duration-200">
       <div className="max-w-6xl mx-auto px-3 sm:px-4 py-2 flex flex-col md:flex-row items-center justify-between gap-2.5">
         {/* Brand & Institutional Identity */}
         <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
@@ -115,6 +123,11 @@ export function Header() {
                 {patientName}
               </p>
               <span className="text-[10px] text-[var(--theme-primary)] font-mono block leading-tight">{folio}</span>
+              {lastSaved && (
+                <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold block leading-tight mt-0.5">
+                  ✓ Guardado local
+                </span>
+              )}
             </div>
 
             {/* Quick explanation toggle button */}

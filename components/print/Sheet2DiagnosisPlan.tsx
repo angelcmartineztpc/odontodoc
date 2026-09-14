@@ -32,7 +32,7 @@ export function Sheet2DiagnosisPlan({ isBlank = false }: Sheet2Props) {
   ];
 
   return (
-    <article className="clinical-sheet p-6 sm:p-8 bg-white text-black font-sans text-[11px] leading-normal border border-slate-300 shadow-md sm:rounded-lg max-w-[215.9mm] mx-auto min-h-[268mm] flex flex-col justify-between mb-8 print:border-none print:shadow-none print:m-0 print:p-6 print:min-h-[260mm]">
+    <article className="clinical-sheet p-6 sm:p-8 bg-white text-black font-sans text-[11px] leading-normal border border-slate-300 shadow-md sm:rounded-lg max-w-[215.9mm] mx-auto min-h-[268mm] flex flex-col justify-between mb-8 print:border-none print:shadow-none print:rounded-none print:m-0 print:p-4 print:min-h-[260mm] print:bg-white">
       <div>
         {/* Institutional UJAT DACS Header with Crests */}
         <InstitutionalHeader sheetTitle="NOTA MEDICA: DIAGNOSTICO Y PLAN DE TRATAMIENTO CLINICO ODONTOLOGICO" />
@@ -91,7 +91,7 @@ export function Sheet2DiagnosisPlan({ isBlank = false }: Sheet2Props) {
           <h5 className="font-bold uppercase text-[11px] mb-2 tracking-wide text-black">
             FOTOGRAFIAS CLINICAS INTRAORALES:
           </h5>
-          <div className="grid grid-cols-5 gap-2 border border-black rounded-lg p-2 bg-slate-50/50">
+          <div className="grid grid-cols-5 gap-2 border border-black rounded-lg p-2 bg-white print:bg-white">
             {intraoralSlots.map((slot) => (
               <div
                 key={slot.key}
@@ -106,12 +106,14 @@ export function Sheet2DiagnosisPlan({ isBlank = false }: Sheet2Props) {
                       className="max-h-[85px] w-full object-contain rounded"
                     />
                   ) : (
-                    <div className="text-[8px] text-slate-400 italic text-center p-1">
-                      {isBlank ? "Foto" : "Sin foto"}
+                    <div className="w-full h-full flex items-center justify-center text-center p-1">
+                      <span className="text-[8px] font-bold text-slate-400 uppercase tracking-tight leading-tight">
+                        {slot.label}
+                      </span>
                     </div>
                   )}
                 </div>
-                <span className="text-[8px] font-bold text-slate-800 text-center mt-1 border-t border-slate-100 w-full pt-0.5">
+                <span className="text-[8px] font-bold text-black text-center mt-1 border-t border-slate-100 w-full pt-0.5">
                   {slot.label}
                 </span>
               </div>

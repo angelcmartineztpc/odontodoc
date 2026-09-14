@@ -8,14 +8,19 @@
 
 ## Summary
 
-OdontoDoc is a static, local-first clinical support tool for dental students and faculty at Universidad Juárez Autónoma de Tabasco (UJAT - DACS, Licenciatura en Cirujano Dentista). It enables rapid, tactile chairside data and photographic capture, strictly client-side Canvas image compression, sovereign persistence via local `.odonto` files, and real-time WYSIWYG rendering of the 3 official UJAT clinical formats for Letter/A4 printing and PDF generation.
-
-Following the analysis of the official institutional PDF ([`Hoja para Notas medicas ejemplo de redaccion (1).pdf`](file:///Users/administrador/odontodoc/public/templates/Hoja%20para%20Notas%20medicas%20ejemplo%20de%20redaccion%20(1).pdf)), the system is enhanced to:
-1. Integrate extracted high-resolution official crests: [`public/logos/ujat-logo.jpg`](file:///Users/administrador/odontodoc/public/logos/ujat-logo.jpg) and [`public/logos/dacs-logo.png`](file:///Users/administrador/odontodoc/public/logos/dacs-logo.png).
-2. Achieve 1:1 visual parity with the official 6-page institutional template across the 3 clinical notes (`Sheet1ClinicalSummary`, `Sheet2DiagnosisPlan`, `Sheet3TreatmentSummary`).
-3. Support a **Dual Output Mode**:
+OdontoDoc is a static, local-first clinical support tool for dental students and faculty at Universidad Juárez Autónoma de Tabasco (UJAT - DACS, Licenciatura en Cirujano Dentista). It enables rapid, tactile chairside data and photographic capture, strictly client-side Canvas image compression, sovereign persistence via local `.odonto` files, and real-time WYSIWYG rendering of the 3 official UJAT clinical formats for Letter/A4 printing and PDF generation. Following the analysis of the official institutional PDF ([`Hoja para Notas medicas ejemplo de redaccion (1).pdf`](file:///Users/administrador/odontodoc/public/templates/Hoja%20para%20Notas%20medicas%20ejemplo%20de%20redaccion%20(1).pdf)), the system is enhanced to:
+1. Integrate extracted high-resolution official crests: [`public/logos/ujat-escudo-oficial.png`](file:///Users/administrador/odontodoc/public/logos/ujat-escudo-oficial.png) and [`public/logos/dacs-logo.png`](file:///Users/administrador/odontodoc/public/logos/dacs-logo.png).
+2. Achieve 1:1 visual parity with the official 6-page institutional template across the 3 clinical notes (`Sheet1ClinicalSummary`, `Sheet2DiagnosisPlan`, `Sheet3TreatmentSummary`), fixing the CSS print bug where `<header>` was hidden by `@media print`.
+3. Scope adjustments: Removal of "Ocupación" and "Motivo de la consulta" from the patient identification form (the latter is recorded in clinical summary).
+4. Patient clinical photography: Replace single photo with standard 6-photo series (Frontal, Perfil Derecho, Perfil Izquierdo, Sonrisa, Oclusal Superior, Oclusal Inferior) with tactile WhatsApp-style crop/framing editor (centering, zoom 1x-3x, 90° rotation, container fill with zero empty borders).
+5. Evolution and procedural records: Treatment field as summary of plan to be performed; multi-photo galleries and print layout sequenced chronologically with **Radiografía (RX)** in first position, followed by procedural progression (**Antes**, **Durante**, and **Después**).
+6. Local cache persistence: Automatic IndexedDB draft saving and restoration surviving browser/tab close.
+7. Support a **Dual Output Mode**:
    - **Modo Expediente (Relleno / Fillable)**: Renders live clinical data, narrative, photos, and procedures from the active state.
    - **Modo Formato Oficial en Blanco (Blank Form)**: Reproduces exact blank form layout with dashed underline guides `____________________` matching pages 2, 4, and 6 of the official PDF for manual paper documentation.
+8. Photo capture UI simplification: Total removal of distracting background watermark text behind capture buttons in `CameraCaptureInput.tsx` and `MultiPhotoGalleryCard.tsx`, maintaining a clean, uncluttered interface.
+9. Strict official PDF export fidelity: Total purge of application theme colors (`var(--theme-app-bg)` / pink) and outer frames upon PDF export or printing, guaranteeing pure white official paper (Carta/Letter) output matching institutional university standards.
+10. Procedural sequence ordering: Strict ordering across form galleries (`TreatmentLogForm.tsx`) and Sheet 3 print template (`Sheet3TreatmentSummary.tsx`) prioritizing initial diagnostic radiography (`xray`) before clinical procedural stages (`before` -> `during` -> `after`).
 
 ---
 
@@ -301,6 +306,36 @@ public/
      - Contextual processing indicator: *"Analizando paciente y aplicando anonimización bioética..."*.
      - Visual badge indicating protection: `🛡️ Anonimización Bioética: Fondo blanco + Ojos censurados`.
      - Dual preview toggle button: `[👁️ Ver Original Diagnóstico]` / `[🔒 Ver Versión Anonimizada]`, giving clinicians full control to examine untreated anatomical proportions or export anonymized documentation for UJAT teaching.
+
+### Phase 30: Restauración del Flujo de Subida Directa y Anonimización Bioética Inmediata
+- **Goal**: Restaurar el flujo original de subida directa sin modales obstructivos al seleccionar o tomar una fotografía clínica, ejecutando inmediatamente la compresión en Canvas y la anonimización bioética UJAT (BlazeFace + Selfie Segmenter: fondo blanco clínico, censura orbitaria y badge conmutador de diagnóstico original vs anonimizado). El editor de encuadre/zoom WhatsApp se mantiene accesible a demanda mediante el botón "Encuadre".
+- **Priority**: P1 (Solicitado expresamente por el usuario tras probar el flujo de captura fotográfica).
+- **Directives & Architecture**:
+  1. **Subida y Procesamiento Inmediato (`components/forms/CameraCaptureInput.tsx`)**:
+     - Al capturar con cámara nativa o seleccionar archivo de galería, se invoca directamente `processImageFile(file)` ejecutando `compressClinicalPhoto` con `enableBioethicsAnonymization`.
+     - Muestra el spinner de compresión y análisis bioético: *"Detectando paciente y aplicando anonimización bioética..."*.
+     - Genera inmediatamente la versión anonimizada (`anonymizedVersion`) y la versión original diagnóstica (`originalVersion`).
+     - Activa el badge de estatus bioético (`🛡️ Anonimización Bioética Activa (Fondo blanco + Ojos)`) y el botón conmutador (`[Ver Original Diagnóstico (Sin censura)]` / `[Reactivar Anonimización]`).
+  2. **Encuadre y Recorte a Demanda (`ImageEditorModal.tsx`)**:
+     - El modal táctil estilo WhatsApp (zoom, paneo, rotación de 90° y centrado) no intercepta la subida inicial.
+     - Se invoca voluntariamente desde la barra de acciones de la foto mediante el botón `[Encuadre]`.
+     - Al abrir el editor, se pasa la versión original limpia (`originalVersion || value`) para encuadrar con el contexto anatómico completo.
+     - Al guardar el encuadre, se re-ejecuta la anonimización bioética sobre la imagen recortada para mantener la protección y los controles de vista.
+  3. **Galerías Procedimentales Multifoto (`components/forms/MultiPhotoGalleryCard.tsx`)**:
+     - Las fotos de procedimiento (RX, Antes, Durante, Después) se suben y agregan directamente a la cuadrícula sin forzar un modal intermedio por cada foto.
+     - Cada miniatura cuenta con su botón `[Encuadre]` para permitir ajustes opcionales de rotación o zoom.
+
+### Phase 31: Supresión de Falsos Positivos en Turbopack Dev Overlay por Mensajes INFO de TFLite / Emscripten
+- **Goal**: Evitar que los mensajes informativos internos de TensorFlow Lite / XNNPACK delegados a `stderr` por WebAssembly sean interpretados por Turbopack como errores de consola en tiempo de desarrollo.
+- **Priority**: P1 (Eliminar overlays intrusivos de desarrollo producidos por la inicialización estándar del delegado XNNPACK de MediaPipe).
+- **Directives & Architecture**:
+  1. **Interceptor de Diagnósticos `stderr`**:
+     - Emscripten por especificación canaliza los mensajes C++ `stderr` hacia `console.error`.
+     - Al inicializar el delegado XNNPACK para CPU, TensorFlow Lite emite: `INFO: Created TensorFlow Lite XNNPACK delegate for CPU.`.
+     - Next.js Turbopack captura cualquier llamada a `console.error` y despliega la modal de `Console Error`.
+     - Se implementó un interceptor seguro en `context/ThemeContext.tsx` y `lib/bioethicsVision.ts` que redirige los mensajes que inicien con `INFO:`, contengan `Created TensorFlow Lite` o `XNNPACK delegate` a `console.info`, permitiendo la inspección en consola sin disparar el overlay de Next.js.
+  2. **Resolución de Rutas con Origen Absoluto**:
+     - Se prefijaron las llamadas a `FilesetResolver.forVisionTasks` y `modelAssetPath` con `window.location.origin` (`/wasm` y `/models/...`) para evitar fallos de resolución relativa en Web Workers o módulos WASM.
 
 ---
 

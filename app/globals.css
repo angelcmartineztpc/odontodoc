@@ -47,25 +47,52 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* Print Specific Rules adhering to UJAT print-layout-contract */
+/* Print Specific Rules adhering to UJAT print-layout-contract (100% pure white official paper) */
 @page {
   size: letter portrait;
-  margin: 8mm;
+  margin: 6mm;
 }
 
 @media print {
-  html, body {
+  *, *::before, *::after {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  html,
+  body,
+  main,
+  #__next,
+  .printable-container,
+  div:not(.border) {
     background: #ffffff !important;
+    background-color: #ffffff !important;
     color: #000000 !important;
-    font-size: 9pt;
+  }
+
+  html, body {
     margin: 0 !important;
     padding: 0 !important;
+    font-size: 9pt;
+    width: 100% !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+  }
+
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
   }
 
   /* Completely purge all application UI chrome */
   nav,
-  header,
-  footer,
+  header.app-header,
+  footer:not(.clinical-sheet footer),
   aside,
   button,
   .no-print,
@@ -75,25 +102,40 @@ body {
     display: none !important;
   }
 
-  /* Printable Sheet Format */
+  /* Printable Sheet Format - Zero borders, zero radius, pure white official page */
+  .printable-container {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    background: #ffffff !important;
+  }
+
   .clinical-sheet {
     page-break-after: always;
     break-after: page;
     width: 100% !important;
-    max-width: 100% !important;
-    min-height: 255mm !important;
-    margin: 0 !important;
-    padding: 2mm !important;
+    max-width: 215.9mm !important;
+    min-height: 260mm !important;
+    margin: 0 auto !important;
+    padding: 4mm 6mm !important;
     box-sizing: border-box !important;
     background: #ffffff !important;
+    background-color: #ffffff !important;
     color: #000000 !important;
     box-shadow: none !important;
     border: none !important;
+    border-radius: 0 !important;
+    outline: none !important;
   }
 
   .clinical-sheet:last-child {
     page-break-after: auto;
     break-after: auto;
+  }
+
+  .institutional-header img {
+    max-height: 20mm !important;
+    display: block !important;
   }
 
   * {

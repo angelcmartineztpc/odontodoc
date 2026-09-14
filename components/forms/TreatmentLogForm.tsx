@@ -14,6 +14,7 @@ import PrintOutlinedIcon from "@mui/icons-material/PrintOutlined";
 import { useClinicalRecord } from "@/context/ClinicalRecordContext";
 import { LogEntry, TreatmentStatus } from "@/lib/types";
 import { CameraCaptureInput } from "./CameraCaptureInput";
+import { MultiPhotoGalleryCard } from "./MultiPhotoGalleryCard";
 
 export function TreatmentLogForm() {
   const {
@@ -40,7 +41,61 @@ export function TreatmentLogForm() {
     receiptNumber: "",
     date: todayStr,
     steps: [],
-    photos: { before: null, during: null, after: null },
+    photos: { before: [], during: [], after: [], xray: [] },
+  };
+
+  const toArray = (val: unknown): string[] => {
+    if (Array.isArray(val)) return val.filter((item): item is string => typeof item === "string");
+    if (typeof val === "string" && val.length > 0) return [val];
+    return [];
+  };
+
+  const beforeImages = toArray(session.photos?.before);
+  const duringImages = toArray(session.photos?.during);
+  const afterImages = toArray(session.photos?.after);
+  const xrayImages = toArray(session.photos?.xray);
+
+  const handleAddPhotoToSection = (section: "before" | "during" | "after" | "xray", dataUrl: string) => {
+    const currentList = toArray(session.photos?.[section]);
+    updateTreatmentSession({
+      photos: {
+        ...session.photos,
+        before: beforeImages,
+        during: duringImages,
+        after: afterImages,
+        xray: xrayImages,
+        [section]: [...currentList, dataUrl],
+      },
+    });
+  };
+
+  const handleRemovePhotoFromSection = (section: "before" | "during" | "after" | "xray", index: number) => {
+    const currentList = toArray(session.photos?.[section]);
+    updateTreatmentSession({
+      photos: {
+        ...session.photos,
+        before: beforeImages,
+        during: duringImages,
+        after: afterImages,
+        xray: xrayImages,
+        [section]: currentList.filter((_, i) => i !== index),
+      },
+    });
+  };
+
+  const handleUpdatePhotoInSection = (section: "before" | "during" | "after" | "xray", index: number, dataUrl: string) => {
+    const currentList = [...toArray(session.photos?.[section])];
+    currentList[index] = dataUrl;
+    updateTreatmentSession({
+      photos: {
+        ...session.photos,
+        before: beforeImages,
+        during: duringImages,
+        after: afterImages,
+        xray: xrayImages,
+        [section]: currentList,
+      },
+    });
   };
 
   const handleAddEntry = (e: React.FormEvent) => {
@@ -84,7 +139,7 @@ export function TreatmentLogForm() {
               Módulo D: Resumen del Tratamiento Realizado y Bitácora
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
-              Datos de sesión, fotografías operatorias (Antes/Durante/Después) y bitácora clínica para la Hoja 3 oficial.
+              Datos de sesión, galerías operatorias (Antes/Durante/Después/Radiografía) y bitácora clínica para la Hoja 3 oficial.
             </p>
           </div>
         </div>
@@ -129,15 +184,18 @@ export function TreatmentLogForm() {
 
           <div className="space-y-1 sm:col-span-2">
             <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
-              Tratamiento Efectuado *
+              Tratamiento (Resumen del Plan a Realizar) *
             </label>
             <input
               type="text"
               value={session.treatmentName}
               onChange={(e) => updateTreatmentSession({ treatmentName: e.target.value })}
-              placeholder="Ej. Restauración clase I con resina compuesta fotopolimerizable"
+              placeholder="Ej. Restauración con resina compuesta en OD 46, profilaxis dental y fase 1 periodontal"
               className="w-full min-h-[44px] px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none"
             />
+            <p className="text-[10.5px] text-slate-500 dark:text-slate-400 mt-0.5">
+              Sintetiza el plan de tratamiento proyectado a realizar en la sesión clínica oficial UJAT.
+            </p>
           </div>
 
           <div className="space-y-1">
@@ -154,51 +212,60 @@ export function TreatmentLogForm() {
         </div>
       </section>
 
-      {/* Section 2: Procedural Photos (Antes / Durante / Después) */}
-      <section className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 flex items-center gap-1.5 border-b border-slate-100 dark:border-slate-800 pb-2">
-          <PhotoCameraOutlinedIcon sx={{ fontSize: 18 }} />
-          <span>Secuencia Fotográfica del Procedimiento (Hoja 3)</span>
-        </h3>
+      {/* Section 2: Procedural Photos Galleries (Antes, Durante, Después y Radiografía) */}
+      <section className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-2">
+          <h3 className="text-sm font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
+            <PhotoCameraOutlinedIcon sx={{ fontSize: 18 }} />
+            <span>Galerías del Procedimiento Clínico y Radiográfico (Hoja 3)</span>
+          </h3>
+          <span className="text-[11px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-900/50 w-fit">
+            {beforeImages.length + duringImages.length + afterImages.length + xrayImages.length} fotos registradas
+          </span>
+        </div>
         <p className="text-xs text-slate-500 dark:text-slate-400">
-          Documenta los tres momentos clínicos obligatorios: estado inicial (Antes), preparación/aislamiento (Durante) y resultado final pulido (Después).
+          Documenta los momentos clínicos operatorios y el respaldo radiográfico. Puedes adjuntar múltiples fotografías por sección con editor interactivo estilo WhatsApp (zoom, rotación de 90° y encuadre).
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <CameraCaptureInput
-            label="1. Antes"
-            description="Estado cavitario inicial"
-            value={session.photos?.before || null}
-            onChange={(dataUrl) =>
-              updateTreatmentSession({
-                photos: { ...session.photos, before: dataUrl },
-              })
-            }
-            aspectRatioLabel="Preoperatorio"
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <MultiPhotoGalleryCard
+            title="1. Radiografía (RX / Gabinete)"
+            subtitle="Radiografía periapical, oclusal o panorámica inicial"
+            watermarkText="RADIOGRAFÍA"
+            images={xrayImages}
+            onAddImage={(dataUrl) => handleAddPhotoToSection("xray", dataUrl)}
+            onRemoveImage={(index) => handleRemovePhotoFromSection("xray", index)}
+            onUpdateImage={(index, dataUrl) => handleUpdatePhotoInSection("xray", index, dataUrl)}
           />
 
-          <CameraCaptureInput
-            label="2. Durante"
-            description="Aislamiento / Cavidad limpia"
-            value={session.photos?.during || null}
-            onChange={(dataUrl) =>
-              updateTreatmentSession({
-                photos: { ...session.photos, during: dataUrl },
-              })
-            }
-            aspectRatioLabel="Transoperatorio"
+          <MultiPhotoGalleryCard
+            title="2. Antes (Preoperatorio)"
+            subtitle="Estado cavitario inicial / Diagnóstico clínico"
+            watermarkText="ANTES"
+            images={beforeImages}
+            onAddImage={(dataUrl) => handleAddPhotoToSection("before", dataUrl)}
+            onRemoveImage={(index) => handleRemovePhotoFromSection("before", index)}
+            onUpdateImage={(index, dataUrl) => handleUpdatePhotoInSection("before", index, dataUrl)}
           />
 
-          <CameraCaptureInput
-            label="3. Después"
-            description="Restauración concluida y pulida"
-            value={session.photos?.after || null}
-            onChange={(dataUrl) =>
-              updateTreatmentSession({
-                photos: { ...session.photos, after: dataUrl },
-              })
-            }
-            aspectRatioLabel="Postoperatorio"
+          <MultiPhotoGalleryCard
+            title="3. Durante (Transoperatorio)"
+            subtitle="Aislamiento absoluto / Cavidad limpia"
+            watermarkText="DURANTE"
+            images={duringImages}
+            onAddImage={(dataUrl) => handleAddPhotoToSection("during", dataUrl)}
+            onRemoveImage={(index) => handleRemovePhotoFromSection("during", index)}
+            onUpdateImage={(index, dataUrl) => handleUpdatePhotoInSection("during", index, dataUrl)}
+          />
+
+          <MultiPhotoGalleryCard
+            title="4. Después (Postoperatorio)"
+            subtitle="Restauración terminada, oclusión y pulido"
+            watermarkText="DESPUÉS"
+            images={afterImages}
+            onAddImage={(dataUrl) => handleAddPhotoToSection("after", dataUrl)}
+            onRemoveImage={(index) => handleRemovePhotoFromSection("after", index)}
+            onUpdateImage={(index, dataUrl) => handleUpdatePhotoInSection("after", index, dataUrl)}
           />
         </div>
       </section>

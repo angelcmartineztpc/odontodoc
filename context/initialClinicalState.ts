@@ -48,9 +48,12 @@ export function createEmptyOdontoDocument(): OdontoDocument {
     },
     photos: {
       extraoralFrontal: null,
-      intraoralFrontal: null,
+      extraoralRightProfile: null,
+      extraoralLeftProfile: null,
+      extraoralSmile: null,
       intraoralUpper: null,
       intraoralLower: null,
+      intraoralFrontal: null,
       intraoralRight: null,
       intraoralLeft: null,
     },
@@ -103,9 +106,10 @@ export function createEmptyOdontoDocument(): OdontoDocument {
         },
       ],
       photos: {
-        before: null,
-        during: null,
-        after: null,
+        before: [],
+        during: [],
+        after: [],
+        xray: [],
       },
     },
   };

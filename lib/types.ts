@@ -18,10 +18,10 @@ export interface PatientData {
   age: number | string;
   gender: Gender;
   dateOfBirth: string;
-  occupation: string;
+  occupation?: string;
   phone: string;
   address: string;
-  consultationReason: string;
+  consultationReason?: string;
 }
 
 export interface StudentData {
@@ -50,12 +50,17 @@ export interface MedicalHistory {
 }
 
 export interface PhotographicMatrix {
-  extraoralFrontal: string | null;
-  intraoralFrontal: string | null;
-  intraoralUpper: string | null;
-  intraoralLower: string | null;
-  intraoralRight: string | null;
-  intraoralLeft: string | null;
+  // Serie Fotográfica Clínica Estándar (6 Tomas)
+  extraoralFrontal: string | null;      // 1. Frontal reposo
+  extraoralRightProfile: string | null; // 2. Perfil derecho
+  extraoralLeftProfile: string | null;  // 3. Perfil izquierdo
+  extraoralSmile: string | null;        // 4. Sonrisa
+  intraoralUpper: string | null;        // 5. Oclusal superior
+  intraoralLower: string | null;        // 6. Oclusal inferior
+  // Compatibilidad con tomas intraorales previas
+  intraoralFrontal?: string | null;
+  intraoralRight?: string | null;
+  intraoralLeft?: string | null;
 }
 
 export interface DiagnosisAndPlan {
@@ -76,9 +81,10 @@ export interface ProcedureStep {
 }
 
 export interface ProcedurePhotos {
-  before: string | null;
-  during: string | null;
-  after: string | null;
+  before: string[];
+  during: string[];
+  after: string[];
+  xray: string[];
 }
 
 export interface TreatmentSession {

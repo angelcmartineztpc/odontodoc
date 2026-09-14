@@ -7,15 +7,18 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import VerifiedUserOutlinedIcon from "@mui/icons-material/VerifiedUserOutlined";
+import CropOutlinedIcon from "@mui/icons-material/CropOutlined";
 import { compressClinicalPhoto, CompressionResult } from "@/lib/compression";
+import { ImageEditorModal } from "./ImageEditorModal";
 
 interface CameraCaptureInputProps {
   label: string;
   description?: string;
-  value: string | null;
+  value?: string | null;
   onChange: (dataUrl: string | null) => void;
   aspectRatioLabel?: string;
   enableBioethicsAnonymization?: boolean;
+  watermarkText?: string;
 }
 
 export function CameraCaptureInput({
@@ -25,12 +28,17 @@ export function CameraCaptureInput({
   onChange,
   aspectRatioLabel = "Frente / Oclusal",
   enableBioethicsAnonymization = true,
+  watermarkText,
 }: CameraCaptureInputProps) {
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isCompressing, setIsCompressing] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  // WhatsApp-style Image Editor state
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [editorRawSrc, setEditorRawSrc] = useState<string | null>(null);
 
   // Bioethics dual version tracking
   const [anonymizedVersion, setAnonymizedVersion] = useState<string | null>(null);
@@ -46,6 +54,11 @@ export function CameraCaptureInput({
     fileInputRef.current?.click();
   };
 
+  const handleOpenEditor = (src: string) => {
+    setEditorRawSrc(src);
+    setIsEditorOpen(true);
+  };
+
   const processImageFile = async (file: File) => {
     if (!file.type.startsWith("image/")) {
       setErrorMessage("Por favor selecciona un archivo de imagen válido (JPG, PNG, WebP o HEIC).");
@@ -56,11 +69,11 @@ export function CameraCaptureInput({
     setErrorMessage(null);
 
     try {
-      // In-Memory Canvas Compression & Bioethics Anonymization pipeline (<1000px, JPEG 0.8)
+      // In-Memory Canvas Compression & Bioethics Anonymization pipeline (<1000px, JPEG 0.85)
       const result: CompressionResult = await compressClinicalPhoto(file, {
         maxWidth: 1000,
         maxHeight: 1000,
-        quality: 0.8,
+        quality: 0.85,
         enableBioethicsAnonymization,
       });
 
@@ -82,12 +95,53 @@ export function CameraCaptureInput({
       setErrorMessage(
         err instanceof Error
           ? err.message
-          : "Error al procesar y comprimir la fotografía en el canvas."
+          : "Error al procesar y anonimizar la fotografía en el canvas."
       );
     } finally {
       setIsCompressing(false);
       if (cameraInputRef.current) cameraInputRef.current.value = "";
       if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+  const handleSaveEditor = async (croppedDataUrl: string) => {
+    setIsEditorOpen(false);
+    setIsCompressing(true);
+    setErrorMessage(null);
+
+    try {
+      // Convert cropped data URL to blob for compression pipeline
+      const response = await fetch(croppedDataUrl);
+      const blob = await response.blob();
+
+      const result: CompressionResult = await compressClinicalPhoto(blob, {
+        maxWidth: 1000,
+        maxHeight: 1000,
+        quality: 0.85,
+        enableBioethicsAnonymization,
+      });
+
+      if (result.bioethics?.faceDetected && result.originalDataUrl) {
+        setFaceDetected(true);
+        setAnonymizedVersion(result.dataUrl);
+        setOriginalVersion(result.originalDataUrl);
+        setIsShowingOriginal(false);
+        onChange(result.dataUrl);
+      } else {
+        setFaceDetected(false);
+        setAnonymizedVersion(null);
+        setOriginalVersion(null);
+        setIsShowingOriginal(false);
+        onChange(result.dataUrl);
+      }
+    } catch (err: unknown) {
+      setErrorMessage(
+        err instanceof Error
+          ? err.message
+          : "Error al procesar y recortar la fotografía."
+      );
+    } finally {
+      setIsCompressing(false);
     }
   };
 
@@ -137,6 +191,7 @@ export function CameraCaptureInput({
   };
 
   return (
+
     <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-4.5 border border-slate-200/90 dark:border-slate-800 shadow-sm flex flex-col gap-3.5 transition-all">
       {/* Hidden input 1: Native Camera trigger (capture="environment") */}
       <input
@@ -197,7 +252,7 @@ export function CameraCaptureInput({
           <>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={value} alt={label} className="w-full h-full object-cover" />
-            
+
             {/* Bioethics Clinical Status Indicator Badge */}
             {faceDetected && (
               <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-start pointer-events-none z-10">
@@ -227,21 +282,21 @@ export function CameraCaptureInput({
             </span>
           </>
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center p-3 text-center">
+          <div className="relative w-full h-full flex flex-col items-center justify-center p-3 text-center">
             {isCompressing ? (
-              <div className="flex flex-col items-center gap-2.5">
+              <div className="relative z-10 flex flex-col items-center gap-2.5">
                 <span className="w-7 h-7 border-2 border-[var(--theme-primary)] border-t-transparent rounded-full animate-spin" />
                 <span className="text-xs text-[var(--theme-accent)] font-medium">
                   Detectando paciente y aplicando anonimización bioética...
                 </span>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-3 w-full h-full p-2">
+              <div className="relative z-10 grid grid-cols-2 gap-3 w-full h-full p-2">
                 <button
                   type="button"
                   onClick={handleTriggerCamera}
                   disabled={isCompressing}
-                  className="group flex flex-col items-center justify-center gap-2 p-3 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 hover:from-slate-850 hover:to-slate-900 border border-slate-800 hover:border-[var(--theme-primary)] transition-all cursor-pointer touch-manipulation active:scale-95 shadow-sm"
+                  className="group flex flex-col items-center justify-center gap-2 p-3 rounded-2xl bg-gradient-to-b from-slate-900/90 to-slate-950/90 hover:from-slate-850 hover:to-slate-900 border border-slate-800 hover:border-[var(--theme-primary)] transition-all cursor-pointer touch-manipulation active:scale-95 shadow-sm backdrop-blur-sm"
                 >
                   <div className="w-11 h-11 rounded-2xl bg-[var(--theme-primary)] text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
                     <PhotoCameraOutlinedIcon sx={{ fontSize: 24 }} />
@@ -256,7 +311,7 @@ export function CameraCaptureInput({
                   type="button"
                   onClick={handleTriggerFile}
                   disabled={isCompressing}
-                  className="group flex flex-col items-center justify-center gap-2 p-3 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 hover:from-slate-850 hover:to-slate-900 border border-slate-800 hover:border-slate-600 transition-all cursor-pointer touch-manipulation active:scale-95 shadow-sm"
+                  className="group flex flex-col items-center justify-center gap-2 p-3 rounded-2xl bg-gradient-to-b from-slate-900/90 to-slate-950/90 hover:from-slate-850 hover:to-slate-900 border border-slate-800 hover:border-slate-600 transition-all cursor-pointer touch-manipulation active:scale-95 shadow-sm backdrop-blur-sm"
                 >
                   <div className="w-11 h-11 rounded-2xl bg-slate-800 text-slate-200 group-hover:text-white border border-slate-700 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
                     <AddPhotoAlternateOutlinedIcon sx={{ fontSize: 24 }} />
@@ -308,6 +363,16 @@ export function CameraCaptureInput({
           <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
+              onClick={() => value && handleOpenEditor(originalVersion || value)}
+              className="px-3.5 min-h-[44px] rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 text-xs font-semibold transition-all flex items-center justify-center gap-1.5 active:scale-95 touch-manipulation cursor-pointer"
+              title="Ajustar encuadre, zoom y rotación"
+            >
+              <CropOutlinedIcon sx={{ fontSize: 16 }} />
+              <span>Encuadre</span>
+            </button>
+
+            <button
+              type="button"
               onClick={handleTriggerCamera}
               disabled={isCompressing}
               className="flex-1 min-h-[44px] px-3 py-2 rounded-xl bg-[var(--theme-primary)] text-white text-xs font-semibold hover:bg-[var(--theme-primary-hover)] transition-all flex items-center justify-center gap-1.5 active:scale-95 shadow-sm touch-manipulation cursor-pointer"
@@ -323,7 +388,7 @@ export function CameraCaptureInput({
               className="flex-1 min-h-[44px] px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-750 border border-slate-200 dark:border-slate-700 text-xs font-semibold transition-all flex items-center justify-center gap-1.5 active:scale-95 touch-manipulation cursor-pointer"
             >
               <AddPhotoAlternateOutlinedIcon sx={{ fontSize: 16 }} />
-              <span>Cambiar Archivo</span>
+              <span>Cambiar</span>
             </button>
 
             <button
@@ -343,6 +408,17 @@ export function CameraCaptureInput({
         <div className="p-2.5 rounded-lg bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 text-xs text-red-600 dark:text-red-400 font-medium">
           {errorMessage}
         </div>
+      )}
+
+      {/* WhatsApp-style Image Editor Modal */}
+      {isEditorOpen && editorRawSrc && (
+        <ImageEditorModal
+          isOpen={isEditorOpen}
+          imageSrc={editorRawSrc}
+          photoLabel={watermarkText || label}
+          onSave={handleSaveEditor}
+          onCancel={() => setIsEditorOpen(false)}
+        />
       )}
     </div>
   );

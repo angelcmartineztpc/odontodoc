@@ -24,10 +24,10 @@ function MainContent() {
   }, [activeTab]);
 
   return (
-    <main className="min-h-screen bg-[var(--theme-app-bg)] text-slate-900 dark:text-slate-100 transition-colors">
+    <main className="min-h-screen bg-[var(--theme-app-bg)] text-slate-900 dark:text-slate-100 transition-colors print:bg-white print:min-h-0 print:p-0 print:m-0">
       <Header />
 
-      <div className="animate-fade-in">
+      <div className="animate-fade-in print:animate-none print:p-0 print:m-0">
         {activeTab === "identification" && <IdentificationForm />}
         {activeTab === "history" && <ClinicalHistoryForm />}
         {activeTab === "photos" && <IntraoralMatrixForm />}

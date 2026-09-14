@@ -8,7 +8,7 @@ interface InstitutionalHeaderProps {
 
 export function InstitutionalHeader({ sheetTitle }: InstitutionalHeaderProps) {
   return (
-    <header className="w-full mb-3">
+    <div className="institutional-header w-full mb-3">
       {/* Logos and University Entity Information */}
       <div className="flex items-center justify-between gap-3 pb-2 border-b border-black">
         {/* Left: Official UJAT HD Vector Shield */}
@@ -29,12 +29,9 @@ export function InstitutionalHeader({ sheetTitle }: InstitutionalHeaderProps) {
           <h2 className="text-[11px] sm:text-[12px] font-bold uppercase text-black mt-0.5">
             DIVISIÓN ACADÉMICA DE CIENCIAS DE LA SALUD
           </h2>
-          <h3 className="text-[10px] sm:text-[11px] font-bold uppercase text-black">
+          <h3 className="text-[10px] sm:text-[11px] font-bold uppercase text-black mt-0.5">
             LICENCIATURA EN CIRUJANO DENTISTA
           </h3>
-          <p className="text-[8px] sm:text-[8.5px] text-black font-serif italic tracking-wider mt-0.5">
-            “ESTUDIO EN LA DUDA. ACCIÓN EN LA FE”
-          </p>
           <p className="text-[7.5px] sm:text-[8px] text-black font-sans mt-0.5">
             Dirección: Av. Gregorio Méndez Magaña No. 2838-A Colonia Tamulté, C.P: 86150, Villahermosa, Tabasco. México.
           </p>
@@ -57,6 +54,6 @@ export function InstitutionalHeader({ sheetTitle }: InstitutionalHeaderProps) {
           {sheetTitle}
         </h4>
       </div>
-    </header>
+    </div>
   );
 }

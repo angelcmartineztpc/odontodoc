@@ -77,14 +77,42 @@ export function Sheet3TreatmentSummary({ isBlank = false }: Sheet3Props) {
     },
   ];
 
-  const sessionPhotos = treatmentSession?.photos || {
-    before: null,
-    during: null,
-    after: null,
+  const toArray = (val: string[] | string | null | undefined): string[] => {
+    if (!val) return [];
+    if (Array.isArray(val)) return val.filter(Boolean);
+    if (typeof val === "string" && val.trim().length > 0) return [val];
+    return [];
   };
 
+  const procedureSlots = [
+    {
+      key: "xray",
+      label: "Radiografía (RX)",
+      watermark: "RADIOGRAFÍA",
+      photos: toArray(treatmentSession?.photos?.xray),
+    },
+    {
+      key: "before",
+      label: "Antes",
+      watermark: "ANTES",
+      photos: toArray(treatmentSession?.photos?.before),
+    },
+    {
+      key: "during",
+      label: "Durante",
+      watermark: "DURANTE",
+      photos: toArray(treatmentSession?.photos?.during),
+    },
+    {
+      key: "after",
+      label: "Después",
+      watermark: "DESPUÉS",
+      photos: toArray(treatmentSession?.photos?.after),
+    },
+  ];
+
   return (
-    <article className="clinical-sheet p-6 sm:p-8 bg-white text-black font-sans text-[11px] leading-normal border border-slate-300 shadow-md sm:rounded-lg max-w-[215.9mm] mx-auto min-h-[268mm] flex flex-col justify-between mb-8 print:border-none print:shadow-none print:m-0 print:p-6 print:min-h-[260mm]">
+    <article className="clinical-sheet p-6 sm:p-8 bg-white text-black font-sans text-[11px] leading-normal border border-slate-300 shadow-md sm:rounded-lg max-w-[215.9mm] mx-auto min-h-[268mm] flex flex-col justify-between mb-8 print:border-none print:shadow-none print:rounded-none print:m-0 print:p-4 print:min-h-[260mm] print:bg-white">
       <div>
         {/* Institutional UJAT DACS Header with Crests */}
         <InstitutionalHeader sheetTitle="NOTA MEDICA: RESUMEN CLINICO ODONTOLOGICO DEL TRATAMIENTO REALIZADO" />
@@ -241,71 +269,47 @@ export function Sheet3TreatmentSummary({ isBlank = false }: Sheet3Props) {
           )}
         </div>
 
-        {/* Section: Fotografías del Procedimiento (Antes, Durante, Después) */}
+        {/* Section: Registro Radiográfico y Fotográfico del Procedimiento (RX, Antes, Durante, Después) */}
         <div className="mb-2">
-          <div className="grid grid-cols-3 gap-3 border border-black rounded-lg p-2.5 bg-slate-50/50">
-            {/* Antes */}
-            <div className="flex flex-col items-center border border-slate-300 rounded p-1 bg-white min-h-[110px]">
-              <div className="w-full flex-1 flex items-center justify-center overflow-hidden">
-                {!isBlank && sessionPhotos.before ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={sessionPhotos.before}
-                    alt="Foto Antes"
-                    className="max-h-[90px] w-full object-contain rounded"
-                  />
-                ) : (
-                  <div className="text-[9px] text-slate-400 italic text-center p-2">
-                    {isBlank ? "Fotografía clínica previa" : "Sin foto previa"}
-                  </div>
-                )}
-              </div>
-              <span className="text-[9px] font-bold text-black uppercase mt-1 border-t border-slate-100 w-full text-center pt-0.5">
-                Antes
-              </span>
-            </div>
+          <div className="grid grid-cols-4 gap-2 border border-black rounded-lg p-2 bg-white print:bg-white">
+            {procedureSlots.map((slot) => {
+              const hasPhoto = !isBlank && slot.photos.length > 0;
+              const primaryPhoto = hasPhoto ? slot.photos[0] : null;
 
-            {/* Durante */}
-            <div className="flex flex-col items-center border border-slate-300 rounded p-1 bg-white min-h-[110px]">
-              <div className="w-full flex-1 flex items-center justify-center overflow-hidden">
-                {!isBlank && sessionPhotos.during ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={sessionPhotos.during}
-                    alt="Foto Durante"
-                    className="max-h-[90px] w-full object-contain rounded"
-                  />
-                ) : (
-                  <div className="text-[9px] text-slate-400 italic text-center p-2">
-                    {isBlank ? "Fotografía transoperatoria" : "Sin foto durante"}
+              return (
+                <div
+                  key={slot.key}
+                  className="flex flex-col items-center justify-between border border-slate-300 rounded p-1 bg-white min-h-[105px] overflow-hidden relative"
+                >
+                  <div className="w-full flex-1 flex items-center justify-center overflow-hidden">
+                    {hasPhoto && primaryPhoto ? (
+                      <div className="relative w-full h-full flex items-center justify-center">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={primaryPhoto}
+                          alt={`Foto ${slot.label}`}
+                          className="max-h-[85px] w-full object-contain rounded"
+                        />
+                        {slot.photos.length > 1 && (
+                          <span className="absolute bottom-1 right-1 text-[7.5px] font-bold bg-black/75 text-white px-1 py-0.2 rounded font-mono">
+                            +{slot.photos.length - 1}
+                          </span>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-center p-1">
+                        <span className="text-[8px] font-bold text-slate-400 uppercase tracking-tight leading-tight">
+                          {slot.watermark}
+                        </span>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-              <span className="text-[9px] font-bold text-black uppercase mt-1 border-t border-slate-100 w-full text-center pt-0.5">
-                Durante
-              </span>
-            </div>
-
-            {/* Después */}
-            <div className="flex flex-col items-center border border-slate-300 rounded p-1 bg-white min-h-[110px]">
-              <div className="w-full flex-1 flex items-center justify-center overflow-hidden">
-                {!isBlank && sessionPhotos.after ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={sessionPhotos.after}
-                    alt="Foto Después"
-                    className="max-h-[90px] w-full object-contain rounded"
-                  />
-                ) : (
-                  <div className="text-[9px] text-slate-400 italic text-center p-2">
-                    {isBlank ? "Fotografía postoperatoria" : "Sin foto posterior"}
-                  </div>
-                )}
-              </div>
-              <span className="text-[9px] font-bold text-black uppercase mt-1 border-t border-slate-100 w-full text-center pt-0.5">
-                Después
-              </span>
-            </div>
+                  <span className="text-[8px] font-bold text-black uppercase mt-1 border-t border-slate-100 w-full text-center pt-0.5 truncate">
+                    {slot.label}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

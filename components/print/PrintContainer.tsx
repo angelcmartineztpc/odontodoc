@@ -23,7 +23,7 @@ export function PrintContainer() {
   };
 
   return (
-    <div className="pb-40 sm:pb-48 max-w-5xl mx-auto px-2 sm:px-4 pt-4">
+    <div className="pb-40 sm:pb-48 max-w-5xl mx-auto px-2 sm:px-4 pt-4 print:p-0 print:m-0 print:max-w-none print:w-full print:pb-0 print:bg-white">
       {/* Screen Control Bar (Hidden on Print) */}
       <div className="no-print bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 mb-6 shadow-md flex flex-col lg:flex-row items-center justify-between gap-4 sticky top-16 z-20 backdrop-blur-md">
         <div>
@@ -142,7 +142,7 @@ export function PrintContainer() {
       </div>
 
       {/* Printable Documents Container */}
-      <div className="printable-container space-y-6">
+      <div className="printable-container space-y-6 print:space-y-0 print:p-0 print:m-0 print:w-full print:bg-white">
         {(selectedSheet === "all" || selectedSheet === "sheet1") && (
           <Sheet1ClinicalSummary isBlank={isBlank} />
         )}
