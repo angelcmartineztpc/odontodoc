@@ -192,7 +192,7 @@ export function CameraCaptureInput({
 
   return (
 
-    <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-4.5 border border-slate-200/90 dark:border-slate-800 shadow-sm flex flex-col gap-3.5 transition-all">
+    <div className="relative bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-4.5 border border-slate-200/90 dark:border-slate-800 shadow-sm flex flex-col gap-3.5 transition-all">
       {/* Hidden input 1: Native Camera trigger (capture="environment") */}
       <input
         type="file"
@@ -214,19 +214,31 @@ export function CameraCaptureInput({
         aria-hidden="true"
       />
 
-      {/* Card Header: Label and Aspect Ratio Badge */}
+      {/* Card Header */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span
-            className={`w-2.5 h-2.5 rounded-full shadow-sm transition-colors ${
-              value ? "bg-[var(--theme-primary)]" : "bg-slate-300 dark:bg-slate-700"
-            }`}
-          />
-          <span className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100">
-            {label}
+        <div className="flex items-center gap-2.5">
+          <span className="relative flex h-2.5 w-2.5">
+            <span
+              className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                value ? "bg-[var(--theme-primary)]" : "hidden"
+              }`}
+            />
+            <span
+              className={`relative inline-flex rounded-full h-2.5 w-2.5 ${
+                value ? "bg-[var(--theme-primary)]" : "bg-slate-300 dark:bg-slate-700"
+              }`}
+            />
           </span>
+          <div>
+            <span className="text-[10px] font-bold tracking-wider uppercase text-slate-400 dark:text-slate-500 block leading-none mb-1">
+              Captura Clínica
+            </span>
+            <h4 className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 leading-none">
+              {label}
+            </h4>
+          </div>
         </div>
-        <span className="px-2.5 py-0.5 rounded-md text-[10px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 font-mono">
+        <span className="px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 font-mono tracking-tight">
           {aspectRatioLabel}
         </span>
       </div>
@@ -266,20 +278,95 @@ export function CameraCaptureInput({
                   <VerifiedUserOutlinedIcon sx={{ fontSize: 13 }} />
                   <span>
                     {isShowingOriginal
-                      ? "Vista Original Diagnóstica (Sin censura)"
-                      : "Anonimización Bioética Activa (Fondo blanco + Ojos)"}
+                      ? "Vista Original (Sin censura)"
+                      : "Anonimización Bioética Activa"}
                   </span>
                 </span>
               </div>
             )}
 
-            <span className="corner-reticle absolute top-2.5 left-2.5 w-3.5 h-3.5 border-t-2 border-l-2 border-[var(--theme-accent)] pointer-events-none" />
-            <span className="corner-reticle absolute top-2.5 right-2.5 w-3.5 h-3.5 border-t-2 border-r-2 border-[var(--theme-accent)] pointer-events-none" />
-            <span className="corner-reticle absolute bottom-2.5 left-2.5 w-3.5 h-3.5 border-b-2 border-l-2 border-[var(--theme-accent)] pointer-events-none" />
-            <span className="corner-reticle absolute bottom-2.5 right-2.5 w-3.5 h-3.5 border-b-2 border-r-2 border-[var(--theme-accent)] pointer-events-none" />
-            <span className="absolute bottom-2.5 right-2.5 bg-black/80 backdrop-blur-md text-[var(--theme-accent)] text-[10px] px-2 py-0.5 rounded-md font-mono border border-white/10 pointer-events-none">
+            {/* HUD Reticles */}
+            <span className="absolute top-2.5 left-2.5 w-3.5 h-3.5 border-t-2 border-l-2 border-[var(--theme-accent)] pointer-events-none" />
+            <span className="absolute top-2.5 right-2.5 w-3.5 h-3.5 border-t-2 border-r-2 border-[var(--theme-accent)] pointer-events-none" />
+            <span className="absolute bottom-2.5 left-2.5 w-3.5 h-3.5 border-b-2 border-l-2 border-[var(--theme-accent)] pointer-events-none" />
+            <span className="absolute bottom-2.5 right-2.5 w-3.5 h-3.5 border-b-2 border-r-2 border-[var(--theme-accent)] pointer-events-none" />
+
+            <span className="absolute bottom-2.5 right-2.5 bg-black/80 backdrop-blur-md text-[var(--theme-accent)] text-[10px] px-2 py-0.5 rounded-md font-mono border border-white/10 pointer-events-none z-10">
               Canvas JPG 0.8
             </span>
+
+            {/* Floating Action Dock inside Viewport */}
+            <div className="absolute bottom-3 inset-x-3 bg-slate-900/85 backdrop-blur-md p-2 rounded-2xl border border-white/10 shadow-xl z-20 flex flex-col gap-2">
+              {faceDetected && (
+                <button
+                  type="button"
+                  onClick={handleToggleBioethicsView}
+                  className={`w-full min-h-[38px] px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm touch-manipulation cursor-pointer border ${
+                    isShowingOriginal
+                      ? "bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-500"
+                      : "bg-slate-800/90 text-slate-200 hover:bg-slate-700 border-slate-700"
+                  }`}
+                  title={
+                    isShowingOriginal
+                      ? "Activar recuadro negro en ojos y fondo blanco"
+                      : "Ver fotografía original sin censura"
+                  }
+                >
+                  {isShowingOriginal ? (
+                    <>
+                      <VisibilityOffOutlinedIcon sx={{ fontSize: 16 }} />
+                      <span>Reactivar Anonimización</span>
+                    </>
+                  ) : (
+                    <>
+                      <VisibilityOutlinedIcon sx={{ fontSize: 16 }} />
+                      <span>Ver Original Clínico</span>
+                    </>
+                  )}
+                </button>
+              )}
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => value && handleOpenEditor(originalVersion || value)}
+                  className="px-3 min-h-[42px] rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 text-xs font-semibold transition-all flex items-center justify-center gap-1.5 active:scale-95 touch-manipulation cursor-pointer"
+                  title="Ajustar encuadre, zoom y rotación"
+                >
+                  <CropOutlinedIcon sx={{ fontSize: 16 }} />
+                  <span>Encuadre</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleTriggerCamera}
+                  disabled={isCompressing}
+                  className="flex-1 min-h-[42px] px-3 py-1.5 rounded-xl bg-[var(--theme-primary)] text-white text-xs font-semibold hover:bg-[var(--theme-primary-hover)] transition-all flex items-center justify-center gap-1.5 active:scale-95 shadow-sm touch-manipulation cursor-pointer"
+                >
+                  <PhotoCameraOutlinedIcon sx={{ fontSize: 16 }} />
+                  <span>Nueva Foto</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleTriggerFile}
+                  disabled={isCompressing}
+                  className="flex-1 min-h-[42px] px-3 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold transition-all flex items-center justify-center gap-1.5 active:scale-95 touch-manipulation cursor-pointer"
+                >
+                  <AddPhotoAlternateOutlinedIcon sx={{ fontSize: 16 }} />
+                  <span>Cambiar</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleRemove}
+                  className="min-h-[42px] px-3 py-1.5 rounded-xl border border-red-500/40 bg-red-950/20 text-red-400 hover:bg-red-900/30 text-xs font-semibold transition-all flex items-center justify-center gap-1 active:scale-95 touch-manipulation cursor-pointer"
+                  title="Quitar esta foto"
+                >
+                  <DeleteOutlineOutlinedIcon sx={{ fontSize: 16 }} />
+                </button>
+              </div>
+            </div>
           </>
         ) : (
           <div className="relative w-full h-full flex flex-col items-center justify-center p-3 text-center">
@@ -287,7 +374,7 @@ export function CameraCaptureInput({
               <div className="relative z-10 flex flex-col items-center gap-2.5">
                 <span className="w-7 h-7 border-2 border-[var(--theme-primary)] border-t-transparent rounded-full animate-spin" />
                 <span className="text-xs text-[var(--theme-accent)] font-medium">
-                  Detectando paciente y aplicando anonimización bioética...
+                  Procesando fotografía y bioética...
                 </span>
               </div>
             ) : (
@@ -326,83 +413,6 @@ export function CameraCaptureInput({
           </div>
         )}
       </div>
-
-      {/* Filled State Action Bar */}
-      {value && (
-        <div className="flex flex-col gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
-          {/* Bioethics Toggle Button (when face is detected) */}
-          {faceDetected && (
-            <button
-              type="button"
-              onClick={handleToggleBioethicsView}
-              className={`w-full min-h-[42px] px-3 py-2 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm touch-manipulation cursor-pointer border ${
-                isShowingOriginal
-                  ? "bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-500"
-                  : "bg-slate-100 dark:bg-slate-800 text-slate-750 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700"
-              }`}
-              title={
-                isShowingOriginal
-                  ? "Activar recuadro negro en ojos y fondo blanco"
-                  : "Ver fotografía original sin censura"
-              }
-            >
-              {isShowingOriginal ? (
-                <>
-                  <VisibilityOffOutlinedIcon sx={{ fontSize: 16 }} />
-                  <span>Reactivar Anonimización (Fondo Blanco + Ojos)</span>
-                </>
-              ) : (
-                <>
-                  <VisibilityOutlinedIcon sx={{ fontSize: 16 }} />
-                  <span>Ver Original Diagnóstico (Sin censura)</span>
-                </>
-              )}
-            </button>
-          )}
-
-          <div className="flex flex-wrap items-center gap-2">
-            <button
-              type="button"
-              onClick={() => value && handleOpenEditor(originalVersion || value)}
-              className="px-3.5 min-h-[44px] rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 text-xs font-semibold transition-all flex items-center justify-center gap-1.5 active:scale-95 touch-manipulation cursor-pointer"
-              title="Ajustar encuadre, zoom y rotación"
-            >
-              <CropOutlinedIcon sx={{ fontSize: 16 }} />
-              <span>Encuadre</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={handleTriggerCamera}
-              disabled={isCompressing}
-              className="flex-1 min-h-[44px] px-3 py-2 rounded-xl bg-[var(--theme-primary)] text-white text-xs font-semibold hover:bg-[var(--theme-primary-hover)] transition-all flex items-center justify-center gap-1.5 active:scale-95 shadow-sm touch-manipulation cursor-pointer"
-            >
-              <PhotoCameraOutlinedIcon sx={{ fontSize: 16 }} />
-              <span>Nueva Foto</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={handleTriggerFile}
-              disabled={isCompressing}
-              className="flex-1 min-h-[44px] px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-750 border border-slate-200 dark:border-slate-700 text-xs font-semibold transition-all flex items-center justify-center gap-1.5 active:scale-95 touch-manipulation cursor-pointer"
-            >
-              <AddPhotoAlternateOutlinedIcon sx={{ fontSize: 16 }} />
-              <span>Cambiar</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={handleRemove}
-              className="min-h-[44px] px-3.5 py-2 rounded-xl border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs font-semibold transition-all flex items-center justify-center gap-1.5 active:scale-95 touch-manipulation cursor-pointer"
-              title="Quitar esta foto"
-            >
-              <DeleteOutlineOutlinedIcon sx={{ fontSize: 16 }} />
-              <span>Quitar</span>
-            </button>
-          </div>
-        </div>
-      )}
 
       {errorMessage && (
         <div className="p-2.5 rounded-lg bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 text-xs text-red-600 dark:text-red-400 font-medium">

@@ -25,104 +25,92 @@ export function PrintContainer() {
   return (
     <div className="pb-40 sm:pb-48 max-w-5xl mx-auto px-2 sm:px-4 pt-4 print:p-0 print:m-0 print:max-w-none print:w-full print:pb-0 print:bg-white">
       {/* Screen Control Bar (Hidden on Print) */}
-      <div className="no-print bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 mb-6 shadow-md flex flex-col lg:flex-row items-center justify-between gap-4 sticky top-16 z-20 backdrop-blur-md">
-        <div>
-          <h2 className="text-base font-bold flex items-center gap-2 text-slate-800 dark:text-slate-100">
-            <DescriptionOutlinedIcon className="text-[var(--theme-primary)]" />
-            <span>Formatos Institucionales UJAT DACS (1:1 Oficial)</span>
-          </h2>
-          <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
-            Réplica fiel Carta/Letter del documento oficial de Clínicas Odontológicas.
-          </p>
+      <div className="no-print bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 mb-6 shadow-md flex flex-col gap-3.5 sticky top-16 z-20 backdrop-blur-md transition-all">
+        {/* Specimen Header Ribbon */}
+        <div className="flex items-center justify-between border-b border-slate-150 dark:border-slate-800 pb-3">
+          <div className="flex items-center gap-2.5">
+            <span className="w-2.5 h-2.5 rounded-sm bg-[var(--theme-primary)] rotate-45" />
+            <span className="font-mono text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              DOCUMENTO OFICIAL · UJAT DACS
+            </span>
+            <span className="text-slate-300 dark:text-slate-700">|</span>
+            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              Clínicas Odontológicas
+            </span>
+          </div>
+          <span className="font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+            CARTA 1:1
+          </span>
         </div>
 
-        {/* Action & Filter buttons */}
-        <div className="flex items-center gap-2.5 w-full lg:w-auto justify-end flex-wrap">
-          {/* Dual Mode Selector (Relleno vs En Blanco) */}
-          <div className="inline-flex rounded-xl p-1 bg-slate-100 dark:bg-slate-800 text-xs font-medium border border-slate-200 dark:border-slate-700">
-            <button
-              type="button"
-              onClick={() => setOutputMode("filled")}
-              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
-                outputMode === "filled"
-                  ? "bg-[var(--theme-primary)] text-white font-bold shadow-sm"
-                  : "text-slate-600 dark:text-slate-300 hover:text-slate-900"
-              }`}
-            >
-              <EditNoteOutlinedIcon sx={{ fontSize: 16 }} />
-              <span>Expediente (Relleno)</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setOutputMode("blank")}
-              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
-                outputMode === "blank"
-                  ? "bg-[var(--theme-primary)] text-white font-bold shadow-sm"
-                  : "text-slate-600 dark:text-slate-300 hover:text-slate-900"
-              }`}
-            >
-              <FeedOutlinedIcon sx={{ fontSize: 16 }} />
-              <span>Formato en Blanco</span>
-            </button>
+        {/* Split Control Dock */}
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-3">
+          {/* Output Mode Switcher */}
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-tight text-[10px]">
+              MODO:
+            </span>
+            <div className="inline-flex rounded-xl p-1 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs">
+              <button
+                type="button"
+                onClick={() => setOutputMode("filled")}
+                className={`px-3 py-1.5 rounded-lg font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+                  outputMode === "filled"
+                    ? "bg-[var(--theme-primary)] text-white font-bold shadow-sm"
+                    : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100"
+                }`}
+              >
+                <EditNoteOutlinedIcon sx={{ fontSize: 16 }} />
+                <span>Expediente Clínico</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setOutputMode("blank")}
+                className={`px-3 py-1.5 rounded-lg font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+                  outputMode === "blank"
+                    ? "bg-[var(--theme-primary)] text-white font-bold shadow-sm"
+                    : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100"
+                }`}
+              >
+                <FeedOutlinedIcon sx={{ fontSize: 16 }} />
+                <span>Formato en Blanco</span>
+              </button>
+            </div>
           </div>
 
-          {/* Sheet Selector */}
-          <div className="inline-flex rounded-xl p-1 bg-slate-100 dark:bg-slate-800 text-xs font-medium border border-slate-200 dark:border-slate-700">
+          {/* Sheets + Print */}
+          <div className="flex items-center gap-2.5 w-full lg:w-auto justify-end flex-wrap">
+            <div className="inline-flex rounded-xl p-1 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs">
+              {[
+                { id: "all", label: "3 Hojas" },
+                { id: "sheet1", label: "Hoja 1" },
+                { id: "sheet2", label: "Hoja 2" },
+                { id: "sheet3", label: "Hoja 3" },
+              ].map((s) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => setSelectedSheet(s.id as any)}
+                  className={`px-2.5 py-1.5 rounded-lg font-semibold transition-all cursor-pointer ${
+                    selectedSheet === s.id
+                      ? "bg-[var(--theme-primary)] text-white font-bold shadow-sm"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
+                  }`}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
+
             <button
               type="button"
-              onClick={() => setSelectedSheet("all")}
-              className={`px-2.5 py-1.5 rounded-lg transition-colors ${
-                selectedSheet === "all"
-                  ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-white font-bold shadow-sm"
-                  : "text-slate-600 dark:text-slate-400"
-              }`}
+              onClick={handlePrint}
+              className="min-h-[40px] px-4 py-2 rounded-xl bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-hover)] text-white font-bold text-xs shadow-md flex items-center gap-1.5 active:scale-95 transition-all cursor-pointer"
             >
-              Las 3 Hojas
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedSheet("sheet1")}
-              className={`px-2.5 py-1.5 rounded-lg transition-colors ${
-                selectedSheet === "sheet1"
-                  ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-white font-bold shadow-sm"
-                  : "text-slate-600 dark:text-slate-400"
-              }`}
-            >
-              Hoja 1
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedSheet("sheet2")}
-              className={`px-2.5 py-1.5 rounded-lg transition-colors ${
-                selectedSheet === "sheet2"
-                  ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-white font-bold shadow-sm"
-                  : "text-slate-600 dark:text-slate-400"
-              }`}
-            >
-              Hoja 2
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedSheet("sheet3")}
-              className={`px-2.5 py-1.5 rounded-lg transition-colors ${
-                selectedSheet === "sheet3"
-                  ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-white font-bold shadow-sm"
-                  : "text-slate-600 dark:text-slate-400"
-              }`}
-            >
-              Hoja 3
+              <PrintOutlinedIcon sx={{ fontSize: 18 }} />
+              <span>Imprimir Formato</span>
             </button>
           </div>
-
-          {/* Print Trigger */}
-          <button
-            type="button"
-            onClick={handlePrint}
-            className="min-h-[38px] px-4 py-2 rounded-xl bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-hover)] text-white font-bold text-xs shadow-md flex items-center gap-1.5 active:scale-95 transition-all"
-          >
-            <PrintOutlinedIcon sx={{ fontSize: 16 }} />
-            <span>Imprimir / PDF</span>
-          </button>
         </div>
       </div>
 

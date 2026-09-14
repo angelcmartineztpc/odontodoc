@@ -223,8 +223,8 @@ export function TreatmentLogForm() {
             {beforeImages.length + duringImages.length + afterImages.length + xrayImages.length} fotos registradas
           </span>
         </div>
-        <p className="text-xs text-slate-500 dark:text-slate-400">
-          Documenta los momentos clínicos operatorios y el respaldo radiográfico. Puedes adjuntar múltiples fotografías por sección con editor interactivo estilo WhatsApp (zoom, rotación de 90° y encuadre).
+        <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+          Documentación fotográfica seriada de las etapas preoperatoria, transoperatoria, postoperatoria y estudio radiográfico. Incluye módulo de edición clínica integrada para optimización de orientación, escala y encuadre documental.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
