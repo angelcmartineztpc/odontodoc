@@ -214,7 +214,7 @@ export function IdentificationForm() {
       {/* Forward Action Card (Material Design 3 Surface with High Clearance) */}
       <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-slate-200/90 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 transition-all">
         <div className="text-xs text-slate-500 dark:text-slate-400 text-center sm:text-left">
-          <span className="font-semibold text-slate-700 dark:text-slate-200">Paso 1 de 6:</span> Ficha de Identificación sincronizada en tiempo real.
+          <span className="font-semibold text-slate-700 dark:text-slate-200">Paso 1 de 7:</span> Ficha de Identificación sincronizada en tiempo real.
         </div>
         <button
           type="button"

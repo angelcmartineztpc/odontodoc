@@ -76,11 +76,14 @@
       "type": "object",
       "properties": {
         "extraoralFrontal": { "type": ["string", "null"] },
+        "extraoralRightProfile": { "type": ["string", "null"] },
+        "extraoralLeftProfile": { "type": ["string", "null"] },
+        "extraoralSmile": { "type": ["string", "null"] },
         "intraoralFrontal": { "type": ["string", "null"] },
-        "intraoralUpper": { "type": ["string", "null"] },
-        "intraoralLower": { "type": ["string", "null"] },
         "intraoralRight": { "type": ["string", "null"] },
-        "intraoralLeft": { "type": ["string", "null"] }
+        "intraoralLeft": { "type": ["string", "null"] },
+        "intraoralUpper": { "type": ["string", "null"] },
+        "intraoralLower": { "type": ["string", "null"] }
       }
     },
     "diagnosisAndPlan": {

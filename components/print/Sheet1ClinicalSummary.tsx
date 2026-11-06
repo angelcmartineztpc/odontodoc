@@ -76,23 +76,21 @@ export function Sheet1ClinicalSummary({ isBlank = false }: Sheet1Props) {
           </div>
         </div>
 
-        {/* Section: Fotografías Clínicas Extraorales (6 Tomas Estándar) */}
+        {/* Section: Fotografías Clínicas Extraorales (4 Tomas Exclusivas) */}
         <div className="mb-4">
           <h5 className="font-bold uppercase text-[11px] mb-2 tracking-wide text-black">
             FOTOGRAFIAS CLINICAS EXTRAORALES:
           </h5>
-          <div className="grid grid-cols-6 gap-2 border border-black rounded-lg p-2 bg-white print:bg-white">
+          <div className="grid grid-cols-4 gap-2 border border-black rounded-lg p-2 bg-white print:bg-white">
             {[
               { label: "Frontal", photo: photos.extraoralFrontal, watermark: "FRONTAL" },
               { label: "Perfil Derecho", photo: photos.extraoralRightProfile, watermark: "PERFIL DERECHO" },
               { label: "Perfil Izquierdo", photo: photos.extraoralLeftProfile, watermark: "PERFIL IZQUIERDO" },
               { label: "Sonrisa", photo: photos.extraoralSmile, watermark: "SONRISA" },
-              { label: "Oclusal Sup.", photo: photos.intraoralUpper, watermark: "OCLUSAL SUP." },
-              { label: "Oclusal Inf.", photo: photos.intraoralLower, watermark: "OCLUSAL INF." },
             ].map((slot, index) => (
               <div
                 key={index}
-                className="flex flex-col items-center justify-between border border-slate-300 rounded p-1 bg-white min-h-[95px] overflow-hidden"
+                className="flex flex-col items-center justify-between border border-slate-300 rounded p-1 bg-white min-h-[105px] overflow-hidden"
               >
                 <div className="w-full flex-1 flex items-center justify-center overflow-hidden">
                   {!isBlank && slot.photo ? (
@@ -100,17 +98,17 @@ export function Sheet1ClinicalSummary({ isBlank = false }: Sheet1Props) {
                     <img
                       src={slot.photo}
                       alt={slot.label}
-                      className="max-h-[75px] w-full object-contain rounded"
+                      className="max-h-[85px] w-full object-contain rounded"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-center p-1">
-                      <span className="text-[7.5px] font-bold text-slate-400 uppercase tracking-tight leading-tight">
+                      <span className="text-[8px] font-bold text-slate-400 uppercase tracking-tight leading-tight">
                         {slot.watermark}
                       </span>
                     </div>
                   )}
                 </div>
-                <span className="text-[7.5px] font-bold text-black text-center mt-0.5 border-t border-slate-100 w-full pt-0.5 truncate">
+                <span className="text-[8px] font-bold text-black text-center mt-1 border-t border-slate-100 w-full pt-0.5 truncate">
                   {slot.label}
                 </span>
               </div>

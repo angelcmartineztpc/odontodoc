@@ -33,46 +33,98 @@ export function ClinicalHistoryForm() {
       : "Obesidad"
     : null;
 
+  const extraoralPhotosCount = [
+    photos.extraoralFrontal,
+    photos.extraoralRightProfile,
+    photos.extraoralLeftProfile,
+    photos.extraoralSmile,
+  ].filter(Boolean).length;
+
+  const intraoralPhotosCount = [
+    photos.intraoralFrontal,
+    photos.intraoralRight,
+    photos.intraoralLeft,
+  ].filter(Boolean).length;
+
+  const oclusalPhotosCount = [
+    photos.intraoralUpper,
+    photos.intraoralLower,
+  ].filter(Boolean).length;
+
   return (
     <div className="space-y-6 pb-40 sm:pb-48 max-w-3xl mx-auto px-4 pt-4">
       {/* Banner */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 border border-slate-200/90 dark:border-slate-800 shadow-sm flex items-start sm:items-center gap-3.5 transition-all">
-        <div className="w-10 h-10 rounded-2xl bg-[var(--theme-primary-light)] text-[var(--theme-primary)] flex items-center justify-center shrink-0 shadow-inner">
-          <MedicalServicesOutlinedIcon sx={{ fontSize: 22 }} />
+      <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 border border-slate-200/90 dark:border-slate-800 shadow-sm flex items-start sm:items-center justify-between gap-3.5 transition-all">
+        <div className="flex items-start sm:items-center gap-3.5">
+          <div className="w-10 h-10 rounded-2xl bg-[var(--theme-primary-light)] text-[var(--theme-primary)] flex items-center justify-center shrink-0 shadow-inner">
+            <MedicalServicesOutlinedIcon sx={{ fontSize: 22 }} />
+          </div>
+          <div>
+            <h2 className="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight leading-snug">
+              Módulo B: Resumen Clínico General y Fotografías Clínicas Extraorales (4 Tomas)
+            </h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
+              Antecedentes patológicos, somatometría, constantes vitales y formato independiente de fotografías extraorales (Frontal, Perfiles y Sonrisa). Alimenta la Hoja 1 oficial UJAT.
+            </p>
+          </div>
         </div>
-        <div>
-          <h2 className="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight leading-snug">
-            Módulo B: Resumen Clínico General y Serie Fotográfica Clínica (6 Tomas)
-          </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
-            Antecedentes patológicos, somatometría, constantes vitales y serie clínica estándar (Frontal, Perfiles, Sonrisa y Oclusales). Alimenta la Hoja 1 oficial UJAT.
-          </p>
+        <div className="shrink-0 text-right">
+          <span className="text-xs font-semibold bg-[var(--theme-primary-light)] text-[var(--theme-primary-text)] dark:text-[var(--theme-accent)] px-2.5 py-1 rounded-full border border-[var(--theme-primary-border)] font-mono">
+            {extraoralPhotosCount} / 4
+          </span>
         </div>
       </div>
 
-      {/* 6-Photo Clinical Dental Series Section */}
+      {/* Selector de los 3 Formatos Fotográficos Independientes */}
+      <div className="bg-white dark:bg-slate-900 rounded-2xl p-2 border border-slate-200 dark:border-slate-800 shadow-sm grid grid-cols-3 gap-2">
+        <button
+          type="button"
+          onClick={() => setActiveTab("history")}
+          className="min-h-[42px] px-3 py-2 rounded-xl bg-[var(--theme-primary)] text-white font-bold text-xs shadow-sm flex items-center justify-center gap-1.5 cursor-pointer transition-all"
+        >
+          <span>1. EXTRAORALES</span>
+          <span className="font-mono text-[10px] bg-white/20 px-1.5 py-0.5 rounded-full">
+            {extraoralPhotosCount}/4
+          </span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab("photos")}
+          className="min-h-[42px] px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-xs flex items-center justify-center gap-1.5 cursor-pointer transition-all"
+        >
+          <span>2. INTRAORALES</span>
+          <span className="font-mono text-[10px] bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded-full">
+            {intraoralPhotosCount}/3
+          </span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab("occlusal")}
+          className="min-h-[42px] px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-xs flex items-center justify-center gap-1.5 cursor-pointer transition-all"
+        >
+          <span>3. OCLUSALES</span>
+          <span className="font-mono text-[10px] bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded-full">
+            {oclusalPhotosCount}/2
+          </span>
+        </button>
+      </div>
+
+      {/* Formato 1: Fotografías Clínicas Extraorales (4 Tomas Exclusivas) */}
       <section className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-2">
           <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--theme-primary-text)] dark:text-[var(--theme-accent)] flex items-center gap-2">
             <PhotoCameraOutlinedIcon sx={{ fontSize: 19 }} />
-            <span>Serie Fotográfica Clínica Estándar (6 Tomas)</span>
+            <span>Formato 1: Fotografías Clínicas Extraorales (4 Tomas)</span>
           </h3>
           <span className="text-[11px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-[var(--theme-primary-light)] text-[var(--theme-primary-text)] border border-[var(--theme-primary-border)] w-fit">
-            {[
-              photos.extraoralFrontal,
-              photos.extraoralRightProfile,
-              photos.extraoralLeftProfile,
-              photos.extraoralSmile,
-              photos.intraoralUpper,
-              photos.intraoralLower,
-            ].filter(Boolean).length} / 6 tomas
+            {extraoralPhotosCount} / 4 tomas
           </span>
         </div>
         <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-          Serie fotográfica odontológica estándar de valoración estomatológica. Cada recuadro incluye editor táctil estilo WhatsApp (zoom, rotación de 90°, paneo y recorte para eliminar bordes vacíos).
+          Registro fotográfico facial extraoral exclusivo para valoración craneofacial y estética. Incluye anonimización bioética automática y editor táctil de encuadre.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* 1. Frontal en Reposo */}
           <CameraCaptureInput
             label="1. Frontal (Reposo)"
@@ -81,6 +133,7 @@ export function ClinicalHistoryForm() {
             onChange={(dataUrl) => updatePhoto("extraoralFrontal", dataUrl)}
             aspectRatioLabel="Facial 4:3"
             watermarkText="FRONTAL"
+            enableBioethicsAnonymization={true}
           />
 
           {/* 2. Perfil Derecho */}
@@ -91,19 +144,21 @@ export function ClinicalHistoryForm() {
             onChange={(dataUrl) => updatePhoto("extraoralRightProfile", dataUrl)}
             aspectRatioLabel="Perfil 4:3"
             watermarkText="PERFIL DERECHO"
+            enableBioethicsAnonymization={true}
           />
 
           {/* 3. Perfil Izquierdo */}
           <CameraCaptureInput
             label="3. Perfil Izquierdo"
-            description="Perfil estricto a 90°, plano de Frankfort horizontal"
+            description="Perfil estricto a 90°, plano de Frankfort horizontal paralelo al piso"
             value={photos.extraoralLeftProfile || null}
             onChange={(dataUrl) => updatePhoto("extraoralLeftProfile", dataUrl)}
             aspectRatioLabel="Perfil 4:3"
             watermarkText="PERFIL IZQUIERDO"
+            enableBioethicsAnonymization={true}
           />
 
-          {/* 4. Sonrisa */}
+          {/* 4. Sonrisa Frontal */}
           <CameraCaptureInput
             label="4. Sonrisa Frontal"
             description="Sonrisa amplia y espontánea evaluando línea de sonrisa y corredores"
@@ -111,28 +166,7 @@ export function ClinicalHistoryForm() {
             onChange={(dataUrl) => updatePhoto("extraoralSmile", dataUrl)}
             aspectRatioLabel="Sonrisa 4:3"
             watermarkText="SONRISA"
-          />
-
-          {/* 5. Oclusal Superior */}
-          <CameraCaptureInput
-            label="5. Oclusal Superior"
-            description="Arcada maxilar superior completa tomada con espejo oclusal y retractor"
-            value={photos.intraoralUpper}
-            onChange={(dataUrl) => updatePhoto("intraoralUpper", dataUrl)}
-            aspectRatioLabel="Maxilar 4:3"
-            watermarkText="OCLUSAL SUPERIOR"
-            enableBioethicsAnonymization={false}
-          />
-
-          {/* 6. Oclusal Inferior */}
-          <CameraCaptureInput
-            label="6. Oclusal Inferior"
-            description="Arcada mandibular inferior completa separando lengua con espejo"
-            value={photos.intraoralLower}
-            onChange={(dataUrl) => updatePhoto("intraoralLower", dataUrl)}
-            aspectRatioLabel="Mandibular 4:3"
-            watermarkText="OCLUSAL INFERIOR"
-            enableBioethicsAnonymization={false}
+            enableBioethicsAnonymization={true}
           />
         </div>
       </section>

@@ -51,7 +51,7 @@ export function DiagnosisPlanForm() {
         </div>
         <div>
           <h2 className="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight leading-snug">
-            Módulo C: Diagnóstico Integral y Plan de Tratamiento Odontológico
+            Módulo E: Diagnóstico Integral y Plan de Tratamiento Odontológico
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
             Diagnóstico integral estomatológico, desglose por órgano dentario (FDI) y fases clínicas para la Hoja 2 oficial UJAT.
@@ -216,11 +216,11 @@ export function DiagnosisPlanForm() {
       <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-slate-200/90 dark:border-slate-800 shadow-sm flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 transition-all">
         <button
           type="button"
-          onClick={() => setActiveTab("photos")}
+          onClick={() => setActiveTab("occlusal")}
           className="min-h-[48px] px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300/80 dark:border-slate-700 font-semibold text-sm transition-colors flex items-center justify-center gap-2 touch-manipulation cursor-pointer"
         >
           <ArrowBackOutlinedIcon sx={{ fontSize: 18 }} />
-          <span>Fotos Intraorales</span>
+          <span>Fotos Oclusales</span>
         </button>
         <button
           type="button"
