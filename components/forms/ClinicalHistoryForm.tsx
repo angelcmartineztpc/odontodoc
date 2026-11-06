@@ -125,53 +125,60 @@ export function ClinicalHistoryForm() {
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* 1. Frontal en Reposo */}
+          {/* 1. Frontal (Reposo) → photos.extraoralFrontal */}
           <CameraCaptureInput
+            key="extraoralFrontal"
+            slotKey="extraoralFrontal"
             label="1. Frontal (Reposo)"
             description="Rostro completo de frente, labios en reposo a la altura de los ojos"
-            value={photos.extraoralFrontal}
+            value={photos.extraoralFrontal ?? null}
             onChange={(dataUrl) => updatePhoto("extraoralFrontal", dataUrl)}
             aspectRatioLabel="Facial 4:3"
             watermarkText="FRONTAL"
             enableBioethicsAnonymization={true}
           />
 
-          {/* 2. Perfil Derecho */}
+          {/* 2. Perfil Derecho → photos.extraoralRightProfile */}
           <CameraCaptureInput
+            key="extraoralRightProfile"
+            slotKey="extraoralRightProfile"
             label="2. Perfil Derecho"
-            description="Perfil estricto a 90°, plano de Frankfort horizontal paralelo al piso"
-            value={photos.extraoralRightProfile || null}
+            description="Perfil derecho estricto a 90°, plano de Frankfort horizontal paralelo al piso"
+            value={photos.extraoralRightProfile ?? null}
             onChange={(dataUrl) => updatePhoto("extraoralRightProfile", dataUrl)}
-            aspectRatioLabel="Perfil 4:3"
+            aspectRatioLabel="Perfil Der. 4:3"
             watermarkText="PERFIL DERECHO"
             enableBioethicsAnonymization={true}
           />
 
-          {/* 3. Perfil Izquierdo */}
+          {/* 3. Perfil Izquierdo → photos.extraoralLeftProfile */}
           <CameraCaptureInput
+            key="extraoralLeftProfile"
+            slotKey="extraoralLeftProfile"
             label="3. Perfil Izquierdo"
-            description="Perfil estricto a 90°, plano de Frankfort horizontal paralelo al piso"
-            value={photos.extraoralLeftProfile || null}
+            description="Perfil izquierdo estricto a 90°, plano de Frankfort horizontal paralelo al piso"
+            value={photos.extraoralLeftProfile ?? null}
             onChange={(dataUrl) => updatePhoto("extraoralLeftProfile", dataUrl)}
-            aspectRatioLabel="Perfil 4:3"
+            aspectRatioLabel="Perfil Izq. 4:3"
             watermarkText="PERFIL IZQUIERDO"
             enableBioethicsAnonymization={true}
           />
 
-          {/* 4. Sonrisa Frontal */}
+          {/* 4. Sonrisa Frontal → photos.extraoralSmile */}
           <CameraCaptureInput
+            key="extraoralSmile"
+            slotKey="extraoralSmile"
             label="4. Sonrisa Frontal"
             description="Sonrisa amplia y espontánea evaluando línea de sonrisa y corredores"
-            value={photos.extraoralSmile || null}
+            value={photos.extraoralSmile ?? null}
             onChange={(dataUrl) => updatePhoto("extraoralSmile", dataUrl)}
             aspectRatioLabel="Sonrisa 4:3"
-            watermarkText="SONRISA"
+            watermarkText="SONRISA FRONTAL"
             enableBioethicsAnonymization={true}
           />
         </div>
       </section>
 
-      {/* Vital Signs Section */}
       {/* Vital Signs Section */}
       <section className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
         <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-2">

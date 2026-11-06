@@ -183,9 +183,20 @@ export function clinicalRecordReducer(
     case "LOAD_DOCUMENT": {
       const loaded = action.payload;
       const defaultDoc = createEmptyOdontoDocument();
+      const loadedPhotos = loaded.photos || ({} as Partial<PhotographicMatrix>);
       const normalizedPhotos: PhotographicMatrix = {
-        ...defaultDoc.photos,
-        ...(loaded.photos || {}),
+        // Formato 1: Extraorales (4 tomas)
+        extraoralFrontal: loadedPhotos.extraoralFrontal ?? defaultDoc.photos.extraoralFrontal,
+        extraoralRightProfile: loadedPhotos.extraoralRightProfile ?? defaultDoc.photos.extraoralRightProfile,
+        extraoralLeftProfile: loadedPhotos.extraoralLeftProfile ?? defaultDoc.photos.extraoralLeftProfile,
+        extraoralSmile: loadedPhotos.extraoralSmile ?? defaultDoc.photos.extraoralSmile,
+        // Formato 2: Intraorales (3 tomas)
+        intraoralFrontal: loadedPhotos.intraoralFrontal ?? defaultDoc.photos.intraoralFrontal,
+        intraoralRight: loadedPhotos.intraoralRight ?? defaultDoc.photos.intraoralRight,
+        intraoralLeft: loadedPhotos.intraoralLeft ?? defaultDoc.photos.intraoralLeft,
+        // Formato 3: Oclusales (2 tomas)
+        intraoralUpper: loadedPhotos.intraoralUpper ?? defaultDoc.photos.intraoralUpper,
+        intraoralLower: loadedPhotos.intraoralLower ?? defaultDoc.photos.intraoralLower,
       };
       const loadedSession = loaded.treatmentSession || defaultDoc.treatmentSession!;
       const rawPhotos = loadedSession.photos as unknown as Record<string, unknown> | undefined;

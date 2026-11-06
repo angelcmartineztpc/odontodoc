@@ -83,20 +83,21 @@ export function Sheet1ClinicalSummary({ isBlank = false }: Sheet1Props) {
           </h5>
           <div className="grid grid-cols-4 gap-2 border border-black rounded-lg p-2 bg-white print:bg-white">
             {[
-              { label: "Frontal", photo: photos.extraoralFrontal, watermark: "FRONTAL" },
-              { label: "Perfil Derecho", photo: photos.extraoralRightProfile, watermark: "PERFIL DERECHO" },
-              { label: "Perfil Izquierdo", photo: photos.extraoralLeftProfile, watermark: "PERFIL IZQUIERDO" },
-              { label: "Sonrisa", photo: photos.extraoralSmile, watermark: "SONRISA" },
-            ].map((slot, index) => (
+              { key: "extraoralFrontal", label: "Frontal", value: photos.extraoralFrontal, watermark: "FRONTAL" },
+              { key: "extraoralRightProfile", label: "Perfil Derecho", value: photos.extraoralRightProfile, watermark: "PERFIL DERECHO" },
+              { key: "extraoralLeftProfile", label: "Perfil Izquierdo", value: photos.extraoralLeftProfile, watermark: "PERFIL IZQUIERDO" },
+              { key: "extraoralSmile", label: "Sonrisa Frontal", value: photos.extraoralSmile, watermark: "SONRISA FRONTAL" },
+            ].map((slot) => (
               <div
-                key={index}
+                key={slot.key}
+                data-slot={slot.key}
                 className="flex flex-col items-center justify-between border border-slate-300 rounded p-1 bg-white min-h-[105px] overflow-hidden"
               >
                 <div className="w-full flex-1 flex items-center justify-center overflow-hidden">
-                  {!isBlank && slot.photo ? (
+                  {!isBlank && slot.value ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={slot.photo}
+                      src={slot.value}
                       alt={slot.label}
                       className="max-h-[85px] w-full object-contain rounded"
                     />

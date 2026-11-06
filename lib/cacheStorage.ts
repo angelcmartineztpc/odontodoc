@@ -57,8 +57,9 @@ export async function saveClinicalDraft(doc: OdontoDocument): Promise<void> {
       const store = transaction.objectStore(STORE_NAME);
       const putRequest = store.put(payload, DRAFT_KEY);
 
-      putRequest.onsuccess = () => resolve();
       putRequest.onerror = () => reject(putRequest.error);
+      transaction.oncomplete = () => resolve();
+      transaction.onerror = () => reject(transaction.error);
     });
 
     if (typeof localStorage !== "undefined") {

@@ -12,6 +12,7 @@ import { compressClinicalPhoto, CompressionResult } from "@/lib/compression";
 import { ImageEditorModal } from "./ImageEditorModal";
 
 interface CameraCaptureInputProps {
+  slotKey?: string;
   label: string;
   description?: string;
   value?: string | null;
@@ -22,6 +23,7 @@ interface CameraCaptureInputProps {
 }
 
 export function CameraCaptureInput({
+  slotKey,
   label,
   description,
   value,
@@ -40,11 +42,28 @@ export function CameraCaptureInput({
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [editorRawSrc, setEditorRawSrc] = useState<string | null>(null);
 
-  // Bioethics dual version tracking
-  const [anonymizedVersion, setAnonymizedVersion] = useState<string | null>(null);
-  const [originalVersion, setOriginalVersion] = useState<string | null>(null);
-  const [isShowingOriginal, setIsShowingOriginal] = useState(false);
-  const [faceDetected, setFaceDetected] = useState(false);
+  // Bioethics dual version tracking scoped strictly to the current slot value
+  const [bioethicsState, setBioethicsState] = useState<{
+    anonymizedVersion: string | null;
+    originalVersion: string | null;
+    isShowingOriginal: boolean;
+    faceDetected: boolean;
+  }>({
+    anonymizedVersion: null,
+    originalVersion: null,
+    isShowingOriginal: false,
+    faceDetected: false,
+  });
+
+  const isCurrentBioethicsValid = Boolean(
+    value &&
+      (value === bioethicsState.anonymizedVersion ||
+        value === bioethicsState.originalVersion)
+  );
+  const faceDetected = isCurrentBioethicsValid && bioethicsState.faceDetected;
+  const anonymizedVersion = isCurrentBioethicsValid ? bioethicsState.anonymizedVersion : null;
+  const originalVersion = isCurrentBioethicsValid ? bioethicsState.originalVersion : null;
+  const isShowingOriginal = isCurrentBioethicsValid && bioethicsState.isShowingOriginal;
 
   const handleTriggerCamera = () => {
     cameraInputRef.current?.click();
@@ -78,17 +97,21 @@ export function CameraCaptureInput({
       });
 
       if (result.bioethics?.faceDetected && result.originalDataUrl) {
-        setFaceDetected(true);
-        setAnonymizedVersion(result.dataUrl);
-        setOriginalVersion(result.originalDataUrl);
-        setIsShowingOriginal(false);
+        setBioethicsState({
+          faceDetected: true,
+          anonymizedVersion: result.dataUrl,
+          originalVersion: result.originalDataUrl,
+          isShowingOriginal: false,
+        });
         onChange(result.dataUrl);
       } else {
         // Dental intraoral photo (0 faces detected) or no face found
-        setFaceDetected(false);
-        setAnonymizedVersion(null);
-        setOriginalVersion(null);
-        setIsShowingOriginal(false);
+        setBioethicsState({
+          faceDetected: false,
+          anonymizedVersion: null,
+          originalVersion: null,
+          isShowingOriginal: false,
+        });
         onChange(result.dataUrl);
       }
     } catch (err: unknown) {
@@ -122,16 +145,20 @@ export function CameraCaptureInput({
       });
 
       if (result.bioethics?.faceDetected && result.originalDataUrl) {
-        setFaceDetected(true);
-        setAnonymizedVersion(result.dataUrl);
-        setOriginalVersion(result.originalDataUrl);
-        setIsShowingOriginal(false);
+        setBioethicsState({
+          faceDetected: true,
+          anonymizedVersion: result.dataUrl,
+          originalVersion: result.originalDataUrl,
+          isShowingOriginal: false,
+        });
         onChange(result.dataUrl);
       } else {
-        setFaceDetected(false);
-        setAnonymizedVersion(null);
-        setOriginalVersion(null);
-        setIsShowingOriginal(false);
+        setBioethicsState({
+          faceDetected: false,
+          anonymizedVersion: null,
+          originalVersion: null,
+          isShowingOriginal: false,
+        });
         onChange(result.dataUrl);
       }
     } catch (err: unknown) {
@@ -148,7 +175,10 @@ export function CameraCaptureInput({
   const handleToggleBioethicsView = () => {
     if (!faceDetected || !anonymizedVersion || !originalVersion) return;
     const nextShowOriginal = !isShowingOriginal;
-    setIsShowingOriginal(nextShowOriginal);
+    setBioethicsState((prev) => ({
+      ...prev,
+      isShowingOriginal: nextShowOriginal,
+    }));
     onChange(nextShowOriginal ? originalVersion : anonymizedVersion);
   };
 
@@ -183,16 +213,20 @@ export function CameraCaptureInput({
 
   const handleRemove = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setFaceDetected(false);
-    setAnonymizedVersion(null);
-    setOriginalVersion(null);
-    setIsShowingOriginal(false);
+    setBioethicsState({
+      faceDetected: false,
+      anonymizedVersion: null,
+      originalVersion: null,
+      isShowingOriginal: false,
+    });
     onChange(null);
   };
 
   return (
-
-    <div className="relative bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-4.5 border border-slate-200/90 dark:border-slate-800 shadow-sm flex flex-col gap-3.5 transition-all">
+    <div
+      data-slot={slotKey}
+      className="relative bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-4.5 border border-slate-200/90 dark:border-slate-800 shadow-sm flex flex-col gap-3.5 transition-all"
+    >
       {/* Hidden input 1: Native Camera trigger (capture="environment") */}
       <input
         type="file"
