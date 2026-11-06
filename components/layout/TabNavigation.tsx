@@ -18,8 +18,9 @@ interface TabItem {
 
 const TABS: TabItem[] = [
   { id: "identification", label: "Ficha", IconComponent: AssignmentIndOutlinedIcon },
-  { id: "history", label: "Historial", IconComponent: MedicalServicesOutlinedIcon },
-  { id: "photos", label: "Fotos", IconComponent: PhotoCameraOutlinedIcon },
+  { id: "history", label: "Extraorales", IconComponent: MedicalServicesOutlinedIcon },
+  { id: "photos", label: "Intraorales", IconComponent: PhotoCameraOutlinedIcon },
+  { id: "occlusal", label: "Oclusales", IconComponent: PhotoCameraOutlinedIcon },
   { id: "diagnosis", label: "Plan", IconComponent: FactCheckOutlinedIcon },
   { id: "log", label: "Bitácora", IconComponent: HistoryEduOutlinedIcon },
   { id: "print", label: "Formatos", IconComponent: PrintOutlinedIcon },

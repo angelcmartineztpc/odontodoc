@@ -47,15 +47,18 @@ export function createEmptyOdontoDocument(): OdontoDocument {
       stomatologicalExam: "",
     },
     photos: {
+      // Formato 1: Extraorales (4 tomas)
       extraoralFrontal: null,
       extraoralRightProfile: null,
       extraoralLeftProfile: null,
       extraoralSmile: null,
-      intraoralUpper: null,
-      intraoralLower: null,
+      // Formato 2: Intraorales (3 tomas)
       intraoralFrontal: null,
       intraoralRight: null,
       intraoralLeft: null,
+      // Formato 3: Oclusales (2 tomas)
+      intraoralUpper: null,
+      intraoralLower: null,
     },
     diagnosisAndPlan: {
       generalDiagnosis: "",

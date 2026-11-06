@@ -24,11 +24,9 @@ export function Sheet2DiagnosisPlan({ isBlank = false }: Sheet2Props) {
   const teethEntries = Object.entries(diagnosisAndPlan.teethRecords);
 
   const intraoralSlots = [
-    { label: "Frontal", key: "intraoralFrontal" as const, photo: photos.intraoralFrontal },
-    { label: "Lateral Derecha", key: "intraoralRight" as const, photo: photos.intraoralRight },
-    { label: "Lateral Izquierda", key: "intraoralLeft" as const, photo: photos.intraoralLeft },
-    { label: "Oclusal Superior", key: "intraoralUpper" as const, photo: photos.intraoralUpper },
-    { label: "Oclusal Inferior", key: "intraoralLower" as const, photo: photos.intraoralLower },
+    { label: "Frontal", watermark: "FRONTAL", key: "intraoralFrontal" as const, photo: photos.intraoralFrontal },
+    { label: "Lateral Derecha", watermark: "LATERAL DERECHA", key: "intraoralRight" as const, photo: photos.intraoralRight },
+    { label: "Lateral Izquierda", watermark: "LATERAL IZQUIERDA", key: "intraoralLeft" as const, photo: photos.intraoralLeft },
   ];
 
   return (
@@ -86,16 +84,16 @@ export function Sheet2DiagnosisPlan({ isBlank = false }: Sheet2Props) {
           </div>
         </div>
 
-        {/* Section: Fotografías Clínicas Intraorales (5-view matrix) */}
+        {/* Section: Fotografías Clínicas Intraorales (3 Tomas Exclusivas) */}
         <div className="mb-4">
           <h5 className="font-bold uppercase text-[11px] mb-2 tracking-wide text-black">
             FOTOGRAFIAS CLINICAS INTRAORALES:
           </h5>
-          <div className="grid grid-cols-5 gap-2 border border-black rounded-lg p-2 bg-white print:bg-white">
+          <div className="grid grid-cols-3 gap-2 border border-black rounded-lg p-2 bg-white print:bg-white">
             {intraoralSlots.map((slot) => (
               <div
                 key={slot.key}
-                className="flex flex-col items-center justify-between border border-slate-300 rounded p-1 bg-white min-h-[105px]"
+                className="flex flex-col items-center justify-between border border-slate-300 rounded p-1 bg-white min-h-[105px] overflow-hidden"
               >
                 <div className="w-full flex-1 flex items-center justify-center overflow-hidden">
                   {!isBlank && slot.photo ? (
@@ -108,12 +106,12 @@ export function Sheet2DiagnosisPlan({ isBlank = false }: Sheet2Props) {
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-center p-1">
                       <span className="text-[8px] font-bold text-slate-400 uppercase tracking-tight leading-tight">
-                        {slot.label}
+                        {slot.watermark}
                       </span>
                     </div>
                   )}
                 </div>
-                <span className="text-[8px] font-bold text-black text-center mt-1 border-t border-slate-100 w-full pt-0.5">
+                <span className="text-[8px] font-bold text-black text-center mt-1 border-t border-slate-100 w-full pt-0.5 truncate">
                   {slot.label}
                 </span>
               </div>

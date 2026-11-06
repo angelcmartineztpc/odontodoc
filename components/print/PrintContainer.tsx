@@ -9,11 +9,12 @@ import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import { useClinicalRecord } from "@/context/ClinicalRecordContext";
 import { Sheet1ClinicalSummary } from "./Sheet1ClinicalSummary";
 import { Sheet2DiagnosisPlan } from "./Sheet2DiagnosisPlan";
+import { SheetOclusalRecord } from "./SheetOclusalRecord";
 import { Sheet3TreatmentSummary } from "./Sheet3TreatmentSummary";
 
 export function PrintContainer() {
   const { setActiveTab } = useClinicalRecord();
-  const [selectedSheet, setSelectedSheet] = useState<"all" | "sheet1" | "sheet2" | "sheet3">("all");
+  const [selectedSheet, setSelectedSheet] = useState<"all" | "sheet1" | "sheet2" | "oclusal" | "sheet3">("all");
   const [outputMode, setOutputMode] = useState<"filled" | "blank">("filled");
 
   const isBlank = outputMode === "blank";
@@ -81,16 +82,19 @@ export function PrintContainer() {
           {/* Sheets + Print */}
           <div className="flex items-center gap-2.5 w-full lg:w-auto justify-end flex-wrap">
             <div className="inline-flex rounded-xl p-1 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs">
-              {[
-                { id: "all", label: "3 Hojas" },
-                { id: "sheet1", label: "Hoja 1" },
-                { id: "sheet2", label: "Hoja 2" },
-                { id: "sheet3", label: "Hoja 3" },
-              ].map((s) => (
+              {(
+                [
+                  { id: "all", label: "Todos" },
+                  { id: "sheet1", label: "Extraorales" },
+                  { id: "sheet2", label: "Intraorales" },
+                  { id: "oclusal", label: "Oclusales" },
+                  { id: "sheet3", label: "Tratamiento" },
+                ] as const
+              ).map((s) => (
                 <button
                   key={s.id}
                   type="button"
-                  onClick={() => setSelectedSheet(s.id as any)}
+                  onClick={() => setSelectedSheet(s.id)}
                   className={`px-2.5 py-1.5 rounded-lg font-semibold transition-all cursor-pointer ${
                     selectedSheet === s.id
                       ? "bg-[var(--theme-primary)] text-white font-bold shadow-sm"
@@ -136,6 +140,9 @@ export function PrintContainer() {
         )}
         {(selectedSheet === "all" || selectedSheet === "sheet2") && (
           <Sheet2DiagnosisPlan isBlank={isBlank} />
+        )}
+        {(selectedSheet === "all" || selectedSheet === "oclusal") && (
+          <SheetOclusalRecord isBlank={isBlank} />
         )}
         {(selectedSheet === "all" || selectedSheet === "sheet3") && (
           <Sheet3TreatmentSummary isBlank={isBlank} />

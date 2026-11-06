@@ -136,7 +136,7 @@ export function TreatmentLogForm() {
           </div>
           <div>
             <h2 className="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight leading-snug">
-              Módulo D: Resumen del Tratamiento Realizado y Bitácora
+              Módulo F: Resumen del Tratamiento Realizado y Bitácora
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
               Datos de sesión, galerías operatorias (Antes/Durante/Después/Radiografía) y bitácora clínica para la Hoja 3 oficial.

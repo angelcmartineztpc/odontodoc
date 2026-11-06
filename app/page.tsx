@@ -7,6 +7,7 @@ import { TabNavigation } from "@/components/layout/TabNavigation";
 import { IdentificationForm } from "@/components/forms/IdentificationForm";
 import { ClinicalHistoryForm } from "@/components/forms/ClinicalHistoryForm";
 import { IntraoralMatrixForm } from "@/components/forms/IntraoralMatrixForm";
+import { OclusalMatrixForm } from "@/components/forms/OclusalMatrixForm";
 import { DiagnosisPlanForm } from "@/components/forms/DiagnosisPlanForm";
 import { TreatmentLogForm } from "@/components/forms/TreatmentLogForm";
 import { PrintContainer } from "@/components/print/PrintContainer";
@@ -31,6 +32,7 @@ function MainContent() {
         {activeTab === "identification" && <IdentificationForm />}
         {activeTab === "history" && <ClinicalHistoryForm />}
         {activeTab === "photos" && <IntraoralMatrixForm />}
+        {activeTab === "occlusal" && <OclusalMatrixForm />}
         {activeTab === "diagnosis" && <DiagnosisPlanForm />}
         {activeTab === "log" && <TreatmentLogForm />}
         {activeTab === "print" && <PrintContainer />}

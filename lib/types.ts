@@ -50,17 +50,18 @@ export interface MedicalHistory {
 }
 
 export interface PhotographicMatrix {
-  // Serie Fotográfica Clínica Estándar (6 Tomas)
+  // Formato 1: Fotografías Clínicas Extraorales (4 Tomas)
   extraoralFrontal: string | null;      // 1. Frontal reposo
   extraoralRightProfile: string | null; // 2. Perfil derecho
   extraoralLeftProfile: string | null;  // 3. Perfil izquierdo
-  extraoralSmile: string | null;        // 4. Sonrisa
-  intraoralUpper: string | null;        // 5. Oclusal superior
-  intraoralLower: string | null;        // 6. Oclusal inferior
-  // Compatibilidad con tomas intraorales previas
-  intraoralFrontal?: string | null;
-  intraoralRight?: string | null;
-  intraoralLeft?: string | null;
+  extraoralSmile: string | null;        // 4. Sonrisa frontal
+  // Formato 2: Fotografías Clínicas Intraorales (3 Tomas)
+  intraoralFrontal: string | null;      // 1. Oclusión frontal anterior
+  intraoralRight: string | null;        // 2. Lateral derecha en oclusión
+  intraoralLeft: string | null;         // 3. Lateral izquierda en oclusión
+  // Formato 3: Fotografías Clínicas Oclusales (2 Tomas)
+  intraoralUpper: string | null;        // 1. Oclusal superior (Arcada maxilar)
+  intraoralLower: string | null;        // 2. Oclusal inferior (Arcada mandibular)
 }
 
 export interface DiagnosisAndPlan {
@@ -128,6 +129,7 @@ export type ActiveTab =
   | "identification"
   | "history"
   | "photos"
+  | "occlusal"
   | "diagnosis"
   | "log"
   | "print";
