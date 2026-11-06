@@ -140,12 +140,30 @@ async function getImageSegmenter() {
   return imageSegmenterInstance;
 }
 
+let bioethicsQueue: Promise<unknown> = Promise.resolve();
+
 /**
- * Processes a clinical photo in an HTMLCanvasElement:
+ * Processes a clinical photo in an HTMLCanvasElement (serialized via queue so
+ * concurrent uploads across Extraoral slots never collide on the WASM singleton):
  * - If NO face is detected (e.g. dental intraoral arches, occlusal, teeth): preserves image 100% untouched.
  * - If face is detected: replaces background with clean white (#FFFFFF) and draws black censor bar across eyes.
  */
-export async function processBioethicsClinicalPhoto(
+export function processBioethicsClinicalPhoto(
+  canvas: HTMLCanvasElement,
+  options: {
+    applyWhiteBackground?: boolean;
+    applyEyeCensor?: boolean;
+  } = {}
+): Promise<BioethicsVisionResult> {
+  const next = bioethicsQueue.then(
+    () => runBioethicsClinicalPhoto(canvas, options),
+    () => runBioethicsClinicalPhoto(canvas, options)
+  );
+  bioethicsQueue = next.catch(() => undefined);
+  return next;
+}
+
+async function runBioethicsClinicalPhoto(
   canvas: HTMLCanvasElement,
   options: {
     applyWhiteBackground?: boolean;
